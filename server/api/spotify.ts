@@ -1,6 +1,5 @@
 import { defineEventHandler } from 'h3';
 import { useStorage } from 'nitropack/runtime';
-import { prisma } from '~/lib/prisma';
 
 // Update these with your Spotify application credentials
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -10,37 +9,8 @@ const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 // Storage for caching token
 const tokenStorage = useStorage('spotify');
 
-async function getCustomTrack() {
-  try {
-    const customTrack = await prisma.customTrack.findFirst({
-      where: { id: 'default' }
-    });
-    return customTrack;
-  } catch (error) {
-    console.error('Error reading custom track from database:', error);
-    return null;
-  }
-}
-
 export default defineEventHandler(async (event) => {
   try {
-    // Check if custom track is enabled
-    const customTrack = await getCustomTrack()
-    
-    if (customTrack && customTrack.enabled) {
-      // Return custom track data
-      return {
-        isPlaying: customTrack.isPlaying,
-        songUrl: customTrack.songUrl || '#',
-        title: customTrack.title,
-        artist: customTrack.artist,
-        album: customTrack.album || '',
-        albumImageUrl: customTrack.albumImageUrl || '',
-        progress: 0, // Progress is not stored in database, always start from 0
-        duration: (customTrack.duration || 180) * 1000, // Convert to milliseconds
-        isCustom: true
-      }
-    }
     // Get access token (from cache or generate new one)
     let accessToken = await tokenStorage.getItem('access_token');
     let tokenExpiry = await tokenStorage.getItem('token_expiry');
@@ -113,22 +83,19 @@ export default defineEventHandler(async (event) => {
                 album: response.item.album.name,
                 albumImageUrl: response.item.album.images[0]?.url,
                 progress: response.progress_ms,
-                duration: response.item.duration_ms,
-                isCustom: false
+                duration: response.item.duration_ms
               };
             } else {
               // No track playing
               return {
-                isPlaying: false,
-                isCustom: false
+                isPlaying: false
               };
             }
     } catch (fetchError: any) {
       // Handle 204 No Content or other API-specific errors
       if (fetchError.response?.status === 204) {
         return {
-          isPlaying: false,
-          isCustom: false
+          isPlaying: false
         };
       }
       
@@ -136,8 +103,7 @@ export default defineEventHandler(async (event) => {
       console.error('Spotify API error:', fetchError.message);
       return { 
         error: 'Spotify API error',
-        isPlaying: false,
-        isCustom: false
+        isPlaying: false
       };
     }
     
@@ -146,8 +112,7 @@ export default defineEventHandler(async (event) => {
     return { 
       error: 'Failed to fetch Spotify data', 
       message: error.message,
-      isPlaying: false,
-      isCustom: false
+      isPlaying: false
     };
   }
 });
