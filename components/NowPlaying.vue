@@ -18,7 +18,6 @@ interface SpotifyNowPlaying {
   albumImageUrl: string;
   progress: number;
   duration: number;
-  isCustom?: boolean;
 }
 
 const nowPlaying = ref<SpotifyNowPlaying | null>(null);
@@ -274,7 +273,6 @@ const { t } = useI18n();
                   >
                     {{ nowPlaying.title }}
                     <IconExternalLink
-                      v-if="!nowPlaying.isCustom"
                       class="w-3 h-3 opacity-50 inline-block"
                     />
                   </a>
