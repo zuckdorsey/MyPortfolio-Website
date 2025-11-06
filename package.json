@@ -58,6 +58,6 @@
     },
     "overrides": {
         "glob": "^10.4.5",
-        "keygrip": "git+https://github.com/crypto-utils/keygrip.git#master"
+        "keygrip": "git+https://github.com/crypto-utils/keygrip.git#70be53a7c8cd2c8e2f30036d2bbb40e911562542"
     }
 }
