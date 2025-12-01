@@ -82,11 +82,14 @@ import { IconLink, IconMapPinFilled } from "@tabler/icons-vue";
     <ClientOnly>
       <ConfettisButton>
         <template v-slot:default="{ onLaunchConfettis }">
-          <img
+          <NuxtImg
             src="/photo.jpeg"
             alt="Ababil Mustaqim"
             class="sm:w-40 sm:h-40 w-24 h-24 rounded-full object-cover hover:cursor-pointer"
             @click="onLaunchConfettis()"
+            width="160"
+            height="160"
+            format="webp"
           />
         </template>
       </ConfettisButton>

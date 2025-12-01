@@ -170,10 +170,13 @@ const currentPreviewMode = ref<'live' | 'video'>('live');
       <p class="text-xs text-neutral-600 dark:text-neutral-400 w-full sm:w-1/2 line-clamp-4 sm:line-clamp-none">
         {{ getLocalizedContent }}
       </p>
-      <img
+      <NuxtImg
         :src="`/projects/${getProjectImageName(project)}.${getProjectImageExtension(project)}`"
         :alt="project.name"
         class="hidden sm:block absolute bottom-0 right-[-10%] shadow-2xl rounded-t-xl z-10 h-32 w-60 sm:h-44 sm:w-80 transition group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:-rotate-2"
+        width="320"
+        height="176"
+        format="webp"
       />
     </div>
     

@@ -1,18 +1,23 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
-    '@nuxt/ui', 
-    '@nuxt/content', 
+    '@nuxt/ui',
+    '@nuxt/content',
     '@nuxtjs/i18n',
     '@nuxthq/studio',
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    '@nuxt/image'
   ],
   devtools: { enabled: true },
-  
+
+  nitro: {
+    compressPublicAssets: true,
+  },
+
   runtimeConfig: {
     // Konfigurasi yang hanya tersedia di server
     databaseUrl: process.env.DATABASE_URL,
-    
+
     // Konfigurasi yang tersedia di client
     public: {
       apiBase: '/api'
@@ -20,32 +25,32 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-      vueI18n: './i18n.config.ts',
-      locales: [
-        {
-          code: 'en',
-          iso: 'en-US',
-          name: 'English'
-        },
-        {
-          code: 'id',
-          iso: 'id-ID', 
-          name: 'Bahasa Indonesia'
-        }
-      ],
-            detectBrowserLanguage: {
-                useCookie: true,
-                cookieKey: 'i18n_redirected',
-                redirectOn: 'root',
-                alwaysRedirect: true,
-                fallbackLocale: 'en'
-            },
-      defaultLocale: 'en'
+    vueI18n: './i18n.config.ts',
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+        name: 'English'
+      },
+      {
+        code: 'id',
+        iso: 'id-ID',
+        name: 'Bahasa Indonesia'
+      }
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: true,
+      fallbackLocale: 'en'
+    },
+    defaultLocale: 'en'
   },
 
   tailwindcss: {
-      configPath: 'tailwind.config.js',
-      cssPath: '~/assets/css/main.css'
+    configPath: 'tailwind.config.js',
+    cssPath: '~/assets/css/main.css'
   },
 
   ui: {},
@@ -63,46 +68,46 @@ export default defineNuxtConfig({
   },
 
   app: {
-      head: {
-          link: [
-              {
-                  rel: 'preload',
-                  as: 'style',
-                  type: 'text/css',
-                  href: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css',
-                  onload: "this.onload=null;this.rel='stylesheet'"
-              },
-              {
-                  rel: 'icon',
-                  type: 'image/svg+xml',
-                  href: '/favicon.svg'
-              },
-              {
-                  rel: 'icon',
-                  type: 'image/x-icon',
-                  href: '/favicon.ico'
-              },
-              {
-                  rel: 'apple-touch-icon',
-                  sizes: '180x180',
-                  href: '/apple-touch-icon.png'
-              },
-              {
-                  rel: 'manifest',
-                  href: '/manifest.json'
-              }
-          ],
-          meta: [
-              { charset: 'utf-8' },
-              { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-              { name: 'format-detection', content: 'telephone=no' },
-              { name: 'msapplication-TileColor', content: '#0f172a' },
-              { name: 'theme-color', content: '#0f172a' }
-          ],
-          htmlAttrs: {
-              lang: 'en'
-          }
+    head: {
+      link: [
+        {
+          rel: 'preload',
+          as: 'style',
+          type: 'text/css',
+          href: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css',
+          onload: "this.onload=null;this.rel='stylesheet'"
+        },
+        {
+          rel: 'icon',
+          type: 'image/svg+xml',
+          href: '/favicon.svg'
+        },
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: '/favicon.ico'
+        },
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png'
+        },
+        {
+          rel: 'manifest',
+          href: '/manifest.json'
+        }
+      ],
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' },
+        { name: 'msapplication-TileColor', content: '#0f172a' },
+        { name: 'theme-color', content: '#0f172a' }
+      ],
+      htmlAttrs: {
+        lang: 'en'
       }
+    }
   },
 
   // SEO Configuration
@@ -121,12 +126,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-      '/': { headers: { 'cache-control': 's-maxage=31536000' } },
-      '/resume': { headers: { 'cache-control': 's-maxage=31536000' } },
-      '/dashboard/**': { ssr: false },
-      '/login': { ssr: false },
-      '/closed': { ssr: false }
+    '/': { headers: { 'cache-control': 's-maxage=31536000' } },
+    '/resume': { headers: { 'cache-control': 's-maxage=31536000' } },
+    '/dashboard/**': { ssr: false },
+    '/login': { ssr: false },
+    '/closed': { ssr: false }
   },
-  
+
   compatibilityDate: '2025-05-09'
 });

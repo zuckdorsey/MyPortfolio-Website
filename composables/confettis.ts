@@ -1,10 +1,17 @@
-import JSConfetti from 'js-confetti';
-
 export function useConfettis() {
-    const jsConfetti = new JSConfetti();
+    let jsConfetti: any = null;
     const confettisCounter = ref(0);
 
     async function launchConfettis(emoji?: string) {
+        if (!jsConfetti) {
+            if (import.meta.client) {
+                const { default: JSConfetti } = await import('js-confetti');
+                jsConfetti = new JSConfetti();
+            } else {
+                return;
+            }
+        }
+
         let confettis;
         if (typeof emoji === 'string') {
             confettis = {

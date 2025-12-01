@@ -206,11 +206,12 @@ const { t } = useI18n();
         <div class="relative">
           <!-- Background album art (blurred) -->
           <div class="absolute inset-0 z-0 overflow-hidden">
-            <img
+            <NuxtImg
               :src="nowPlaying.albumImageUrl"
               alt=""
               class="w-full h-full object-cover blur-2xl opacity-20 transform scale-110"
               aria-hidden="true"
+              format="webp"
             />
             <div class="absolute inset-0 bg-gradient-to-b from-white dark:from-primary-950/80 to-white/95 dark:to-primary-950/95"></div>
           </div>
@@ -219,10 +220,13 @@ const { t } = useI18n();
           <div class="relative z-10 flex flex-col sm:flex-row p-0">
             <!-- Album Art -->
             <div class="w-full h-36 sm:w-32 sm:h-32 relative group">
-              <img
+              <NuxtImg
                 :src="nowPlaying.albumImageUrl"
                 :alt="nowPlaying.album"
                 class="w-full h-full object-cover shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
+                width="128"
+                height="128"
+                format="webp"
               />
               
               <!-- Play indicator overlay -->

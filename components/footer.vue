@@ -16,11 +16,12 @@
           >Nuxt.js</a
         >
       </p>
-      <img
+      <NuxtImg
         src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Red%20Heart.png"
         alt="Red Heart"
         width="23"
         height="23"
+        loading="lazy"
       />
     </div>
     <Settings />
