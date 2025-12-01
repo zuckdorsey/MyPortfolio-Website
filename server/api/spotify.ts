@@ -75,8 +75,7 @@ export default defineEventHandler(async (event) => {
             
             // If we got a response, Spotify is playing something
             if (response && response.item) {
-              // Extract song data
-              const songData = {
+              return {
                 isPlaying: response.is_playing,
                 songUrl: response.item.external_urls.spotify,
                 title: response.item.name,
@@ -86,8 +85,6 @@ export default defineEventHandler(async (event) => {
                 progress: response.progress_ms,
                 duration: response.item.duration_ms
               };
-              
-              return songData;
             } else {
               // No track playing
               return {
@@ -106,7 +103,7 @@ export default defineEventHandler(async (event) => {
       console.error('Spotify API error:', fetchError.message);
       return { 
         error: 'Spotify API error',
-        isPlaying: false 
+        isPlaying: false
       };
     }
     
