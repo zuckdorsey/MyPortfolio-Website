@@ -1,4 +1,5 @@
 import { getDb, handleDbError } from '../../utils/db';
+import { uploadImage } from '../../utils/cloudinary';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -6,9 +7,20 @@ export default defineEventHandler(async (event) => {
         const body = await readBody(event);
         const db = getDb();
 
-        const {
+        let {
             name, link, repo_link, date, image, image_ext, technos, type, content_en, content_id
         } = body;
+
+        // Check if image is a base64 string
+        if (image && image.startsWith('data:image')) {
+            try {
+                const uploadResult = await uploadImage(image, 'portfolio/projects');
+                image = uploadResult.secure_url;
+            } catch (err) {
+                console.error('Failed to upload image:', err);
+                throw createError({ statusCode: 500, message: 'Image upload failed' });
+            }
+        }
 
         const result = await db.query(
             `UPDATE projects 
