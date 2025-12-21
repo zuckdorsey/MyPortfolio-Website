@@ -27,9 +27,44 @@ const navItems = [
 const route = useRoute();
 const currentPageTitle = computed(() => {
   const path = route.path;
-  if (path === '/dashboard') return 'Overview';
-  const segment = path.split('/').filter(Boolean).pop();
-  return segment ? segment.charAt(0).toUpperCase() + segment.slice(1) : 'Dashboard';
+  
+  // 1. Explicit meta title, if provided by the route definition
+  const metaTitle = (route.meta as any)?.title as string | undefined;
+  if (metaTitle) {
+    return metaTitle;
+  }
+
+  // 2. Exact dashboard overview
+  if (path === "/dashboard") {
+    return "Overview";
+  }
+
+  // 3. Handle nested project routes explicitly
+  if (path.startsWith("/dashboard/projects")) {
+    const segments = path.split("/").filter(Boolean);
+    const lastSegment = segments[segments.length - 1];
+
+    if (lastSegment === "projects") {
+      return "Projects";
+    }
+
+    if (lastSegment === "new") {
+      return "New Project";
+    }
+
+    // Any other nested project route (e.g. /dashboard/projects/123)
+    return "Edit Project";
+  }
+
+  // 4. Fall back to the matching nav item label for other sections
+  const matchedNavItem = navItems.find((item) => path.startsWith(item.to));
+  if (matchedNavItem) {
+    return matchedNavItem.label;
+  }
+
+  // 5. Final fallback: capitalize the last path segment
+  const segment = path.split("/").filter(Boolean).pop();
+  return segment ? segment.charAt(0).toUpperCase() + segment.slice(1) : "Dashboard";
 });
 </script>
 
@@ -57,6 +92,8 @@ const currentPageTitle = computed(() => {
         ]"
         @mouseenter="isSidebarExpanded = true"
         @mouseleave="isSidebarExpanded = false"
+        @focusin="isSidebarExpanded = true"
+        @focusout="isSidebarExpanded = false"
       >
         <!-- Logo -->
         <div class="h-14 lg:h-16 flex items-center px-4 border-b border-white/5">
@@ -128,10 +165,12 @@ const currentPageTitle = computed(() => {
             <h1 class="text-xl font-semibold text-white">{{ currentPageTitle }}</h1>
           </div>
           <div class="flex items-center gap-4">
-            <button class="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
+            <!-- TODO: Implement search functionality -->
+            <button class="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors" disabled title="Search (coming soon)">
               <i class="i-tabler-search w-5 h-5"></i>
             </button>
-            <button class="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
+            <!-- TODO: Implement notification system -->
+            <button class="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors" disabled title="Notifications (coming soon)">
               <i class="i-tabler-bell w-5 h-5"></i>
             </button>
             <div class="w-px h-6 bg-white/10"></div>

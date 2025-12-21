@@ -14,6 +14,7 @@ const isLoading = ref(true);
 
 // Animated counters
 const animatedStats = ref({ projects: 0, skills: 0, experiences: 0, education: 0, certifications: 0 });
+const activeTimers = ref<NodeJS.Timeout[]>([]);
 
 const animateCounter = (key: keyof typeof animatedStats.value, target: number) => {
   const duration = 1000;
@@ -31,7 +32,14 @@ const animateCounter = (key: keyof typeof animatedStats.value, target: number) =
       animatedStats.value[key] = Math.floor(current);
     }
   }, stepTime);
+  
+  activeTimers.value.push(timer);
 };
+
+onUnmounted(() => {
+  activeTimers.value.forEach(timer => clearInterval(timer));
+  activeTimers.value = [];
+});
 
 onMounted(async () => {
   auth.initAuth();
@@ -166,7 +174,8 @@ const recentActivity = [
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-lg font-semibold text-white">Activity</h2>
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <!-- Ping animation: 2s duration, ease-out timing, 3 iterations -->
+            <span class="animate-[ping_2s_ease-out_3] absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
         </div>
@@ -217,7 +226,8 @@ const recentActivity = [
                 <i class="i-tabler-server w-6 h-6 text-emerald-400"></i>
               </div>
               <span class="absolute -top-1 -right-1 flex h-3 w-3">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <!-- Ping animation: 2s duration, ease-out timing, 3 iterations -->
+                <span class="animate-[ping_2s_ease-out_3] absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
               </span>
             </div>
