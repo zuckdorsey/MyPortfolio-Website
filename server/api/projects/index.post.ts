@@ -12,13 +12,23 @@ export default defineEventHandler(async (event) => {
 
         // Check if image is a base64 string or binary data that needs uploading
         if (image && image.startsWith('data:image')) {
+            // Validate that it's a proper base64-encoded image
+            const base64Pattern = /^data:image\/(png|jpeg|jpg|webp|gif);base64,/;
+            if (!base64Pattern.test(image)) {
+                throw createError({ statusCode: 400, message: 'Invalid image format' });
+            }
+            
             try {
                 const uploadResult = await uploadImage(image, 'portfolio/projects');
                 image = uploadResult.secure_url;
                 // We typically don't need image_ext for cloudinary URLs, but keeping it for compatibility if needed.
                 // Or we can leave it as is or set it to 'webp' or whatever cloudinary returns format-wise.
             } catch (err) {
-                console.error('Failed to upload image:', err);
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error('Failed to upload image:', err);
+                } else {
+                    console.error('Failed to upload image');
+                }
                 // Fallback or throw? Let's throw for now as image upload failure is critical if intended.
                 throw createError({ statusCode: 500, message: 'Image upload failed' });
             }
