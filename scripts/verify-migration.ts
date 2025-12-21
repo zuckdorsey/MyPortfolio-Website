@@ -8,19 +8,34 @@ let envConfig: any = {};
 if (fs.existsSync(envPath)) {
     const envContent = fs.readFileSync(envPath, 'utf-8');
     envContent.split('\n').forEach(line => {
-        const [key, value] = line.split('=');
-        if (key && value) {
-            envConfig[key.trim()] = value.trim().replace(/^["']|["']$/g, '');
+        const trimmedLine = line.trim();
+        if (!trimmedLine || trimmedLine.startsWith('#')) {
+            return;
+        }
+        const idx = trimmedLine.indexOf('=');
+        if (idx === -1) {
+            return;
+        }
+        const key = trimmedLine.substring(0, idx).trim();
+        const value = trimmedLine.substring(idx + 1).trim();
+        if (key && value !== undefined) {
+            envConfig[key] = value.replace(/^["']|["']$/g, '');
         }
     });
 }
 
 const DATABASE_URL = process.env.DATABASE_URL || envConfig.DATABASE_URL;
+const NODE_ENV = process.env.NODE_ENV || envConfig.NODE_ENV || 'development';
 
-const pool = new Pool({
+const poolConfig: any = {
     connectionString: DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
-});
+};
+
+if (NODE_ENV === 'production') {
+    poolConfig.ssl = { rejectUnauthorized: true };
+}
+
+const pool = new Pool(poolConfig);
 
 async function checkMigration() {
     const client = await pool.connect();

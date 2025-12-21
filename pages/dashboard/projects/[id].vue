@@ -24,8 +24,27 @@ onMounted(async () => {
     if (isEditing.value) {
       const p = await $fetch(`/api/projects/${route.params.id}`);
       form.value = { ...p };
-      // Ensure arrays
-      form.value.technos = typeof form.value.technos === 'string' ? JSON.parse(form.value.technos) : (form.value.technos || []);
+      
+      // Ensure arrays and support legacy comma-separated technos strings
+      if (typeof form.value.technos === 'string') {
+        let parsedTechnos: unknown;
+        try {
+          parsedTechnos = JSON.parse(form.value.technos);
+        } catch {
+          parsedTechnos = null;
+        }
+        if (Array.isArray(parsedTechnos)) {
+          form.value.technos = parsedTechnos as string[];
+        } else {
+          form.value.technos = form.value.technos
+            .split(',')
+            .map(t => t.trim())
+            .filter(t => t.length > 0);
+        }
+      } else {
+        form.value.technos = form.value.technos || [];
+      }
+      
       form.value.type = typeof form.value.type === 'string' ? JSON.parse(form.value.type) : (form.value.type || []);
       
       const type = form.value.type;
@@ -43,6 +62,13 @@ onMounted(async () => {
 const handleImageSelect = (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (!file) return;
+
+  // Validate file size (max 5MB)
+  const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+  if (file.size > maxSize) {
+    alert('Image size must be less than 5MB');
+    return;
+  }
 
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -132,10 +158,10 @@ const save = async () => {
            <div class="space-y-1.5">
             <label class="block text-sm font-medium text-slate-300">Project Image</label>
             <div class="flex items-start gap-4">
-              <div v-if="imagePreview" class="relative group w-24 h-24 rounded-xl overflow-hidden border border-white/10 bg-white/5 shrink-0">
+               <div v-if="imagePreview" class="relative group w-24 h-24 rounded-xl overflow-hidden border border-white/10 bg-white/5 shrink-0">
                 <img :src="imagePreview" alt="Preview" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                   <button type="button" @click="() => { imagePreview = ''; form.image = ''; }" class="text-white hover:text-red-400 transition-colors"><i class="i-tabler-trash w-5 h-5"></i></button>
+                   <button type="button" @click="() => { if (confirm('Remove the current project image?')) { imagePreview = ''; form.image = ''; } }" class="text-white hover:text-red-400 transition-colors"><i class="i-tabler-trash w-5 h-5"></i></button>
                 </div>
               </div>
               <div class="flex-1">
@@ -144,7 +170,7 @@ const save = async () => {
                         <i class="i-tabler-cloud-upload w-6 h-6 text-slate-400 mb-1"></i>
                         <p class="text-xs text-slate-400">Click to upload image</p>
                     </div>
-                    <input type="file" class="hidden" accept="image/*" @change="handleImageSelect" />
+                    <input type="file" class="hidden" accept="image/*" aria-label="Upload project image" @change="handleImageSelect" />
                 </label>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { getDb, handleDbError } from '../../utils/db';
-import { uploadImage } from '../../utils/cloudinary';
+import { uploadImage, deleteImage } from '../../utils/cloudinary';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -13,11 +13,44 @@ export default defineEventHandler(async (event) => {
 
         // Check if image is a base64 string
         if (image && image.startsWith('data:image')) {
+            // Validate that it's a proper base64-encoded image
+            const base64Pattern = /^data:image\/(png|jpeg|jpg|webp|gif);base64,/;
+            if (!base64Pattern.test(image)) {
+                throw createError({ statusCode: 400, message: 'Invalid image format' });
+            }
+            
             try {
+                // Fetch the old project data to delete the old image
+                const oldProject = await db.query('SELECT image FROM projects WHERE id = $1', [id]);
+                
+                // Upload new image
                 const uploadResult = await uploadImage(image, 'portfolio/projects');
                 image = uploadResult.secure_url;
+                
+                // Delete old image from Cloudinary if it exists and is a Cloudinary URL
+                if (oldProject.rows.length > 0 && oldProject.rows[0].image) {
+                    const oldImageUrl = oldProject.rows[0].image;
+                    if (oldImageUrl.includes('cloudinary.com')) {
+                        // Extract public_id from Cloudinary URL
+                        const urlParts = oldImageUrl.split('/');
+                        const filename = urlParts[urlParts.length - 1];
+                        const publicIdWithExt = urlParts.slice(urlParts.indexOf('upload') + 2).join('/');
+                        const publicId = publicIdWithExt.substring(0, publicIdWithExt.lastIndexOf('.'));
+                        
+                        try {
+                            await deleteImage(publicId);
+                        } catch (deleteErr) {
+                            // Log but don't fail the update if deletion fails
+                            console.error('Failed to delete old image:', deleteErr);
+                        }
+                    }
+                }
             } catch (err) {
-                console.error('Failed to upload image:', err);
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error('Failed to upload image:', err);
+                } else {
+                    console.error('Failed to upload image');
+                }
                 throw createError({ statusCode: 500, message: 'Image upload failed' });
             }
         }
