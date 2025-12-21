@@ -35,8 +35,8 @@ export default defineEventHandler(async (event) => {
                     // Check if URL is from our Cloudinary account
                     if (cloudName && oldImageUrl.includes(`res.cloudinary.com/${cloudName}/`)) {
                         // Extract public_id from Cloudinary URL
-                        const uploadIndex = oldImageUrl.indexOf('/upload/');
-                        if (uploadIndex !== -1) {
+                        const uploadPathIndex = oldImageUrl.indexOf('/upload/');
+                        if (uploadPathIndex !== -1) {
                             const urlParts = oldImageUrl.split('/');
                             const publicIdWithExt = urlParts.slice(urlParts.indexOf('upload') + 2).join('/');
                             const publicId = publicIdWithExt.substring(0, publicIdWithExt.lastIndexOf('.'));

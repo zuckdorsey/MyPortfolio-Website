@@ -92,6 +92,8 @@ const currentPageTitle = computed(() => {
         ]"
         @mouseenter="isSidebarExpanded = true"
         @mouseleave="isSidebarExpanded = false"
+        @focusin="isSidebarExpanded = true"
+        @focusout="isSidebarExpanded = false"
       >
         <!-- Logo -->
         <div class="h-14 lg:h-16 flex items-center px-4 border-b border-white/5">
@@ -117,8 +119,6 @@ const currentPageTitle = computed(() => {
             class="group flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200"
             active-class="!bg-white/10 !text-white"
             :class="$route.path === item.to ? '' : 'text-slate-400 hover:text-white hover:bg-white/5'"
-            @focus="isSidebarExpanded = true"
-            @blur="isSidebarExpanded = false"
           >
             <i :class="[item.icon, 'w-5 h-5 flex-shrink-0 transition-colors', $route.path === item.to ? 'text-purple-400' : 'text-slate-500 group-hover:text-slate-300']"></i>
             <span 

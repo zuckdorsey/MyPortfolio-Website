@@ -31,6 +31,7 @@ onMounted(async () => {
         try {
           parsedTechnos = JSON.parse(form.value.technos);
         } catch {
+          // Parsing failed, likely a comma-separated string - handle below
           parsedTechnos = null;
         }
         if (Array.isArray(parsedTechnos)) {
