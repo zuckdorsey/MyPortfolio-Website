@@ -66,6 +66,7 @@ const handleImageSelect = (event: Event) => {
   // Validate file size (max 5MB)
   const maxSize = 5 * 1024 * 1024; // 5MB in bytes
   if (file.size > maxSize) {
+    // TODO: Replace with toast notification for better UX
     alert('Image size must be less than 5MB');
     return;
   }
@@ -161,6 +162,7 @@ const save = async () => {
                <div v-if="imagePreview" class="relative group w-24 h-24 rounded-xl overflow-hidden border border-white/10 bg-white/5 shrink-0">
                 <img :src="imagePreview" alt="Preview" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                   <!-- TODO: Replace confirm() with proper modal component for better UX -->
                    <button type="button" @click="() => { if (confirm('Remove the current project image?')) { imagePreview = ''; form.image = ''; } }" class="text-white hover:text-red-400 transition-colors"><i class="i-tabler-trash w-5 h-5"></i></button>
                 </div>
               </div>

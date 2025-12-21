@@ -174,6 +174,7 @@ const recentActivity = [
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-lg font-semibold text-white">Activity</h2>
           <span class="relative flex h-2 w-2">
+            <!-- Ping animation: 2s duration, ease-out timing, 3 iterations -->
             <span class="animate-[ping_2s_ease-out_3] absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
@@ -225,6 +226,7 @@ const recentActivity = [
                 <i class="i-tabler-server w-6 h-6 text-emerald-400"></i>
               </div>
               <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                <!-- Ping animation: 2s duration, ease-out timing, 3 iterations -->
                 <span class="animate-[ping_2s_ease-out_3] absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
               </span>

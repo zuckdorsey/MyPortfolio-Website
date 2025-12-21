@@ -30,18 +30,23 @@ export default defineEventHandler(async (event) => {
                 // Delete old image from Cloudinary if it exists and is a Cloudinary URL
                 if (oldProject.rows.length > 0 && oldProject.rows[0].image) {
                     const oldImageUrl = oldProject.rows[0].image;
-                    if (oldImageUrl.includes('cloudinary.com')) {
+                    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+                    
+                    // Check if URL is from our Cloudinary account
+                    if (cloudName && oldImageUrl.includes(`res.cloudinary.com/${cloudName}/`)) {
                         // Extract public_id from Cloudinary URL
-                        const urlParts = oldImageUrl.split('/');
-                        const filename = urlParts[urlParts.length - 1];
-                        const publicIdWithExt = urlParts.slice(urlParts.indexOf('upload') + 2).join('/');
-                        const publicId = publicIdWithExt.substring(0, publicIdWithExt.lastIndexOf('.'));
-                        
-                        try {
-                            await deleteImage(publicId);
-                        } catch (deleteErr) {
-                            // Log but don't fail the update if deletion fails
-                            console.error('Failed to delete old image:', deleteErr);
+                        const uploadIndex = oldImageUrl.indexOf('/upload/');
+                        if (uploadIndex !== -1) {
+                            const urlParts = oldImageUrl.split('/');
+                            const publicIdWithExt = urlParts.slice(urlParts.indexOf('upload') + 2).join('/');
+                            const publicId = publicIdWithExt.substring(0, publicIdWithExt.lastIndexOf('.'));
+                            
+                            try {
+                                await deleteImage(publicId);
+                            } catch (deleteErr) {
+                                // Log but don't fail the update if deletion fails
+                                console.error('Failed to delete old image:', deleteErr);
+                            }
                         }
                     }
                 }
