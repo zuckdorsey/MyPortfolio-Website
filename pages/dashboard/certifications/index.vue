@@ -2,8 +2,19 @@
 definePageMeta({ layout: "dashboard", middleware: "auth" });
 import useAuth from "~/composables/auth/useAuth";
 
+interface Certification {
+  id: number;
+  title: string;
+  date: string;
+  icon?: string;
+  website?: string;
+  badge_alt?: string;
+  description?: string;
+  skills?: string;
+}
+
 const auth = useAuth();
-const certifications = ref([]);
+const certifications = ref<Certification[]>([]);
 const isLoading = ref(true);
 
 onMounted(async () => {
@@ -100,7 +111,7 @@ const deleteCert = async (id: number) => {
           </div>
           
           <!-- Link -->
-          <a v-if="c.url" :href="c.url" target="_blank" class="mt-4 inline-flex items-center gap-1.5 text-xs text-pink-400 hover:text-pink-300 transition-colors">
+          <a v-if="c.website" :href="c.website" target="_blank" class="mt-4 inline-flex items-center gap-1.5 text-xs text-pink-400 hover:text-pink-300 transition-colors">
             <i class="i-tabler-external-link w-3.5 h-3.5"></i>
             View Certificate
           </a>

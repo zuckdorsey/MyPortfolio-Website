@@ -27,8 +27,8 @@ function checkIfMobile() {
 const { data: allSkills } = await useAsyncData<ContentSkill[]>(
   "skills",
   async () => {
-    const items = await queryContent("/skills").find();
-    return items as unknown as ContentSkill[];
+    const items = await $fetch<ContentSkill[]>("/api/skills");
+    return items;
   }
 );
 const filteredSkills = computed(() => {

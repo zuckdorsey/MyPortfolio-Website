@@ -31,10 +31,8 @@ interface ContentCertification {
 const { data: certifications } = await useAsyncData<ContentCertification[]>(
   "certifications",
   async () => {
-    const items = await queryContent("/certifications")
-      .sort({ date: -1 })
-      .find();
-    return items as unknown as ContentCertification[];
+    const items = await $fetch<ContentCertification[]>("/api/certifications");
+    return items;
   }
 );
 useHead({

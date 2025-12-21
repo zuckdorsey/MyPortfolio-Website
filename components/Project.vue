@@ -171,6 +171,15 @@ const currentPreviewMode = ref<'live' | 'video'>('live');
         {{ getLocalizedContent }}
       </p>
       <NuxtImg
+        v-if="project.image && project.image.startsWith('http')"
+        :src="project.image"
+        :alt="project.name"
+        class="hidden sm:block absolute bottom-0 right-[-10%] shadow-2xl rounded-t-xl z-10 h-32 w-60 sm:h-44 sm:w-80 transition group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:-rotate-2"
+        width="320"
+        height="176"
+      />
+      <NuxtImg
+        v-else
         :src="`/projects/${getProjectImageName(project)}.${getProjectImageExtension(project)}`"
         :alt="project.name"
         class="hidden sm:block absolute bottom-0 right-[-10%] shadow-2xl rounded-t-xl z-10 h-32 w-60 sm:h-44 sm:w-80 transition group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:-rotate-2"

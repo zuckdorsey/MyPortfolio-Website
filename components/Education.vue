@@ -35,7 +35,21 @@ const currentLocale = computed<LocaleType>(() => {
 
 const { data: education } = await useAsyncData<ContentEducation[]>(
   "education",
-  () => queryContent("/education").sort({ "period.start": -1 }).find()
+  async () => {
+    const items = await $fetch<any[]>("/api/education");
+    // Map database fields to component expected format
+    return items.map(edu => ({
+      ...edu,
+      period: {
+        start: edu.start_date,
+        end: edu.end_date
+      },
+      content: {
+        en: edu.content_en,
+        id: edu.content_id
+      }
+    })) as ContentEducation[];
+  }
 );
 
 const getLocalizedContent = (edu: ContentEducation): string => {

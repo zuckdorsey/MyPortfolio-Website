@@ -31,7 +31,23 @@ const currentLocale = computed<LocaleType>(() => {
 });
 const { data: experiences } = await useAsyncData<ContentExperience[]>(
   "experiences",
-  () => queryContent("/experiences").sort({ _file: -1 }).find()
+  async () => {
+    const items = await $fetch<any[]>("/api/experiences");
+    // Map database fields to component expected format
+    return items.map(exp => ({
+      ...exp,
+      companyUrl: exp.company_url,
+      period: {
+        start: exp.start_date,
+        end: exp.end_date
+      },
+      content: {
+        en: exp.content_en,
+        id: exp.content_id
+      },
+      technologies: exp.technologies || []
+    })) as ContentExperience[];
+  }
 );
 const getLocalizedContent = (exp: ContentExperience): string => {
   if (exp.content && exp.content[currentLocale.value]) {

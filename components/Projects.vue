@@ -28,8 +28,15 @@ const selectedTechFilters = ref<string[]>([]);
 const { data: allProjects } = await useAsyncData<ContentProject[]>(
   "projects",
   async () => {
-    const items = await queryContent("/projects").sort({ date: -1 }).find();
-    return items as unknown as ContentProject[];
+    const items = await $fetch<any[]>("/api/projects");
+    // Map database fields to component expected format
+    return items.map(project => ({
+      ...project,
+      content: {
+        en: project.content_en || '',
+        id: project.content_id || ''
+      }
+    })) as ContentProject[];
   }
 );
 const availableTechnologies = computed(() => {
