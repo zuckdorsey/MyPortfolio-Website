@@ -40,8 +40,7 @@ const technoTypesLabels: Record<TechnoType, Record<string, string>> = {
 };
 
 export function getTechnoTypeLabel(type: TechnoType) {
-    const { locale } = useI18n();
-    return technoTypesLabels[type][locale.value];
+    return technoTypesLabels[type]['en'];
 }
 
 type TechnoType = (typeof technoTypes)[number];
@@ -87,8 +86,7 @@ const projectTypesLabels: Record<ProjectType, Record<string, string>> = {
 };
 
 export function getProjectTypeLabel(type: ProjectType) {
-    const { locale } = useI18n();
-    return projectTypesLabels[type][locale.value];
+    return projectTypesLabels[type]['en'];
 }
 
 type ProjectType = (typeof projectTypes)[number];
@@ -116,16 +114,16 @@ export type Experience = {
     companyUrl: string;
     position: string;
     period: {
-      start: string;
-      end: string;
+        start: string;
+        end: string;
     };
     type: 'apprenticeship' | 'internship' | 'job';
     description: {
-      en: string[];
-      id: string[];
-      [key: string]: string[]; // Add index signature
+        en: string[];
+        id: string[];
+        [key: string]: string[]; // Add index signature
     };
     technologies: string[];
-  };
+};
 
 export type { Hobby, Locale, Project, ProjectType, Techno, TechnoType };

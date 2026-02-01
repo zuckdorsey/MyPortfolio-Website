@@ -5,13 +5,13 @@
   >
     <div class="flex flex-row items-center justify-center gap-1.5">
       <p>
-        {{ $t("madeBy") }}
+        Made by
         <a
           href="https://github.com/birdfromhell"
           class="hover:underline font-bold"
           >Ababil Mustaqim</a
         >
-        {{ $t("with") }}
+        with
         <a href="https://nuxt.com/" class="hover:underline font-bold"
           >Nuxt.js</a
         >

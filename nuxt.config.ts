@@ -3,7 +3,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
     '@nuxt/content',
-    '@nuxtjs/i18n',
     '@nuxthq/studio',
     '@nuxtjs/sitemap',
     '@nuxt/image'
@@ -22,30 +21,6 @@ export default defineNuxtConfig({
     public: {
       apiBase: '/api'
     }
-  },
-
-  i18n: {
-    vueI18n: './i18n.config.ts',
-    locales: [
-      {
-        code: 'en',
-        iso: 'en-US',
-        name: 'English'
-      },
-      {
-        code: 'id',
-        iso: 'id-ID',
-        name: 'Bahasa Indonesia'
-      }
-    ],
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root',
-      alwaysRedirect: true,
-      fallbackLocale: 'en'
-    },
-    defaultLocale: 'en'
   },
 
   tailwindcss: {
@@ -70,13 +45,6 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        {
-          rel: 'preload',
-          as: 'style',
-          type: 'text/css',
-          href: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css',
-          onload: "this.onload=null;this.rel='stylesheet'"
-        },
         {
           rel: 'icon',
           type: 'image/svg+xml',

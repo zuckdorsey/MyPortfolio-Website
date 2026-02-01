@@ -25,10 +25,7 @@ interface ContentExperience {
   technologies?: string[];
   body?: any;
 }
-const { locale } = useI18n();
-const currentLocale = computed<LocaleType>(() => {
-  return locale.value === "en" || locale.value === "id" ? locale.value : "en";
-});
+const currentLocale = 'en';
 const { data: experiences } = await useAsyncData<ContentExperience[]>(
   "experiences",
   async () => {
@@ -50,15 +47,8 @@ const { data: experiences } = await useAsyncData<ContentExperience[]>(
   }
 );
 const getLocalizedContent = (exp: ContentExperience): string => {
-  if (exp.content && exp.content[currentLocale.value]) {
-    return exp.content[currentLocale.value] || "";
-  }
-  const company = exp.company?.toLowerCase().replace(/[^a-z]/g, "");
-  if (company) {
-    const i18n = useI18n();
-    if (i18n.te(`${company}.1`)) {
-      return i18n.t(`${company}.1`) + "<br><br>" + i18n.t(`${company}.2`);
-    }
+  if (exp.content && exp.content[currentLocale]) {
+    return exp.content[currentLocale] || "";
   }
   return "";
 };
@@ -112,10 +102,10 @@ function isTechnoAvailable(tech: string): boolean {
             <h2
               class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-neutral-100 dark:to-neutral-300 bg-clip-text text-transparent hover:cursor-pointer"
             >
-              {{ $t("experience") }}
+              Experience
             </h2>
             <p class="text-sm text-neutral-500 dark:text-neutral-400">
-              {{ $t("myProfessionalJourney", "My Professional Journey") }}
+              My Professional Journey
             </p>
           </div>
         </div>
@@ -179,7 +169,7 @@ function isTechnoAvailable(tech: string): boolean {
                             v-if="exp.position"
                             class="text-primary-600 dark:text-primary-400 font-medium"
                           >
-                            {{ $t(exp.position) || exp.position }}
+                          {{ exp.position }}
                           </p>
                           <span
                             v-if="exp.type"
@@ -188,7 +178,7 @@ function isTechnoAvailable(tech: string): boolean {
                             <span
                               class="w-1.5 h-1.5 bg-primary-500 rounded-full mr-1.5"
                             ></span>
-                            {{ $t(exp.type) }}
+                            {{ exp.type }}
                           </span>
                         </div>
                       </div>
@@ -257,8 +247,8 @@ function isTechnoAvailable(tech: string): boolean {
                     >
                       <span>{{
                         isDescriptionExpanded(exp._id || String(index))
-                          ? $t("readLess", "Read Less")
-                          : $t("readMore", "Read More")
+                          ? "Read Less"
+                          : "Read More"
                       }}</span>
                       <svg
                         class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
@@ -294,7 +284,7 @@ function isTechnoAvailable(tech: string): boolean {
                     <IconTools
                       class="w-5 h-5 transition-transform group-hover:rotate-12 duration-300"
                     />
-                    <span>{{ $t("techUsed", "Tech Used") }}</span>
+                    <span>Tech Used</span>
                     <span
                       class="bg-white/20 text-xs px-2 py-1 rounded-full font-bold"
                     >
@@ -353,12 +343,12 @@ function isTechnoAvailable(tech: string): boolean {
                 </div>
                 <div>
                   <h3 class="text-xl font-bold text-white">
-                    {{ $t("technologiesUsed", "Technologies Used") }}
+                    Technologies Used
                   </h3>
                   <p class="text-primary-100 text-sm">
                     {{ exp.company }}
                     <template v-if="exp.position">
-                      - {{ $t(exp.position) || exp.position }}
+                      - {{ exp.position }}
                     </template>
                   </p>
                 </div>
@@ -408,7 +398,7 @@ function isTechnoAvailable(tech: string): boolean {
                 <IconBrandGithub class="w-10 h-10 text-neutral-400" />
               </div>
               <p class="text-neutral-500 text-lg">
-                {{ $t("noTechFound", "No technologies specified") }}
+                No technologies specified
               </p>
             </div>
           </div>
@@ -422,7 +412,7 @@ function isTechnoAvailable(tech: string): boolean {
                 @click="closeTechModal"
                 class="px-8 py-2"
               >
-                {{ $t("close", "Close") }}
+                Close
               </UButton>
             </div>
           </template>

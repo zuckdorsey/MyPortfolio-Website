@@ -25,15 +25,8 @@ interface ContentProject {
   };
 }
 
-const { locale } = useI18n();
-
-// Create a computed property that safely provides the current locale
-const currentLocale = computed<LocaleType>(() => {
-  // Return current locale or default to 'en'
-  return (locale.value === 'en' || locale.value === 'id' || locale.value === 'fr') 
-    ? locale.value as LocaleType 
-    : 'en';
-});
+// Use 'en' locale directly
+const currentLocale = 'en';
 
 // Accept props from parent component
 const props = defineProps<{ project: ContentProject }>();
@@ -81,8 +74,8 @@ function getRepoLink(project: ContentProject): string {
 
 // Get localized content
 const getLocalizedContent = computed(() => {
-  if (props.project.content && props.project.content[currentLocale.value]) {
-    return props.project.content[currentLocale.value] || '';
+  if (props.project.content && props.project.content[currentLocale]) {
+    return props.project.content[currentLocale] || '';
   }
   return '';
 });
@@ -192,7 +185,7 @@ const currentPreviewMode = ref<'live' | 'video'>('live');
     <div class="mt-4 flex flex-row items-center justify-start gap-2 w-full">
       <!-- Code/Repository button -->
       <UButton :to="getRepoLink(project)" :target="isClosedSource(project) ? '_self' : '_blank'" variant="solid">
-        <i class="devicon-github-original" v-if="!isClosedSource(project)"></i>
+        <UIcon name="devicon:github-original" v-if="!isClosedSource(project)" />
         <i class="material-symbols-light:lock-outline-sharp" v-else></i>
         {{ isClosedSource(project) ? 'Closed Source' : 'Code' }}
       </UButton>
@@ -203,7 +196,7 @@ const currentPreviewMode = ref<'live' | 'video'>('live');
         @click="previewModalOpen = true" 
         variant="solid"
       >
-        <IconEye class="w-4 h-4 mr-1" /> {{ $t('preview', 'Preview') }}
+        <IconEye class="w-4 h-4 mr-1" /> Preview
       </UButton>
     </div>
   </UCard>

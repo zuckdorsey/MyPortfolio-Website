@@ -9,8 +9,6 @@ useHead({
   title: 'Closed Source Projects'
 });
 
-const { t } = useI18n();
-
 // Get random quote for closed source
 function getRandomClosedSourceQuote(): string {
   const quotes = [
@@ -43,10 +41,10 @@ onMounted(() => {
           </div>
           <div>
             <h1 class="text-2xl font-bold text-amber-700 dark:text-amber-300">
-              {{ t('closed_source_title', 'Closed Source Projects') }}
+              Closed Source Projects
             </h1>
             <p class="text-sm text-amber-600/70 dark:text-amber-400/70">
-              {{ t('project_access_restricted', 'Project access restricted') }}
+              Project access restricted
             </p>
           </div>
         </div>
@@ -62,11 +60,11 @@ onMounted(() => {
               <div class="bg-amber-50 dark:bg-amber-900/20 p-5 rounded-lg border-l-4 border-amber-500">
                 <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
                   <IconInfoCircle class="text-amber-600" /> 
-                  {{ t('closed_source_heading', 'Why are some projects closed source?') }}
+                  Why are some projects closed source?
                 </h2>
                 
                 <p class="mb-3 text-neutral-700 dark:text-neutral-300">
-                  {{ t('closed_source_explanation', 'Some projects are closed source due to client requirements, proprietary code, or other restrictions. While I believe in open source software, not all projects can be shared publicly.') }}
+                  Some projects are closed source due to client requirements, proprietary code, or other restrictions. While I believe in open source software, not all projects can be shared publicly.
                 </p>
               </div>
               
@@ -74,7 +72,7 @@ onMounted(() => {
               <div class="flex flex-col items-center text-center p-4">
                 <IconBrain class="text-2xl text-primary-500 mb-2" />
                 <p class="text-sm text-neutral-600 dark:text-neutral-400 italic">
-                  {{ t('skills_explanation', 'Sometimes the most interesting engineering happens behind closed doors. The skills gained from solving complex problems remain, even when the code cannot be shared.') }}
+                  Sometimes the most interesting engineering happens behind closed doors. The skills gained from solving complex problems remain, even when the code cannot be shared.
                 </p>
               </div>
               
@@ -87,9 +85,9 @@ onMounted(() => {
               
               <!-- Contact info -->
               <div class="bg-neutral-50 dark:bg-neutral-800/50 rounded-lg p-6">
-                <h3 class="font-medium text-lg mb-2">{{ t('want_to_know_more', 'Want to know more?') }}</h3>
+              <h3 class="font-medium text-lg mb-2">Want to know more?</h3>
                 <p class="mb-4">
-                  {{ t('closed_source_contact', 'If you are interested in learning more about these projects or would like to discuss them further, please contact me through the contact form or via email.') }}
+                  If you are interested in learning more about these projects or would like to discuss them further, please contact me through the contact form or via email.
                 </p>
                 
                 <!-- Action buttons -->
@@ -100,7 +98,7 @@ onMounted(() => {
                     color="amber"
                     class="w-full sm:w-auto"
                   >
-                    <IconMail class="w-4 h-4 mr-1" /> {{ t('contact_me', 'Contact Me') }}
+                    <IconMail class="w-4 h-4 mr-1" /> Contact Me
                   </UButton>
                   <UButton 
                     to="/#projects" 
@@ -108,7 +106,7 @@ onMounted(() => {
                     color="amber" 
                     class="w-full sm:w-auto"
                   >
-                    <IconCode class="w-4 h-4 mr-1" /> {{ t('back_to_projects', 'See Public Projects') }}
+                    <IconCode class="w-4 h-4 mr-1" /> See Public Projects
                   </UButton>
                 </div>
               </div>
@@ -118,31 +116,31 @@ onMounted(() => {
         
         <!-- Examples of closed source projects section -->
         <div class="mt-12">
-          <h2 class="text-xl font-bold mb-6 text-center">{{ t('examples_of_closed_source', 'Examples of Closed Source Projects') }}</h2>
+          <h2 class="text-xl font-bold mb-6 text-center">Examples of Closed Source Projects</h2>
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <!-- Project 1 -->
             <div class="border border-amber-200 dark:border-amber-900/50 rounded-lg p-5 bg-white dark:bg-neutral-900">
               <h3 class="font-bold mb-2">SeleraRasaSunda</h3>
-              <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-3">{{ t('client_project', 'Client Project') }} • 2024</p>
+              <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Client Project • 2024</p>
               <div class="flex flex-wrap gap-2 mb-4">
                 <span class="text-xs bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded">Laravel</span>
                 <span class="text-xs bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded">PHP</span>
                 <span class="text-xs bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded">MySQL</span>
               </div>
-              <p class="text-sm">{{ t('food_catering', 'A clean and responsive landing page for a food catering business with focus on user engagement and conversion.') }}</p>
+              <p class="text-sm">A clean and responsive landing page for a food catering business with focus on user engagement and conversion.</p>
             </div>
             
             <!-- Project 2 -->
             <div class="border border-amber-200 dark:border-amber-900/50 rounded-lg p-5 bg-white dark:bg-neutral-900">
               <h3 class="font-bold mb-2">Accountant Software</h3>
-              <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-3">{{ t('client_project', 'Client Project') }} • 2022</p>
+              <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-3">Client Project • 2022</p>
               <div class="flex flex-wrap gap-2 mb-4">
                 <span class="text-xs bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded">Laravel</span>
                 <span class="text-xs bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded">Bootstrap</span>
                 <span class="text-xs bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded">Vue.js</span>
               </div>
-              <p class="text-sm">{{ t('accountant_software', 'Proprietary accounting software developed for a client with custom reporting and financial management features.') }}</p>
+              <p class="text-sm">Proprietary accounting software developed for a client with custom reporting and financial management features.</p>
             </div>
           </div>
         </div>

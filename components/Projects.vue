@@ -99,7 +99,7 @@ watch([currentFilter, selectedTechFilters], () => {
           class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
         />
         <h2 class="text-xl font-bold hover:cursor-pointer">
-          {{ $t("projects") }}
+          Projects
         </h2>
       </div>
     </a>
@@ -125,7 +125,7 @@ watch([currentFilter, selectedTechFilters], () => {
         }"
       >
         <IconFilter class="w-4 h-4 mr-1" />
-        {{ $t("filterByTech", "Filter by Tech") }}
+        Filter by Tech
         <span v-if="selectedTechFilters.length > 0" class="ml-1">
           ({{ selectedTechFilters.length }})
         </span>
@@ -151,7 +151,7 @@ watch([currentFilter, selectedTechFilters], () => {
         />
       </UBadge>
       <UButton size="xs" variant="ghost" @click="clearTechFilters">
-        {{ $t("clearFilters", "Clear filters") }}
+        Clear filters
       </UButton>
     </div>
     <div class="flex flex-col gap-3 items-center">
@@ -165,7 +165,7 @@ watch([currentFilter, selectedTechFilters], () => {
       />
       <div v-if="projectsList.length === 0" class="py-8 text-center w-full">
         <p class="text-neutral-500">
-          {{ $t("noProjectsFound", "No projects match your current filters.") }}
+          No projects match your current filters.
         </p>
       </div>
       <div class="flex flex-row items-center justify-center w-full mt-3">
@@ -177,14 +177,14 @@ watch([currentFilter, selectedTechFilters], () => {
           @click="currentNumberOfProjects = projectsList.length"
         >
           <IconArrowBigDownLine class="w-5 h-5" />
-          {{ $t("showAll") }}
+          Show all
         </UButton>
         <UButton
           v-else-if="projectsList.length > defaultNumberOfProjects"
           @click="currentNumberOfProjects = defaultNumberOfProjects"
         >
           <IconArrowBigDownLine class="w-5 h-5 rotate-180" />
-          {{ $t("showLess") }}
+          Show less
         </UButton>
       </div>
     </div>
@@ -193,7 +193,7 @@ watch([currentFilter, selectedTechFilters], () => {
         <template #header>
           <div class="flex justify-between items-center">
             <h3 class="text-lg font-bold">
-              {{ $t("filterByTech", "Filter by Tech Stack") }}
+              Filter by Tech Stack
             </h3>
             <UButton
               color="gray"
@@ -223,10 +223,10 @@ watch([currentFilter, selectedTechFilters], () => {
               @click="clearTechFilters"
               :disabled="selectedTechFilters.length === 0"
             >
-              {{ $t("clearAll", "Clear All") }}
+              Clear All
             </UButton>
             <UButton @click="techFilterModalOpen = false">
-              {{ $t("apply", "Apply") }}
+              Apply
             </UButton>
           </div>
         </template>

@@ -13,21 +13,21 @@ const toggleContent = () => {
           class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
         />
         <h2 class="text-xl font-bold hover:cursor-pointer">
-          {{ $t("aboutMe") }}
+          About Me
         </h2>
       </div>
     </a>
     <p class="text-pretty text-sm text-neutral-600 dark:text-neutral-400">
-      {{ $t("about.1") }}
+      Hi! I'm a backend developer with a strong interest in robotics and cybersecurity. I have experience building scalable and efficient backend architectures using Python, Node.js, and PHP, and I work with frameworks like Express.js, Laravel, and Django. My focus is on developing RESTful APIs, managing databases, and writing modular, maintainable code.
     </p>
     <div v-if="isExpanded" class="animate-fadeIn">
       <p
         class="text-pretty text-sm text-neutral-600 dark:text-neutral-400 mb-3"
       >
-        {{ $t("about.2") }}
+        Outside of backend development, I actively work on robotics projects, especially those involving microcontrollers, sensors, and automation systems. I'm particularly interested in integrating software with hardware—such as programming navigation logic, implementing serial communication between devices, and handling real-time sensor data. For me, robotics is where code meets the real world and logic is truly tested.
       </p>
       <p class="text-pretty text-sm text-neutral-600 dark:text-neutral-400">
-        {{ $t("about.3") }}
+        I'm also a cybersecurity enthusiast who values writing secure, resilient software. I explore secure coding practices, including encryption, token-based authentication, and system hardening to improve application security. I regularly share personal projects and experiments on GitHub as part of my learning journey and to contribute to the developer community. For me, software development is not just about building features—it's about building systems that are both reliable and secure.
       </p>
     </div>
     <div class="flex justify-center mt-4">
@@ -42,11 +42,7 @@ const toggleContent = () => {
           <IconChevronDown class="w-4 h-4 animate-bounce-mini" />
         </span>
         <span class="relative">
-          {{
-            isExpanded
-              ? $t("showLess", "Show less")
-              : $t("readMore", "Read more")
-          }}
+          {{ isExpanded ? "Show less" : "Read more" }}
         </span>
         <span
           class="absolute inset-0 -z-10 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 bg-gradient-to-r from-transparent via-primary-500/10 to-transparent dark:via-primary-500/20"

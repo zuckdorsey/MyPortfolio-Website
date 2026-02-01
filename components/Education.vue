@@ -27,11 +27,7 @@ interface ContentEducation {
   };
 }
 
-const { locale } = useI18n();
-
-const currentLocale = computed<LocaleType>(() => {
-  return locale.value === "en" || locale.value === "id" ? locale.value : "en";
-});
+const currentLocale = 'en';
 
 const { data: education } = await useAsyncData<ContentEducation[]>(
   "education",
@@ -53,8 +49,8 @@ const { data: education } = await useAsyncData<ContentEducation[]>(
 );
 
 const getLocalizedContent = (edu: ContentEducation): string => {
-  if (edu.content && edu.content[currentLocale.value]) {
-    return edu.content[currentLocale.value] || "";
+  if (edu.content && edu.content[currentLocale]) {
+    return edu.content[currentLocale] || "";
   }
   return "";
 };
@@ -136,10 +132,10 @@ const formatDegree = (degree?: string): string => {
             <h2
               class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-neutral-100 dark:to-neutral-300 bg-clip-text text-transparent hover:cursor-pointer"
             >
-              {{ $t("education") }}
+              Education
             </h2>
             <p class="text-sm text-neutral-500 dark:text-neutral-400">
-              {{ $t("academicBackground", "Academic Background") }}
+              Academic Background
             </p>
           </div>
         </div>
@@ -307,8 +303,8 @@ const formatDegree = (degree?: string): string => {
                     >
                       <span>{{
                         isDescriptionExpanded(edu._id || String(index))
-                          ? $t("readLess", "Read Less")
-                          : $t("readMore", "Read More")
+                          ? "Read Less"
+                          : "Read More"
                       }}</span>
                       <svg
                         class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"

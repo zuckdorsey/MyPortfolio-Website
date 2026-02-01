@@ -145,7 +145,6 @@ const refreshData = async () => {
 onMounted(() => {
   fetchWakaTimeStats();
 });
-const { t } = useI18n();
 </script>
 <template>
   <section class="flex flex-col gap-3">
@@ -157,7 +156,7 @@ const { t } = useI18n();
           />
           <h2 class="text-xl font-bold hover:cursor-pointer flex items-center">
             <IconCode class="w-5 h-5 mr-2 text-primary-500" />
-            {{ $t("coding_stats", "Coding Statistics") }}
+            Coding Statistics
           </h2>
         </div>
       </a>
@@ -174,7 +173,7 @@ const { t } = useI18n();
         <template #icon>
           <i class="i-tabler-refresh"></i>
         </template>
-        <span class="text-xs">{{ $t("refresh", "Refresh") }}</span>
+        <span class="text-xs">Refresh</span>
       </UButton>
     </div>
     <UCard
@@ -188,7 +187,7 @@ const { t } = useI18n();
             <div class="double-bounce2"></div>
           </div>
           <p class="text-sm text-neutral-500">
-            {{ $t("loading_stats", "Loading your coding stats...") }}
+            Loading your coding stats...
           </p>
         </div>
       </template>
@@ -206,7 +205,7 @@ const { t } = useI18n();
           </p>
           <UButton @click="fetchWakaTimeStats" variant="soft" color="red">
             <i class="i-tabler-refresh mr-1"></i>
-            {{ $t("try_again", "Try Again") }}
+            Try Again
           </UButton>
         </div>
       </template>
@@ -219,7 +218,7 @@ const { t } = useI18n();
               </div>
               <div class="stat-content">
                 <h3 class="stat-label">
-                  {{ $t("total_coding_time", "Last 30 Days") }}
+                  Last 30 Days
                 </h3>
                 <p class="stat-value">
                   {{ stats.data.human_readable_total || "0h 0m" }}
@@ -232,7 +231,7 @@ const { t } = useI18n();
               </div>
               <div class="stat-content">
                 <h3 class="stat-label">
-                  {{ $t("daily_average", "Daily Average") }}
+                  Daily Average
                 </h3>
                 <p class="stat-value">
                   {{ stats.data.human_readable_daily_average || "0h 0m" }}
@@ -245,7 +244,7 @@ const { t } = useI18n();
               </div>
               <div class="stat-content">
                 <h3 class="stat-label">
-                  {{ $t("active_days", "Active Days") }}
+                  Active Days
                 </h3>
                 <p class="stat-value">
                   {{ stats.data.days_including_holidays || 0 }}
@@ -263,7 +262,7 @@ const { t } = useI18n();
                 <h3
                   class="text-sm font-medium text-neutral-600 dark:text-neutral-300"
                 >
-                  {{ $t("best_day", "Most Productive Day") }}
+                  Most Productive Day
                 </h3>
                 <div class="flex items-center gap-2">
                   <p class="text-lg font-bold">{{ formattedBestDay }}</p>
@@ -285,7 +284,7 @@ const { t } = useI18n();
                 class="px-4 py-2 text-sm font-medium flex items-center border-b-2 border-primary-500 dark:border-primary-400 text-primary-600 dark:text-primary-300"
               >
                 <IconCode class="w-4 h-4 mr-1" />
-                {{ $t("languages", "Languages") }}
+                Languages
               </h3>
             </div>
             <div class="tab-content">
@@ -347,7 +346,7 @@ const { t } = useI18n();
                   "
                   class="text-center py-6 text-neutral-500"
                 >
-                  {{ $t("no_language_data", "No language data available") }}
+                  No language data available
                 </div>
               </div>
             </div>
@@ -355,8 +354,8 @@ const { t } = useI18n();
           <div
             class="text-center text-xs text-neutral-500 mt-2 pt-3 border-t border-neutral-100 dark:border-primary-800"
           >
-            {{ $t("data_source", "Data from WakaTime") }} •
-            {{ $t("last_updated", "Last updated") }}:
+            Data from WakaTime •
+            Last updated:
             {{
               new Date().toLocaleString(undefined, {
                 dateStyle: "medium",

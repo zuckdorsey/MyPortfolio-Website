@@ -298,8 +298,6 @@ onMounted(() => {
     }
   });
 });
-
-const { t } = useI18n();
 </script>
 
 <template>
@@ -317,7 +315,7 @@ const { t } = useI18n();
         <a href="#github-activity" class="flex items-center gap-2 group">
           <IconBrandGithub class="w-5 h-5 text-primary-500 group-hover:scale-110 transition-transform duration-300" />
           <h2 class="text-lg font-bold group-hover:text-primary-500 transition-colors duration-200">
-            {{ $t("github_activity", "GitHub Activity") }}
+            GitHub Activity
           </h2>
         </a>
         
@@ -343,14 +341,14 @@ const { t } = useI18n();
               @click="viewMode = 'quarter'"
               :disabled="isLoading"
             >
-              3 {{ $t("months", "months") }}
+              3 months
             </UButton>
             <UButton 
               :variant="viewMode === 'halfYear' ? 'solid' : 'outline'" 
               @click="viewMode = 'halfYear'"
               :disabled="isLoading"
             >
-              6 {{ $t("months", "months") }}
+              6 months
             </UButton>
             <UButton 
               :variant="viewMode === 'year' ? 'solid' : 'outline'" 
@@ -358,7 +356,7 @@ const { t } = useI18n();
               class="hidden sm:inline-flex"
               :disabled="isLoading"
             >
-              {{ $t("year", "Year") }}
+              Year
             </UButton>
           </UButtonGroup>
         </div>
@@ -367,12 +365,12 @@ const { t } = useI18n();
         <div class="flex flex-wrap items-center gap-2">
           <div class="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 text-xs">
             <IconCalendar class="w-3 h-3 text-emerald-500" />
-            <span>{{ contributions?.total || 0 }} {{ $t("contributions", "contributions") }}</span>
+            <span>{{ contributions?.total || 0 }} contributions</span>
           </div>
           
           <div v-if="streak.current > 0" class="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 text-xs">
             <IconFlame class="w-3 h-3 text-orange-500" />
-            <span>{{ streak.current }} {{ $t("day_streak", "day streak") }}</span>
+            <span>{{ streak.current }} day streak</span>
           </div>
         </div>
       </div>
@@ -383,7 +381,7 @@ const { t } = useI18n();
       <div v-if="isLoading" class="flex justify-center py-8">
         <div class="github-spinner">
           <div class="spinner-icon"></div>
-          <p class="mt-3 text-sm text-gray-500">{{ $t("loading_data", "Loading GitHub data...") }}</p>
+          <p class="mt-3 text-sm text-gray-500">Loading GitHub data...</p>
         </div>
       </div>
       
@@ -399,7 +397,7 @@ const { t } = useI18n();
           @click="fetchContributions" 
           icon="i-tabler-refresh"
         >
-          {{ $t("try_again", "Try Again") }}
+          Try Again
         </UButton>
       </div>
       
@@ -460,7 +458,7 @@ const { t } = useI18n();
           
           <!-- Legend -->
           <div class="flex justify-end items-center mt-2 text-xs text-neutral-500">
-            <span class="mr-2">{{ $t("less_activity", "Less") }}</span>
+            <span class="mr-2">Less</span>
             <div class="flex gap-1">
               <div
                 v-for="level in 5"
@@ -469,7 +467,7 @@ const { t } = useI18n();
                 :class="activityColors[(level-1) as keyof typeof activityColors]"
               ></div>
             </div>
-            <span class="ml-2">{{ $t("more_activity", "More") }}</span>
+            <span class="ml-2">More</span>
           </div>
           
           <!-- Tooltip -->
@@ -485,14 +483,14 @@ const { t } = useI18n();
               <div class="font-medium mb-1 text-sm">{{ formatDate(hoverDay.date) }}</div>
               <div class="text-xs">
                 <span class="font-semibold">{{ hoverDay.count }}</span>
-                {{ hoverDay.count === 1 ? $t("contribution", "contribution") : $t("contributions", "contributions") }}
+                {{ hoverDay.count === 1 ? "contribution" : "contributions" }}
               </div>
             </div>
           </div>
           
           <!-- Statistics section -->
           <div class="mt-5 pt-4 border-t border-gray-200 dark:border-gray-800">
-            <h3 class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-3">{{ $t("activity_insights", "Activity Insights") }}</h3>
+            <h3 class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-3">Activity Insights</h3>
             
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <!-- Current Streak -->
@@ -501,10 +499,10 @@ const { t } = useI18n();
                   <IconFlame class="w-4 h-4 text-orange-500" />
                 </div>
                 <div class="activity-stat-content">
-                  <div class="activity-stat-label">{{ $t("current_streak", "Current Streak") }}</div>
+                  <div class="activity-stat-label">Current Streak</div>
                   <div class="activity-stat-value">
                     {{ streak.current }}
-                    <span class="activity-stat-unit">{{ $t("days", "days") }}</span>
+                    <span class="activity-stat-unit">days</span>
                   </div>
                 </div>
               </div>
@@ -515,10 +513,10 @@ const { t } = useI18n();
                   <IconHistory class="w-4 h-4 text-blue-500" />
                 </div>
                 <div class="activity-stat-content">
-                  <div class="activity-stat-label">{{ $t("longest_streak", "Longest Streak") }}</div>
+                  <div class="activity-stat-label">Longest Streak</div>
                   <div class="activity-stat-value">
                     {{ streak.longest }}
-                    <span class="activity-stat-unit">{{ $t("days", "days") }}</span>
+                    <span class="activity-stat-unit">days</span>
                   </div>
                 </div>
               </div>
@@ -529,10 +527,10 @@ const { t } = useI18n();
                   <IconChartBar class="w-4 h-4 text-emerald-500" />
                 </div>
                 <div class="activity-stat-content">
-                  <div class="activity-stat-label">{{ $t("most_active", "Most Active Day") }}</div>
+                  <div class="activity-stat-label">Most Active Day</div>
                   <div class="activity-stat-value">
                     {{ mostActiveDay.day }}
-                    <span class="activity-stat-unit">{{ mostActiveDay.count }} {{ $t("commits", "commits") }}</span>
+                    <span class="activity-stat-unit">{{ mostActiveDay.count }} commits</span>
                   </div>
                 </div>
               </div>

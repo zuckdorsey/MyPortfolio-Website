@@ -27,14 +27,13 @@ useHead({
   ],
 });
 
-const { t } = useI18n();
 const resumeFile = "/Ababil-2025-CV.pdf";
 </script>
 
 <template>
   <div class="container mx-auto px-4 py-6">
     <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold">{{ t("resume", "Resume") }}</h1>
+      <h1 class="text-3xl font-bold">Resume</h1>
 
       <UButton
         :to="resumeFile"
@@ -45,7 +44,7 @@ const resumeFile = "/Ababil-2025-CV.pdf";
         class="mt-4 md:mt-0"
       >
         <i class="i-tabler-file-download mr-2"></i>
-        {{ t("download_resume", "Download Resume") }}
+        Download Resume
       </UButton>
     </div>
 

@@ -35,12 +35,11 @@ const { data: allTools } = await useAsyncData<SystemTool[]>(
   }
 );
 function getCategoryDisplayName(category: string): string {
-  const { t } = useI18n();
   switch (category) {
     case "system":
-      return t("system_category_system", "Operating Systems & Hardware");
+      return "Operating Systems & Hardware";
     case "software":
-      return t("system_category_software", "Software & Development Tools");
+      return "Software & Development Tools";
     default:
       return category.charAt(0).toUpperCase() + category.slice(1);
   }
@@ -84,7 +83,6 @@ const categoryHasMoreItems = (tools: SystemTool[]) => {
 const toggleShowMore = () => {
   showAllMobile.value = !showAllMobile.value;
 };
-const { t } = useI18n();
 </script>
 <template>
   <section class="flex flex-col gap-3">
@@ -97,20 +95,18 @@ const { t } = useI18n();
           class="text-xl font-bold hover:cursor-pointer flex items-center gap-2"
         >
           <IconDeviceDesktop class="w-5 h-5 text-primary-500" />
-          {{ $t("system_tools", "My Tech Stack") }}
+          My Tech Stack
         </h2>
       </div>
     </a>
     <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-      {{
-        $t("system_tools_desc", "Development environment and tools I use daily")
-      }}
+      Development environment and tools I use daily
     </p>
     <div
       v-if="!allTools || allTools.length === 0"
       class="text-center py-8 text-neutral-500"
     >
-      <p>{{ $t("loading_tools", "Loading tech stack...") }}</p>
+      <p>Loading tech stack...</p>
     </div>
     <template v-else-if="showCategories">
       <div
@@ -170,8 +166,8 @@ const { t } = useI18n();
           >
             {{
               showAllMobile
-                ? $t("show_less", "Show Less")
-                : $t("show_more", "Show More")
+                ? "Show Less"
+                : "Show More"
             }}
           </UButton>
         </div>
@@ -211,8 +207,8 @@ const { t } = useI18n();
         >
           {{
             showAllMobile
-              ? $t("show_less", "Show Less")
-              : $t("show_more", "Show More")
+              ? "Show Less"
+              : "Show More"
           }}
         </UButton>
       </div>

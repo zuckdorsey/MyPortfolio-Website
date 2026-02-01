@@ -100,8 +100,6 @@ onBeforeUnmount(() => {
   if (refreshInterval) clearInterval(refreshInterval);
   if (progressInterval) clearInterval(progressInterval);
 });
-
-const { t } = useI18n();
 </script>
 <template>
   <section class="flex flex-col gap-3">
@@ -114,7 +112,7 @@ const { t } = useI18n();
           class="text-xl font-bold hover:cursor-pointer flex items-center gap-2"
         >
           <IconMusic class="w-5 h-5 text-primary-500" />
-          {{ $t("now_playing", "Spotify Now Playing") }}
+          Spotify Now Playing
         </h2>
       </div>
     </a>
@@ -142,7 +140,7 @@ const { t } = useI18n();
               <span></span>
             </div>
             <p class="text-sm text-center mt-4 text-neutral-500">
-              {{ $t("loading_spotify", "Loading your vibes...") }}
+              Loading your vibes...
             </p>
           </div>
         </div>
@@ -162,7 +160,7 @@ const { t } = useI18n();
             variant="soft"
             class="mt-1"
           >
-            {{ $t("try_again", "Try Again") }}
+            Try Again
           </UButton>
         </div>
       </template>
@@ -174,7 +172,7 @@ const { t } = useI18n();
             <IconVolume class="text-neutral-500 w-7 h-7 sm:w-8 sm:h-8" />
           </div>
           <p class="text-sm text-center text-neutral-600 dark:text-neutral-400 max-w-xs px-2">
-            {{ $t("not_playing", "Ababil recently not playing Music!!") }}
+            Ababil recently not playing Music!!
           </p>
           <div class="w-full max-w-[150px] mt-1 sm:mt-2">
             <div class="flex items-center justify-center gap-2">

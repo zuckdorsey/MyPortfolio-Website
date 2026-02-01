@@ -1,10 +1,4 @@
 <script setup lang="ts">
-const { locale, setLocale } = useI18n();
-
-function localeToSet() {
-    return locale.value === 'id' ? 'en' : 'id';
-}
-
 const colorMode = useColorMode();
 const isDark = computed({
     get() {
@@ -22,16 +16,6 @@ function rickRoll() {
 
 <template>
     <div class="flex flex-row gap-2 items-center">
-        <UButton icon="i-circle-flags-id" class="hidden" />
-        <UButton icon="i-circle-flags-en" class="hidden" />
-        <UButton
-            @click="setLocale(localeToSet())"
-            variant="ghost"
-            :icon="`i-circle-flags-${localeToSet()}`"
-            aria-label="Change language"
-            aria-current-value="true"
-        >
-        </UButton>
         <UButton
             @click="isDark = !isDark"
             variant="ghost"

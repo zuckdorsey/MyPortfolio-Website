@@ -31,7 +31,7 @@ const schema = z.object({
     .string()
     .min(10, { message: "Message must be at least 10 characters" }),
 });
-const { t } = useI18n();
+
 const socialLinks = [
   {
     name: "GitHub",
@@ -114,7 +114,7 @@ function handleBlur() {
           class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
         />
         <h2 class="text-xl font-bold hover:cursor-pointer flex items-center">
-          <span>{{ $t("contact", "Contact") }}</span>
+          <span>Contact</span>
           <span class="ml-2 inline-block relative">
             <span
               class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary-400 opacity-75"
@@ -134,20 +134,15 @@ function handleBlur() {
         <div class="flex flex-col h-full justify-between">
           <div>
             <h3 class="text-lg font-medium mb-2">
-              {{ $t("getInTouch", "Get in Touch") }}
+              Get in Touch
             </h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              {{
-                $t(
-                  "contactDescription",
-                  "Have a project in mind or just want to say hello? Feel free to reach out!"
-                )
-              }}
+              Have a project in mind or just want to say hello? Feel free to reach out!
             </p>
           </div>
           <div class="mt-auto">
             <h4 class="text-sm font-medium mb-3">
-              {{ $t("connectWithMe", "Connect with me") }}
+              Connect with me
             </h4>
             <div class="flex flex-wrap gap-3">
               <UButton
@@ -186,15 +181,10 @@ function handleBlur() {
           <h3
             class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200"
           >
-            {{ $t("messageSent", "Message Sent!") }}
+            Message Sent!
           </h3>
           <p class="text-gray-600 dark:text-gray-400 mb-6">
-            {{
-              $t(
-                "thankYouMessage",
-                "Thank you for reaching out. I'll get back to you as soon as possible."
-              )
-            }}
+            Thank you for reaching out. I'll get back to you as soon as possible.
           </p>
           <UButton
             variant="outline"
@@ -202,7 +192,7 @@ function handleBlur() {
             size="sm"
             icon="i-tabler-refresh"
           >
-            {{ $t("sendAnotherMessage", "Send another message") }}
+            Send another message
           </UButton>
         </div>
         <form v-else @submit.prevent="submitForm" class="flex flex-col gap-4">
@@ -217,7 +207,7 @@ function handleBlur() {
             <div class="relative">
               <UInput
                 v-model="formState.name"
-                :placeholder="$t('yourName', 'Your name')"
+                placeholder="Your name"
                 type="text"
                 required
                 :ui="{
@@ -234,14 +224,14 @@ function handleBlur() {
                   v-if="formFocused === 'name'"
                   class="text-xs text-gray-500 dark:text-gray-400 absolute -bottom-5 left-1"
                 >
-                  {{ $t("nameField", "Your full name") }}
+                  Your full name
                 </small>
               </transition>
             </div>
             <div class="relative">
               <UInput
                 v-model="formState.email"
-                :placeholder="$t('yourEmail', 'Your email')"
+                placeholder="Your email"
                 type="email"
                 required
                 :ui="{
@@ -258,7 +248,7 @@ function handleBlur() {
                   v-if="formFocused === 'email'"
                   class="text-xs text-gray-500 dark:text-gray-400 absolute -bottom-5 left-1"
                 >
-                  {{ $t("emailField", "Where I can reach you") }}
+                  Where I can reach you
                 </small>
               </transition>
             </div>
@@ -266,7 +256,7 @@ function handleBlur() {
           <div class="relative">
             <UTextarea
               v-model="formState.message"
-              :placeholder="$t('yourMessage', 'Your message...')"
+              placeholder="Your message..."
               row="4"
               required
               class="resize-none transition-all duration-300"
@@ -284,9 +274,7 @@ function handleBlur() {
                 v-if="formFocused === 'message'"
                 class="text-xs text-gray-500 dark:text-gray-400 absolute -bottom-5 left-1"
               >
-                {{
-                  $t("messageField", "Tell me about your project or question")
-                }}
+                Tell me about your project or question
               </small>
             </transition>
           </div>
@@ -310,7 +298,7 @@ function handleBlur() {
             class="mt-2 submit-button transition-all duration-300"
           >
             <IconSend class="w-4 h-4 mr-2" />
-            {{ $t("sendMessage", "Send Message") }}
+            Send Message
           </UButton>
         </form>
       </UCard>

@@ -56,7 +56,6 @@ function loadMoreSkills() {
   showAllSkills.value = true;
 }
 const colorMode = useColorMode();
-const { t } = useI18n();
 </script>
 <template>
   <section class="flex flex-col gap-3">
@@ -117,13 +116,13 @@ const { t } = useI18n();
       variant="soft"
       color="primary"
     >
-      {{ t("showMore", "Load more") }}
+      Load more
     </UButton>
     <div
       v-if="filteredSkills.length === 0"
       class="text-center py-8 text-neutral-500"
     >
-      <p>{{ t("loading_skills", "No skills found for this category") }}</p>
+      <p>No skills found for this category</p>
     </div>
   </section>
 </template>
