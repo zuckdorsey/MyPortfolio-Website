@@ -1,0 +1,32 @@
+# Node/Nuxt artifacts
+node_modules
+.output
+.nuxt
+.nitro
+dist
+
+# Logs
+npm-debug.log*
+
+# VCS
+.git
+.gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.*
+
+# Misc
+coverage
+tmp
+*.tgz
