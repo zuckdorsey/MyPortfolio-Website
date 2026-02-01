@@ -90,6 +90,8 @@ import { IconLink, IconMapPinFilled } from "@tabler/icons-vue";
             width="160"
             height="160"
             format="webp"
+            preload
+            :placeholder="[40, 40, 75, 5]"
           />
         </template>
       </ConfettisButton>

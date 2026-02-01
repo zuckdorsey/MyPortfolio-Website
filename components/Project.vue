@@ -170,6 +170,8 @@ const currentPreviewMode = ref<'live' | 'video'>('live');
         class="hidden sm:block absolute bottom-0 right-[-10%] shadow-2xl rounded-t-xl z-10 h-32 w-60 sm:h-44 sm:w-80 transition group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:-rotate-2"
         width="320"
         height="176"
+        loading="lazy"
+        :placeholder="[64, 35, 75, 5]"
       />
       <NuxtImg
         v-else
@@ -179,6 +181,8 @@ const currentPreviewMode = ref<'live' | 'video'>('live');
         width="320"
         height="176"
         format="webp"
+        loading="lazy"
+        :placeholder="[64, 35, 75, 5]"
       />
     </div>
     
