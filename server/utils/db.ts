@@ -22,11 +22,6 @@ export function getDb() {
         rejectUnauthorized: false // Required for NeonDB
       }
     });
-
-    // Test connection and initialize database
-    initializeDatabase().catch(err => {
-      console.error('Failed to initialize database:', err);
-    });
   }
 
   return pool;

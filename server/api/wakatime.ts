@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export default defineEventHandler(async (event) => {
   try {
     const apiKey = process.env.WAKATIME_API_KEY;
@@ -10,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
     const username = 'birdfromhell'; 
     
-    const response = await axios.get(
+    const data = await $fetch(
       `https://wakatime.com/api/v1/users/${username}/stats/last_30_days`,
       {
         headers: {
@@ -19,7 +17,7 @@ export default defineEventHandler(async (event) => {
       }
     );
 
-    return response.data;
+    return data;
   } catch (error) {
     console.error('Error fetching WakaTime data:', error);
     throw createError({
