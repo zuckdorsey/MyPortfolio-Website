@@ -32,7 +32,8 @@ export default defineNuxtConfig({
 
     // Konfigurasi yang tersedia di client
     public: {
-      apiBase: '/api'
+      apiBase: '/api',
+      resumeUrl: process.env.NUXT_PUBLIC_RESUME_URL || ''
     }
   },
 

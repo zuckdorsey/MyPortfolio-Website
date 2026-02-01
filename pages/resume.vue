@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 definePageMeta({});
 
 useHead({
@@ -27,7 +29,12 @@ useHead({
   ],
 });
 
-const resumeFile = "/Ababil-2025-CV.pdf";
+const runtimeConfig = useRuntimeConfig();
+const resumeFile = computed(
+  () => runtimeConfig.public.resumeUrl?.trim() ?? ""
+);
+const hasResume = computed(() => resumeFile.value.length > 0);
+const resumeLink = computed(() => (hasResume.value ? resumeFile.value : undefined));
 </script>
 
 <template>
@@ -36,7 +43,8 @@ const resumeFile = "/Ababil-2025-CV.pdf";
       <h1 class="text-3xl font-bold">Resume</h1>
 
       <UButton
-        :to="resumeFile"
+        v-if="hasResume"
+        :to="resumeLink"
         download="Ababil-CV.pdf"
         target="_blank"
         color="primary"
@@ -46,14 +54,26 @@ const resumeFile = "/Ababil-2025-CV.pdf";
         <i class="i-tabler-file-download mr-2"></i>
         Download Resume
       </UButton>
+      <p
+        v-else
+        class="mt-4 md:mt-0 text-sm text-gray-500 text-center md:text-right"
+      >
+        Resume belum tersedia.
+      </p>
     </div>
 
-    <UCard class="w-full">
+    <UCard v-if="hasResume" class="w-full">
       <embed
         :src="resumeFile"
         type="application/pdf"
         class="w-full min-h-[80vh]"
       />
+    </UCard>
+    <UCard v-else class="w-full">
+      <p class="text-sm text-gray-500">
+        URL resume belum dikonfigurasi. Setel `NUXT_PUBLIC_RESUME_URL` ke tautan
+        Google Drive publik untuk menampilkan CV.
+      </p>
     </UCard>
   </div>
 </template>

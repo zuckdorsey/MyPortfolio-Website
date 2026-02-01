@@ -83,7 +83,10 @@ Visit the live portfolio at: [https://ababil.is-not-a.dev](https://ababil.is-not
    SPOTIFY_CLIENT_ID=your_spotify_client_id
    SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
    SPOTIFY_REFRESH_TOKEN=your_spotify_refresh_token
+   NUXT_PUBLIC_RESUME_URL=https://drive.google.com/uc?export=download&id=YOUR_FILE_ID
    ```
+
+Gunakan tautan Google Drive yang dapat diakses publik (contoh format `https://drive.google.com/uc?export=download&id=FILE_ID`) agar file resume dapat ditampilkan dan diunduh dari halaman `resume`.
 
 4. Run the development server:
 
