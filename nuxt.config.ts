@@ -3,7 +3,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
     '@nuxt/content',
-    '@nuxthq/studio',
     '@nuxtjs/sitemap',
     '@nuxt/image'
   ],
@@ -30,13 +29,12 @@ export default defineNuxtConfig({
 
   ui: {},
 
-  // Konfigurasi Content untuk Nuxt Studio
+  // Content Configuration
   content: {
     documentDriven: true,
     api: {
       baseURL: '/api/_content'
     },
-    // Tambahkan opsi ini untuk integrasi dengan Nuxt Studio
     experimental: {
       stripQueryParameters: false
     }
