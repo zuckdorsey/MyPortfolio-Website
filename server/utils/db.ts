@@ -4,11 +4,22 @@ import { createError } from 'h3';
 // Create a PostgreSQL connection pool for NeonDB
 let pool: Pool;
 
+const sanitizeConnectionString = (raw: string) => {
+  try {
+    const url = new URL(raw);
+    // Remove sslmode to avoid alias warning; ssl is configured explicitly below
+    url.searchParams.delete('sslmode');
+    return url.toString();
+  } catch (e) {
+    return raw;
+  }
+};
+
 export function getDb() {
   if (!pool) {
     // Get configuration from environment variables
     const config = useRuntimeConfig();
-    const connectionString = config.databaseUrl;
+    const connectionString = sanitizeConnectionString(config.databaseUrl);
 
     // Check if connection string is available
     if (!connectionString) {

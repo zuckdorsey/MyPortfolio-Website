@@ -32,7 +32,7 @@
 
 - Proper crawling instructions
 - Allows indexing of main content
-- Blocks sensitive areas (/dashboard, /api)
+- Blocks sensitive areas (/api)
 - Sitemap reference
 
 ### 6. **Internationalization (i18n)** ✅

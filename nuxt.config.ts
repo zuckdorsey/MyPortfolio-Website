@@ -73,8 +73,6 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { headers: { 'cache-control': 's-maxage=31536000' } },
     '/resume': { headers: { 'cache-control': 's-maxage=31536000' } },
-    '/dashboard/**': { ssr: false },
-    '/login': { ssr: false },
     '/closed': { ssr: false }
   },
 
