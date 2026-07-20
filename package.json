@@ -1,47 +1,47 @@
 {
-    "name": "nuxt-app",
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "build": "nuxt build",
-        "dev": "nuxt dev",
-        "generate": "nuxt generate",
-        "preview": "nuxt preview",
-        "postinstall": "nuxt prepare",
-        "db:init": "node -e \"import('./server/utils/db.js').then(db => db.initializeDatabase()).then(() => process.exit(0)).catch(err => {console.error(err); process.exit(1);})\""
-    },
-    "dependencies": {
-        "@iconify-json/cif": "^1.1.11",
-        "@iconify-json/fluent-emoji-flat": "^1.1.17",
-        "@iconify-json/tabler": "^1.1.118",
-        "@nuxt/content": "^2.13.2",
-        "@nuxt/image": "^2.0.0",
-        "@nuxt/ui": "^2.17.0",
-        "@nuxtjs/robots": "^5.2.11",
-        "@nuxtjs/sitemap": "^7.4.3",
-        "@tabler/icons-vue": "^3.11.0",
-        "@vercel/analytics": "^1.5.0",
-        "cloudinary": "^2.8.0",
-        "gray-matter": "^4.0.3",
-        "js-confetti": "^0.12.0",
-        "nuxt": "^3.12.4",
-        "pg": "^8.16.0",
-        "resend": "^3.4.0",
-        "vue": "latest",
-        "zod": "^3.24.4"
-    },
-    "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "^4.21.0"
-    },
-    "devDependencies": {
-        "@iconify-json/devicon": "^1.2.23",
-        "@iconify-json/fa6-brands": "^1.2.5",
-        "@iconify-json/logos": "^1.2.4",
-        "@iconify-json/material-symbols": "^1.2.20",
-        "@iconify-json/material-symbols-light": "^1.2.20",
-        "@iconify-json/octicon": "^1.2.5",
-        "@iconify-json/simple-icons": "^1.2.34",
-        "@iconify-json/skill-icons": "^1.2.0",
-        "@types/pg": "^8.15.4"
-    }
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "db:init": "bun run server/utils/db.ts"
+  },
+  "dependencies": {
+    "@iconify-json/fluent-emoji-flat": "^1.1.17",
+    "@iconify-json/tabler": "^1.1.118",
+    "@nuxt/content": "^2.13.2",
+    "@nuxt/image": "^2.0.0",
+    "@nuxt/ui": "^2.17.0",
+    "@nuxtjs/robots": "^5.2.11",
+    "@nuxtjs/sitemap": "^7.4.3",
+    "@tabler/icons-vue": "^3.11.0",
+    "@vercel/analytics": "^1.5.0",
+    "cloudinary": "^2.8.0",
+    "gray-matter": "^4.0.3",
+    "jose": "^6.2.3",
+    "js-confetti": "^0.12.0",
+    "nuxt": "^3.12.4",
+    "pg": "^8.16.0",
+    "resend": "^3.4.0",
+    "vue": "latest",
+    "zod": "^3.24.4"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.21.0"
+  },
+  "devDependencies": {
+    "@iconify-json/devicon": "^1.2.23",
+    "@iconify-json/fa6-brands": "^1.2.5",
+    "@iconify-json/logos": "^1.2.4",
+    "@iconify-json/material-symbols": "^1.2.20",
+    "@iconify-json/material-symbols-light": "^1.2.20",
+    "@iconify-json/octicon": "^1.2.5",
+    "@iconify-json/simple-icons": "^1.2.34",
+    "@iconify-json/skill-icons": "^1.2.0",
+    "@types/pg": "^8.15.4"
+  }
 }

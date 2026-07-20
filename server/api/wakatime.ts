@@ -1,4 +1,5 @@
-export default defineEventHandler(async (event) => {
+// Cache WakaTime stats for 1 hour — data rarely changes
+export default defineCachedEventHandler(async (event) => {
   try {
     const apiKey = process.env.WAKATIME_API_KEY;
     
@@ -25,4 +26,8 @@ export default defineEventHandler(async (event) => {
       message: 'Failed to fetch WakaTime statistics'
     });
   }
+}, {
+  maxAge: 3600, // 1 hour
+  name: 'wakatime-stats',
+  getKey: () => 'wakatime-stats'
 });

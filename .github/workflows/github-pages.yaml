@@ -10,12 +10,11 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - run: corepack enable
-            - uses: actions/setup-node@v3
+            - uses: oven-sh/setup-bun@v2
               with:
-                  node-version: '20'
-            - run: npm install
-            - run: NUXT_APP_BASE_URL=/portfolio-v2/ npx nuxt build --preset github_pages
+                  bun-version: latest
+            - run: bun install --frozen-lockfile
+            - run: NUXT_APP_BASE_URL=/portfolio-v2/ bun run build --preset github_pages
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v1
               with:

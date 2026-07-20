@@ -1,0 +1,35 @@
+[
+  {
+    "id": 3,
+    "institution": "SMKN 13 BANDUNG",
+    "website": "http://www.smkn-13bdg.sch.id",
+    "degree": "Software Engineer",
+    "start_date": "2022",
+    "end_date": "2025",
+    "location": "Bandung, Indonesia",
+    "content_en": "I studied at SMKN 13 Bandung, majoring in Software Engineering (Rekayasa Perangkat Lunak). During this time, I learned the fundamentals of programming, application development, UI/UX design, and software project management. This experience gave me strong technical and logical skills that serve as a solid foundation for my passion in software development and technology.\n",
+    "content_id": "Saya menempuh pendidikan di SMKN 13 Bandung dengan fokus pada jurusan Rekayasa Perangkat Lunak (RPL). Di sini, saya mempelajari dasar-dasar pemrograman, pengembangan aplikasi, desain UI/UX, serta pengelolaan proyek perangkat lunak. Pengalaman ini memberikan saya keterampilan teknis dan logis yang menjadi fondasi dalam pengembangan software dan teknologi.\n"
+  },
+  {
+    "id": 2,
+    "institution": "Self Learning",
+    "website": "https://www.udemy.com/",
+    "degree": "Online Courses",
+    "start_date": "2022",
+    "end_date": "Present",
+    "location": "Online",
+    "content_en": "Self-directed learning through various online courses, primarily on Udemy.\nFocus on expanding programming skills, mastering new technologies, and practical software development.\n",
+    "content_id": "Belajar mandiri melalui berbagai kursus online, terutama di Udemy.\nFokus pada pengembangan keterampilan pemrograman, menguasai teknologi baru, dan pengembangan perangkat lunak secara praktis.\n"
+  },
+  {
+    "id": 1,
+    "institution": "State Polytechnic of Batam",
+    "website": "https://www.polibatam.ac.id",
+    "degree": "Robotic Engineering",
+    "start_date": "2025",
+    "end_date": "2029",
+    "location": "Batam, Indonesia",
+    "content_en": "I am currently pursuing a Bachelor's degree in Robotic Engineering at the State Polytechnic of Batam (2025–2029), located in Batam, Indonesia. This program focuses on the integration of mechanical, electrical, and software systems to build intelligent and automated machines. My background in Software Engineering from SMKN 13 Bandung has equipped me with strong fundamentals in programming, application development, and UI/UX design—skills that complement my studies in robotics, especially in areas such as embedded systems, automation, and intelligent control.",
+    "content_id": "Saya sedang menempuh pendidikan Sarjana Terapan di bidang Teknik Robotika di Politeknik Negeri Batam (2025–2029), yang berlokasi di Batam, Indonesia. Program ini berfokus pada integrasi sistem mekanik, elektronik, dan perangkat lunak untuk menciptakan mesin cerdas dan otomatis. Latar belakang saya di bidang Rekayasa Perangkat Lunak dari SMKN 13 Bandung telah membekali saya dengan dasar yang kuat dalam pemrograman, pengembangan aplikasi, dan desain UI/UX—keterampilan yang sangat mendukung studi saya di bidang robotika, khususnya dalam sistem embedded, otomasi, dan kendali cerdas."
+  }
+]

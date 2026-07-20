@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import {
-  IconLink,
-  IconTools,
-  IconTool,
-  IconBrandGithub,
+  IconBriefcase,
+  IconCalendar,
+  IconExternalLink,
+  IconChevronDown,
+  IconChevronUp,
+  IconCode,
 } from "@tabler/icons-vue";
+
 type LocaleType = "en" | "id";
+
 interface ContentExperience {
   _id?: string;
   _path?: string;
@@ -23,602 +27,286 @@ interface ContentExperience {
     [key: string]: string | undefined;
   };
   technologies?: string[];
-  body?: any;
 }
-const currentLocale = 'en';
+
+const currentLocale = "en";
+
 const { data: experiences } = await useAsyncData<ContentExperience[]>(
   "experiences",
   async () => {
     const items = await $fetch<any[]>("/api/experiences");
-    // Map database fields to component expected format
-    return items.map(exp => ({
+    return items.map((exp) => ({
       ...exp,
       companyUrl: exp.company_url,
       period: {
         start: exp.start_date,
-        end: exp.end_date
+        end: exp.end_date,
       },
       content: {
         en: exp.content_en,
-        id: exp.content_id
+        id: exp.content_id,
       },
-      technologies: exp.technologies || []
+      technologies: exp.technologies || [],
     })) as ContentExperience[];
   }
 );
+
 const getLocalizedContent = (exp: ContentExperience): string => {
-  if (exp.content && exp.content[currentLocale]) {
-    return exp.content[currentLocale] || "";
-  }
-  return "";
+  return exp.content?.[currentLocale] ?? "";
 };
-const techModalOpen = ref<string | null>(null);
-const expandedDescriptions = ref<Set<string>>(new Set());
-function toggleDescription(expId: string) {
-  const expanded = expandedDescriptions.value;
-  if (expanded.has(expId)) {
-    expanded.delete(expId);
-  } else {
-    expanded.add(expId);
-  }
-  expandedDescriptions.value = new Set(expanded);
+
+const expandedIds = ref<Set<string>>(new Set());
+const expandedTech = ref<Set<string>>(new Set());
+
+function expId(exp: ContentExperience, index: number): string {
+  return exp._id ?? String(index);
 }
-function isDescriptionExpanded(expId: string): boolean {
-  return expandedDescriptions.value.has(expId);
+
+function toggleDescription(id: string) {
+  const s = new Set(expandedIds.value);
+  s.has(id) ? s.delete(id) : s.add(id);
+  expandedIds.value = s;
 }
-function truncateText(text: string, maxLength: number = 200): string {
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength).trim() + "...";
+
+function toggleTech(id: string) {
+  const s = new Set(expandedTech.value);
+  s.has(id) ? s.delete(id) : s.add(id);
+  expandedTech.value = s;
 }
-function needsTruncation(text: string, maxLength: number = 200): boolean {
-  return text.length > maxLength;
+
+function isExpanded(id: string): boolean {
+  return expandedIds.value.has(id);
 }
-function openTechModal(expId: string) {
-  techModalOpen.value = expId;
+
+function isTechExpanded(id: string): boolean {
+  return expandedTech.value.has(id);
 }
-function closeTechModal() {
-  techModalOpen.value = null;
+
+function truncateText(text: string, max = 220): string {
+  if (text.length <= max) return text;
+  return text.substring(0, max).trimEnd() + "…";
 }
-function isTechnoAvailable(tech: string): boolean {
-  return !!(tech && tech.trim().length > 0);
+
+function needsTruncation(text: string, max = 220): boolean {
+  return text.length > max;
 }
+
+const typeLabel: Record<string, string> = {
+  apprenticeship: "Apprenticeship",
+  internship: "Internship",
+  job: "Full-time",
+  freelance: "Freelance",
+  contract: "Contract",
+};
 </script>
+
 <template>
-  <section class="flex flex-col gap-8">
-    <div class="relative">
-      <a href="#experience">
-        <div class="flex flex-row gap-3 items-center group relative">
-          <div class="relative">
-            <div
-              class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105"
-            >
-              <IconLink class="w-5 h-5 text-white" />
-            </div>
-            <div
-              class="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-500 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"
-            ></div>
-          </div>
-          <div class="flex flex-col">
-            <h2
-              class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-neutral-100 dark:to-neutral-300 bg-clip-text text-transparent hover:cursor-pointer"
-            >
-              Experience
-            </h2>
-            <p class="text-sm text-neutral-500 dark:text-neutral-400">
-              My Professional Journey
-            </p>
-          </div>
-        </div>
-      </a>
+  <section class="flex flex-col gap-8" id="experience">
+    <!-- Section header -->
+    <div class="flex flex-col gap-1">
+      <div class="flex items-center gap-2">
+        <div class="w-1 h-6 rounded-full bg-primary-500" />
+        <a href="#experience" class="group">
+          <h2
+            class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200"
+          >
+            Experience
+          </h2>
+        </a>
+      </div>
+      <p class="text-sm text-neutral-500 dark:text-neutral-400 pl-3">
+        Where I've worked and what I built there.
+      </p>
     </div>
+
+    <!-- Timeline -->
     <div class="relative">
+      <!-- Vertical line -->
       <div
-        class="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 via-primary-400 to-transparent hidden sm:block"
-      ></div>
-      <div class="space-y-8">
-        <div
+        class="absolute left-[19px] top-3 bottom-3 w-px bg-gradient-to-b from-neutral-300 via-neutral-200 to-transparent dark:from-neutral-700 dark:via-neutral-800 hidden sm:block"
+      />
+
+      <div class="flex flex-col gap-6">
+        <article
           v-for="(exp, index) in experiences"
-          :key="exp?._id || index"
-          class="experience-card group relative"
-          :style="{ '--index': index }"
+          :key="expId(exp, index)"
+          class="exp-entry group relative flex gap-5 sm:gap-6"
+          :style="{ '--i': index }"
         >
+          <!-- Timeline dot -->
           <div
-            class="absolute left-4 w-4 h-4 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full border-4 border-white dark:border-neutral-900 shadow-lg group-hover:scale-125 transition-transform duration-300 z-10 hidden sm:block"
-          ></div>
-          <div
-            class="sm:ml-12 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-xl transition-all duration-300 group-hover:border-primary-200 dark:group-hover:border-primary-800 overflow-hidden"
+            class="relative z-10 flex-shrink-0 hidden sm:flex items-start pt-0.5"
           >
             <div
-              class="bg-gradient-to-r from-primary-50 to-primary-100/50 dark:from-primary-900/30 dark:to-primary-800/30 p-6 border-b border-neutral-100 dark:border-neutral-800"
+              class="w-10 h-10 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 group-hover:border-primary-300 dark:group-hover:border-primary-700 flex items-center justify-center transition-colors duration-300 shadow-sm"
             >
-              <div
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-              >
-                <div class="flex-1">
-                  <div class="flex items-center gap-3 mb-2">
-                    <div
-                      class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg"
-                    >
-                      <span class="text-white font-bold text-lg">{{
-                        exp.company?.charAt(0)
-                      }}</span>
-                    </div>
-                    <div class="flex-1">
-                      <div class="flex flex-col gap-2">
-                        <div
-                          class="flex flex-col sm:flex-row sm:items-center gap-2"
-                        >
-                          <a
-                            v-if="exp.companyUrl"
-                            class="text-xl font-bold hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 flex items-center gap-2"
-                            :href="exp.companyUrl"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {{ exp.company }}
-                            <IconLink class="w-4 h-4 opacity-60" />
-                          </a>
-                          <span v-else class="text-xl font-bold">{{
-                            exp.company
-                          }}</span>
-                        </div>
-                        <div
-                          class="flex flex-col sm:flex-row sm:items-center gap-2"
-                        >
-                          <p
-                            v-if="exp.position"
-                            class="text-primary-600 dark:text-primary-400 font-medium"
-                          >
-                          {{ exp.position }}
-                          </p>
-                          <span
-                            v-if="exp.type"
-                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-primary-100 to-primary-200 text-primary-800 dark:from-primary-800 dark:to-primary-700 dark:text-primary-200 shadow-sm border border-primary-200 dark:border-primary-600 w-fit"
-                          >
-                            <span
-                              class="w-1.5 h-1.5 bg-primary-500 rounded-full mr-1.5"
-                            ></span>
-                            {{ exp.type }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-sm"
-                >
-                  <div
-                    class="bg-white dark:bg-neutral-800 px-3 py-2 rounded-lg border border-neutral-200 dark:border-neutral-700 shadow-sm"
-                  >
-                    <div class="flex items-center gap-1">
-                      <svg
-                        class="w-3 h-3 text-neutral-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      <span
-                        class="text-neutral-600 dark:text-neutral-400 font-medium"
-                      >
-                        {{ exp.period?.start }} - {{ exp.period?.end }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="p-6 space-y-4">
-              <div class="prose dark:prose-invert max-w-none">
-                <div class="relative">
-                  <p
-                    class="text-neutral-700 dark:text-neutral-300 leading-relaxed"
-                  >
-                    <span
-                      v-html="
-                        isDescriptionExpanded(exp._id || String(index))
-                          ? getLocalizedContent(exp)
-                          : truncateText(
-                              getLocalizedContent(exp).replace(/<[^>]*>/g, ''),
-                              200
-                            )
-                      "
-                    ></span>
-                  </p>
-                  <div
-                    v-if="
-                      needsTruncation(
-                        getLocalizedContent(exp).replace(/<[^>]*>/g, ''),
-                        200
-                      )
-                    "
-                    class="mt-3"
-                  >
-                    <button
-                      @click="toggleDescription(exp._id || String(index))"
-                      class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 group"
-                    >
-                      <span>{{
-                        isDescriptionExpanded(exp._id || String(index))
-                          ? "Read Less"
-                          : "Read More"
-                      }}</span>
-                      <svg
-                        class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                        :class="{
-                          'rotate-180': isDescriptionExpanded(
-                            exp._id || String(index)
-                          ),
-                        }"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="flex justify-between items-center pt-4 border-t border-neutral-100 dark:border-neutral-800"
-              >
-                <button
-                  v-if="exp.technologies && exp.technologies.length > 0"
-                  @click="openTechModal(exp._id || String(index))"
-                  class="modern-tech-button group relative inline-flex items-center gap-3 px-6 py-3 rounded-xl overflow-hidden bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0"
-                >
-                  <div class="relative z-10 flex items-center gap-2">
-                    <IconTools
-                      class="w-5 h-5 transition-transform group-hover:rotate-12 duration-300"
-                    />
-                    <span>Tech Used</span>
-                    <span
-                      class="bg-white/20 text-xs px-2 py-1 rounded-full font-bold"
-                    >
-                      {{ exp.technologies.length }}
-                    </span>
-                  </div>
-                  <div
-                    class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                  ></div>
-                </button>
-                <div
-                  class="text-6xl font-bold text-neutral-100 dark:text-neutral-800 select-none"
-                >
-                  {{ String(index + 1).padStart(2, "0") }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-for="(exp, index) in experiences"
-      :key="`modal-${exp?._id || index}`"
-    >
-      <UModal
-        :model-value="techModalOpen === (exp._id || String(index))"
-        @close="closeTechModal"
-        :ui="{
-          overlay: {
-            background: 'bg-black/80 backdrop-blur-sm',
-          },
-          container: 'flex items-center justify-center p-4',
-        }"
-      >
-        <UCard
-          :ui="{
-            base: 'tech-modal overflow-hidden max-w-4xl w-full',
-            ring: 'ring-0',
-            divide: 'divide-y divide-neutral-100 dark:divide-neutral-800',
-            header: {
-              padding: 'p-6 bg-gradient-to-r from-primary-500 to-primary-600',
-            },
-            body: {
-              padding: 'p-6',
-            },
-          }"
-        >
-          <template #header>
-            <div class="flex justify-between items-center">
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center"
-                >
-                  <IconTool class="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 class="text-xl font-bold text-white">
-                    Technologies Used
-                  </h3>
-                  <p class="text-primary-100 text-sm">
-                    {{ exp.company }}
-                    <template v-if="exp.position">
-                      - {{ exp.position }}
-                    </template>
-                  </p>
-                </div>
-              </div>
-              <UButton
-                color="white"
-                variant="ghost"
-                icon="i-tabler-x"
-                @click="closeTechModal"
-                class="hover:rotate-90 transition-transform duration-300 text-white hover:bg-white/10"
+              <IconBriefcase
+                class="w-4 h-4 text-neutral-400 dark:text-neutral-500 group-hover:text-primary-500 transition-colors duration-300"
               />
             </div>
-          </template>
-          <div class="max-h-[70vh] overflow-y-auto space-y-6">
-            <template v-if="exp.technologies && exp.technologies.length > 0">
+          </div>
+
+          <!-- Card -->
+          <div
+            class="flex-1 min-w-0 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 group-hover:border-neutral-300 dark:group-hover:border-neutral-700 transition-all duration-300 group-hover:shadow-md group-hover:shadow-neutral-100 dark:group-hover:shadow-black/20 overflow-hidden"
+          >
+            <div class="p-5 flex flex-col gap-3">
+              <!-- Top row: company + period -->
               <div
-                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2"
               >
-                <div
-                  v-for="tech in exp.technologies"
-                  :key="tech"
-                  class="tech-item group relative flex flex-col items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-800 dark:to-neutral-900 hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/30 dark:hover:to-primary-800/30 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-lg cursor-pointer"
-                >
-                  <div
-                    class="absolute inset-0 bg-gradient-to-br from-primary-500/0 to-primary-600/0 group-hover:from-primary-500/10 group-hover:to-primary-600/10 rounded-xl transition-all duration-300"
-                  ></div>
-                  <div
-                    class="relative z-10 transform group-hover:scale-110 transition-transform duration-300"
-                  >
-                    <Techno :techno="tech" size="medium" class="w-8 h-8" />
+                <!-- Company & position -->
+                <div class="flex flex-col gap-0.5">
+                  <div class="flex items-center gap-1.5">
+                    <a
+                      v-if="exp.companyUrl"
+                      :href="exp.companyUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-base font-semibold text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 inline-flex items-center gap-1 group/link"
+                    >
+                      {{ exp.company }}
+                      <IconExternalLink
+                        class="w-3.5 h-3.5 opacity-0 group-hover/link:opacity-70 transition-opacity duration-200 flex-shrink-0"
+                      />
+                    </a>
+                    <span
+                      v-else
+                      class="text-base font-semibold text-neutral-900 dark:text-neutral-100"
+                    >
+                      {{ exp.company }}
+                    </span>
                   </div>
+
                   <p
-                    class="relative z-10 text-sm font-medium text-center text-neutral-800 dark:text-neutral-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300"
+                    v-if="exp.position"
+                    class="text-sm text-neutral-500 dark:text-neutral-400"
                   >
-                    {{ tech }}
+                    {{ exp.position }}
                   </p>
-                  <div
-                    class="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-primary-200 dark:group-hover:border-primary-700 transition-colors duration-300"
-                  ></div>
+                </div>
+
+                <!-- Period + type badge -->
+                <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
+                  <span
+                    v-if="exp.type"
+                    class="text-xs font-medium px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400"
+                  >
+                    {{ typeLabel[exp.type] ?? exp.type }}
+                  </span>
+
+                  <span
+                    v-if="exp.period?.start"
+                    class="inline-flex items-center gap-1 text-xs text-neutral-400 dark:text-neutral-500 tabular-nums"
+                  >
+                    <IconCalendar class="w-3 h-3 flex-shrink-0" />
+                    {{ exp.period.start }}
+                    <span class="mx-0.5">–</span>
+                    {{ exp.period.end ?? "Present" }}
+                  </span>
                 </div>
               </div>
-            </template>
-            <div v-else class="text-center py-12">
-              <div
-                class="w-20 h-20 bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-900 rounded-full flex items-center justify-center mx-auto mb-4"
-              >
-                <IconBrandGithub class="w-10 h-10 text-neutral-400" />
+
+              <!-- Divider -->
+              <div class="h-px bg-neutral-100 dark:bg-neutral-800" />
+
+              <!-- Description -->
+              <div v-if="getLocalizedContent(exp)" class="flex flex-col gap-2">
+                <p
+                  class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed"
+                  v-html="
+                    isExpanded(expId(exp, index))
+                      ? getLocalizedContent(exp)
+                      : truncateText(
+                          getLocalizedContent(exp).replace(/<[^>]*>/g, ''),
+                          220
+                        )
+                  "
+                />
+
+                <button
+                  v-if="
+                    needsTruncation(
+                      getLocalizedContent(exp).replace(/<[^>]*>/g, ''),
+                      220
+                    )
+                  "
+                  @click="toggleDescription(expId(exp, index))"
+                  class="inline-flex items-center gap-1 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
+                >
+                  <span>{{
+                    isExpanded(expId(exp, index)) ? "Show less" : "Read more"
+                  }}</span>
+                  <IconChevronDown
+                    class="w-3.5 h-3.5 transition-transform duration-200"
+                    :class="{ 'rotate-180': isExpanded(expId(exp, index)) }"
+                  />
+                </button>
               </div>
-              <p class="text-neutral-500 text-lg">
-                No technologies specified
-              </p>
+
+              <!-- Tech stack — inline pills, expandable -->
+              <div
+                v-if="exp.technologies && exp.technologies.length > 0"
+                class="flex flex-wrap items-center gap-1.5 pt-1"
+              >
+                <ClientOnly>
+                  <template
+                    v-for="tech in isTechExpanded(expId(exp, index))
+                      ? exp.technologies
+                      : exp.technologies.slice(0, 4)"
+                    :key="tech"
+                  >
+                    <span
+                      class="inline-flex items-center gap-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 px-2 py-1 rounded-md"
+                    >
+                      <Techno :techno="tech" size="little" />
+                    </span>
+                  </template>
+                </ClientOnly>
+
+                <button
+                  v-if="
+                    !isTechExpanded(expId(exp, index)) &&
+                    exp.technologies.length > 4
+                  "
+                  @click="toggleTech(expId(exp, index))"
+                  class="inline-flex items-center gap-1 text-xs text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 px-2 py-1 rounded-md transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                >
+                  <IconCode class="w-3 h-3" />
+                  +{{ exp.technologies.length - 4 }} more
+                </button>
+
+                <button
+                  v-if="isTechExpanded(expId(exp, index))"
+                  @click="toggleTech(expId(exp, index))"
+                  class="inline-flex items-center gap-1 text-xs text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
+                >
+                  <IconChevronUp class="w-3 h-3" />
+                  Show less
+                </button>
+              </div>
             </div>
           </div>
-          <template #footer>
-            <div
-              class="flex justify-center p-4 bg-neutral-50 dark:bg-neutral-900"
-            >
-              <UButton
-                variant="soft"
-                color="primary"
-                @click="closeTechModal"
-                class="px-8 py-2"
-              >
-                Close
-              </UButton>
-            </div>
-          </template>
-        </UCard>
-      </UModal>
+        </article>
+      </div>
     </div>
   </section>
 </template>
+
 <style scoped>
-.inline-flex.items-center.px-3 {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(8px);
+.exp-entry {
+  animation: expEnter 0.45s ease-out both;
+  animation-delay: calc(var(--i, 0) * 90ms);
 }
-.inline-flex.items-center.px-3:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 4px 12px rgba(var(--color-primary-500), 0.25);
-}
-@media (max-width: 640px) {
-  .inline-flex.items-center.px-3 {
-    font-size: 0.75rem;
-    padding: 0.375rem 0.75rem;
-    margin-top: 0.25rem;
-  }
-  .flex.flex-col.gap-2 {
-    gap: 0.5rem;
-  }
-  .flex.flex-col.sm\\:flex-row.sm\\:items-center.gap-2 {
-    gap: 0.375rem;
-  }
-  .bg-white.dark\\:bg-neutral-800.px-3 {
-    width: 100%;
-    text-align: center;
-  }
-  .w-12.h-12.bg-gradient-to-br {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-  .w-12.h-12.bg-gradient-to-br span {
-    font-size: 0.875rem;
-  }
-}
-.prose p {
-  transition: all 0.3s ease;
-}
-button:has(svg) {
-  position: relative;
-  overflow: hidden;
-}
-button:has(svg)::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.3s ease;
-}
-button:has(svg):hover::before {
-  width: 100%;
-}
-.prose .relative {
-  transition: max-height 0.3s ease-out;
-}
-.experience-card {
-  animation: slideInFromLeft 0.6s ease-out forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-  opacity: 0;
-  transform: translateX(-20px);
-}
-@keyframes slideInFromLeft {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-.modern-tech-button {
-  position: relative;
-  overflow: hidden;
-}
-.modern-tech-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transition: left 0.5s;
-}
-.modern-tech-button:hover::before {
-  left: 100%;
-}
-.experience-card:hover .absolute.left-4 {
-  box-shadow: 0 0 20px rgba(var(--color-primary-500), 0.5);
-}
-.tech-modal {
-  animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@keyframes modalSlideIn {
+
+@keyframes expEnter {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(20px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
   }
-}
-.tech-item {
-  position: relative;
-  overflow: hidden;
-}
-.tech-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    to right,
-    var(--color-primary-500, #3b82f6),
-    var(--color-primary-300, #93c5fd)
-  );
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-  border-radius: 0 0 8px 8px;
-}
-.tech-item:hover::before {
-  transform: scaleX(1);
-}
-.experience-card:hover .bg-white {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-.bg-gradient-to-r.from-neutral-900.to-neutral-700 {
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
-}
-.experience-card:hover .w-12.h-12.bg-gradient-to-br {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 10px 25px rgba(var(--color-primary-500), 0.3);
-}
-.experience-card:hover .text-6xl {
-  transform: scale(1.05);
-  background: linear-gradient(
-    45deg,
-    var(--color-primary-500),
-    var(--color-primary-300)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-@media (max-width: 640px) {
-  .experience-card {
-    animation-delay: calc(var(--index, 0) * 0.05s);
-  }
-  .tech-modal {
-    max-width: 95vw;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .experience-card:hover .bg-white {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4),
-      0 10px 10px -5px rgba(0, 0, 0, 0.2);
-  }
-}
-.modern-tech-button:focus-visible {
-  outline: 2px solid var(--color-primary-500);
-  outline-offset: 2px;
-}
-.tech-item:focus-visible {
-  outline: 2px solid var(--color-primary-500);
-  outline-offset: 2px;
-  border-radius: 12px;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>

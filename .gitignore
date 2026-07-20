@@ -18,6 +18,9 @@ logs
 .fleet
 .idea
 
+# Local image backup (originals before compression)
+.original-images-backup
+
 # Environment variables
 .env
 .env.*
@@ -28,7 +31,5 @@ logs
 .env.*
 !.env.example
 
-package-lock.json
-yarn.lock
 
 .github

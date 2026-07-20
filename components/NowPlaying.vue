@@ -94,11 +94,30 @@ onMounted(() => {
   refreshInterval = setInterval(() => {
     fetchNowPlaying();
   }, 30000);
+
+  // Pause timers when tab is not visible to avoid wasted polling
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 });
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    clearInterval(refreshInterval);
+    clearInterval(progressInterval);
+  } else {
+    // Resume: fetch fresh data and restart timers
+    fetchNowPlaying().then(() => {
+      startProgressUpdater();
+    });
+    refreshInterval = setInterval(() => {
+      fetchNowPlaying();
+    }, 30000);
+  }
+}
 
 onBeforeUnmount(() => {
   if (refreshInterval) clearInterval(refreshInterval);
   if (progressInterval) clearInterval(progressInterval);
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 </script>
 <template>
@@ -210,6 +229,9 @@ onBeforeUnmount(() => {
               class="w-full h-full object-cover blur-2xl opacity-20 transform scale-110"
               aria-hidden="true"
               format="webp"
+              loading="lazy"
+              width="256"
+              height="256"
             />
             <div class="absolute inset-0 bg-gradient-to-b from-white dark:from-primary-950/80 to-white/95 dark:to-primary-950/95"></div>
           </div>

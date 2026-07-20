@@ -1,0 +1,219 @@
+[
+  {
+    "id": 31,
+    "title": "Wordpress",
+    "type": "CMS",
+    "url": "https://developer.android.com/studio",
+    "icon": "skill-icons:wordpress"
+  },
+  {
+    "id": 30,
+    "title": "Wakatime",
+    "type": "library",
+    "url": "https://developer.android.com/studio",
+    "icon": "simple-icons:wakatime"
+  },
+  {
+    "id": 29,
+    "title": "Vue.js",
+    "type": "framework",
+    "url": "https://vuejs.com",
+    "icon": "skill-icons:vuejs-light"
+  },
+  {
+    "id": 28,
+    "title": "Supabase",
+    "type": "database",
+    "url": "https://supabase.com",
+    "icon": "skill-icons:supabase-dark"
+  },
+  {
+    "id": 27,
+    "title": "SQLite",
+    "type": "database",
+    "url": "https://developer.android.com/studio",
+    "icon": "skill-icons:sqlite"
+  },
+  {
+    "id": 26,
+    "title": "Python",
+    "type": "language",
+    "url": "https://www.python.org/",
+    "icon": "skill-icons:python-light"
+  },
+  {
+    "id": 25,
+    "title": "Pypi",
+    "type": "development-tool",
+    "url": "https://developer.android.com/studio",
+    "icon": "devicon:pypi"
+  },
+  {
+    "id": 24,
+    "title": "Php",
+    "type": "language",
+    "url": "https://www.java.com/en/",
+    "icon": "skill-icons:php-light"
+  },
+  {
+    "id": 23,
+    "title": "Nuxt.js",
+    "type": "framework",
+    "url": "https://nuxt.com/",
+    "icon": "skill-icons:nuxtjs-light"
+  },
+  {
+    "id": 22,
+    "title": "NPM",
+    "type": "development-tool",
+    "url": "https://developer.android.com/studio",
+    "icon": "devicon:npm"
+  },
+  {
+    "id": 21,
+    "title": "Next.js",
+    "type": "framework",
+    "url": "https://nextjs.com",
+    "icon": "skill-icons:nextjs-light"
+  },
+  {
+    "id": 20,
+    "title": "MySql",
+    "type": "database",
+    "url": "https://developer.android.com/studio",
+    "icon": "skill-icons:mysql-light"
+  },
+  {
+    "id": 19,
+    "title": "MongoDB",
+    "type": "database",
+    "url": "https://developer.android.com/studio",
+    "icon": "skill-icons:mongodb"
+  },
+  {
+    "id": 18,
+    "title": "Laravel",
+    "type": "framework",
+    "url": "https://laravel.com/",
+    "icon": "skill-icons:laravel-light"
+  },
+  {
+    "id": 17,
+    "title": "JavaScript",
+    "type": "language",
+    "url": "https://www.javascript.com/",
+    "icon": "i-logos-javascript"
+  },
+  {
+    "id": 16,
+    "title": "Java",
+    "type": "language",
+    "url": "https://www.java.com/en/",
+    "icon": "skill-icons:java-light"
+  },
+  {
+    "id": 15,
+    "title": "i18n",
+    "type": "library",
+    "url": "https://developer.android.com/studio",
+    "icon": "material-icon-theme:i18n"
+  },
+  {
+    "id": 14,
+    "title": "HTML",
+    "type": "language",
+    "url": "https://www.python.org/",
+    "icon": "skill-icons:html"
+  },
+  {
+    "id": 13,
+    "title": "Github Action",
+    "type": "devops",
+    "url": "https://developer.android.com/studio",
+    "icon": "skill-icons:githubactions-dark"
+  },
+  {
+    "id": 12,
+    "title": "Github",
+    "type": "development-tool",
+    "url": "https://github.com",
+    "icon": "skill-icons:github-light"
+  },
+  {
+    "id": 11,
+    "title": "Git",
+    "type": "development-tool",
+    "url": "https://git-scm.com/",
+    "icon": "skill-icons:git"
+  },
+  {
+    "id": 10,
+    "title": "Flask",
+    "type": "framework",
+    "url": "https://flask.palletsprojects.com/en/stable/",
+    "icon": "skill-icons:flask-light"
+  },
+  {
+    "id": 9,
+    "title": "Django",
+    "type": "framework",
+    "url": "https://www.djangoproject.com/",
+    "icon": "skill-icons:django"
+  },
+  {
+    "id": 8,
+    "title": "FastAPI",
+    "type": "framework",
+    "url": "https://www.djangoproject.com/",
+    "icon": "skill-icons:fastapi"
+  },
+  {
+    "id": 7,
+    "title": "Digital Ocean",
+    "type": "devops",
+    "url": "https://developer.android.com/studio",
+    "icon": "devicon:digitalocean-wordmark"
+  },
+  {
+    "id": 6,
+    "title": "Pycharm",
+    "type": "language",
+    "url": "https://www.jetbrains.com/pycharm/",
+    "icon": "skill-icons:css"
+  },
+  {
+    "id": 5,
+    "title": "C++",
+    "type": "language",
+    "url": "https://www.jetbrains.com/pycharm/",
+    "icon": "skill-icons:cpp"
+  },
+  {
+    "id": 4,
+    "title": "cPanel",
+    "type": "devops",
+    "url": "https://developer.android.com/studio",
+    "icon": "simple-icons:cpanel"
+  },
+  {
+    "id": 3,
+    "title": "Bootstrap",
+    "type": "framework",
+    "url": "https://bootstrap.com",
+    "icon": "skill-icons:bootstrap"
+  },
+  {
+    "id": 2,
+    "title": "Vercel",
+    "type": "devops",
+    "url": "https://vercel.com",
+    "icon": "skill-icons:vercel-light"
+  },
+  {
+    "id": 1,
+    "title": "Arduino",
+    "type": "development-tool",
+    "url": "https://developer.android.com/studio",
+    "icon": "skill-icons:arduino"
+  }
+]

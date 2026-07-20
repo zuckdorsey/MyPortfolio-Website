@@ -1,0 +1,26 @@
+[
+  {
+    "id": 2,
+    "company": "Freelance Developer",
+    "company_url": null,
+    "position": "Full Stack Developer",
+    "start_date": "2022",
+    "end_date": "Present",
+    "type": "freelance",
+    "technologies": ["React", "Node.js", "MongoDB", "Express", "Next.js", "AWS"],
+    "content_en": "As a freelance developer, I work independently and remotely with clients, managing the entire development process from initial communication and requirements gathering to proposal creation, application development, testing, and post-project support.\n\nI maintain open communication with clients through email, chat, or video meetings, breaking work into manageable phases, providing regular updates, and using tools like Trello or Notion for task tracking. Documentation and transparency are key parts of my workflow to ensure the final product meets expectations.\n",
+    "content_id": "Sebagai freelance developer, saya bekerja secara mandiri maupun dalam kolaborasi jarak jauh bersama klien. Saya terbiasa menangani seluruh proses pengembangan, mulai dari komunikasi awal, penyusunan kebutuhan, pembuatan proposal teknis, pengembangan aplikasi, hingga testing dan support setelah proyek selesai.\n\nDalam proses kerja, saya menjaga komunikasi terbuka dengan klien melalui email, chat, atau meeting daring. Saya membagi pekerjaan ke dalam fase-fase (milestone), membuat pembaruan rutin, serta menggunakan tools seperti Trello atau Notion untuk pelacakan tugas. Dokumentasi dan transparansi menjadi bagian penting dari workflow saya untuk memastikan hasil akhir sesuai ekspektasi.\n"
+  },
+  {
+    "id": 1,
+    "company": "PT Erka Solution Group",
+    "company_url": "https://erka.co.id",
+    "position": "Backend Software Developer",
+    "start_date": "2024",
+    "end_date": "2025",
+    "type": "apprenticeship",
+    "technologies": ["GitHub", "Laravel", "Php", "Git", "JavaScript"],
+    "content_en": "I worked as a Backend Software Developer at PT Erka Solution Group, where I was responsible for developing and maintaining backend systems for web-based applications.\n",
+    "content_id": "Saya bekerja sebagai Backend Software Developer di PT Erka Solution Group, dengan tanggung jawab utama dalam pengembangan dan pemeliharaan sistem backend untuk aplikasi berbasis web.</p><br>"
+  }
+]

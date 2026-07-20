@@ -9,8 +9,18 @@ const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 // Storage for caching token
 const tokenStorage = useStorage('spotify');
 
+// In-memory cache for Spotify "now playing" response
+let cachedResponse: any = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 15_000; // 15 seconds
+
 export default defineEventHandler(async (event) => {
   try {
+    // Return cached response if still fresh
+    if (cachedResponse && (Date.now() - cacheTimestamp) < CACHE_TTL) {
+      return cachedResponse;
+    }
+
     // Get access token (from cache or generate new one)
     let accessToken = await tokenStorage.getItem('access_token');
     let tokenExpiry = await tokenStorage.getItem('token_expiry');
@@ -87,19 +97,24 @@ export default defineEventHandler(async (event) => {
                 duration: response.item.duration_ms
               };
               
+              // Cache the response
+              cachedResponse = songData;
+              cacheTimestamp = Date.now();
               return songData;
             } else {
               // No track playing
-              return {
-                isPlaying: false
-              };
+              const result = { isPlaying: false };
+              cachedResponse = result;
+              cacheTimestamp = Date.now();
+              return result;
             }
     } catch (fetchError: any) {
       // Handle 204 No Content or other API-specific errors
       if (fetchError.response?.status === 204) {
-        return {
-          isPlaying: false
-        };
+        const result = { isPlaying: false };
+        cachedResponse = result;
+        cacheTimestamp = Date.now();
+        return result;
       }
       
       // Other API errors

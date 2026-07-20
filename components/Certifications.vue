@@ -1,458 +1,197 @@
 <script setup lang="ts">
 import {
+  IconCertificate,
   IconExternalLink,
-  IconLink,
-  IconChevronLeft,
-  IconChevronRight,
+  IconCalendar,
+  IconChevronDown,
 } from "@tabler/icons-vue";
+
 interface ContentCertification {
   _id?: string;
   _path?: string;
   title: string;
-  titleId?: string;
   website?: string;
   date: string;
-  credlyBadgeUrl?: string;
-  provider?: string;
   icon?: string;
-  badgeImage?: string;
-  badgeAlt: string;
-  imageHeight?: string;
-  imageWidth?: string;
+  badge_alt: string;
   description: string;
-  descriptionId?: string;
   skills?: string;
-  skillsId?: string;
-  recap?: string;
-  recapId?: string;
-  details?: string;
-  detailsId?: string;
 }
-const { data: certifications } = await useAsyncData<ContentCertification[]>(
+
+const { data: certifications } = await useLazyAsyncData<ContentCertification[]>(
   "certifications",
   async () => {
     const items = await $fetch<ContentCertification[]>("/api/certifications");
     return items;
   }
 );
-useHead({
-  script: [
-    {
-      src: "//cdn.credly.com/assets/utilities/embed.js",
-      async: true,
-      type: "text/javascript",
-    },
-  ],
-});
-function getProviderDefaultIcon(provider: string | undefined): string {
-  if (!provider) return "tabler:certificate";
-  switch (provider.toLowerCase()) {
-    case "github":
-      return "devicon:github";
-    case "udemy":
-      return "logos:udemy-icon";
-    case "coursera":
-      return "simple-icons:coursera";
-    case "microsoft":
-      return "logos:microsoft-icon";
-    case "google":
-      return "logos:google-icon";
-    case "aws":
-      return "logos:aws";
-    default:
-      return "tabler:certificate";
-  }
+
+const expandedIds = ref<Set<string>>(new Set());
+
+function certId(cert: ContentCertification, index: number): string {
+  return cert._id ?? String(index);
 }
-function isIconifyFormat(iconName: string | undefined): boolean {
-  return !!iconName && (iconName.includes(":") || iconName.startsWith("i-"));
+
+function toggle(id: string) {
+  const s = new Set(expandedIds.value);
+  s.has(id) ? s.delete(id) : s.add(id);
+  expandedIds.value = s;
 }
-const currentIndex = ref(0);
-const itemsPerPage = ref(1);
-const touchStartX = ref(0);
-const carouselRef = ref<HTMLElement | null>(null);
-const isAnimating = ref(false);
-const autoplayEnabled = ref(true);
-const autoplayInterval = ref<number | null>(null);
-const isHovering = ref(false);
-onMounted(() => {
-  itemsPerPage.value = 1;
-  if (
-    certifications.value &&
-    currentIndex.value > certifications.value.length - itemsPerPage.value
-  ) {
-    currentIndex.value = Math.max(
-      0,
-      certifications.value.length - itemsPerPage.value
-    );
-  }
-  if (autoplayEnabled.value) {
-    startAutoplay();
-  }
-});
-onBeforeUnmount(() => {
-  stopAutoplay();
-});
-function nextSlide() {
-  if (!certifications.value || isAnimating.value) return;
-  isAnimating.value = true;
-  const maxIndex = Math.max(
-    0,
-    certifications.value.length - itemsPerPage.value
-  );
-  currentIndex.value = Math.min(currentIndex.value + 1, maxIndex);
-  setTimeout(() => {
-    isAnimating.value = false;
-  }, 800);
+
+function isExpanded(id: string): boolean {
+  return expandedIds.value.has(id);
 }
-function prevSlide() {
-  if (isAnimating.value) return;
-  isAnimating.value = true;
-  currentIndex.value = Math.max(0, currentIndex.value - 1);
-  setTimeout(() => {
-    isAnimating.value = false;
-  }, 800);
-}
-function goToSlide(index: number) {
-  if (!certifications.value || isAnimating.value) return;
-  isAnimating.value = true;
-  const maxIndex = Math.max(
-    0,
-    certifications.value.length - itemsPerPage.value
-  );
-  currentIndex.value = Math.min(Math.max(0, index), maxIndex);
-  setTimeout(() => {
-    isAnimating.value = false;
-  }, 800);
-}
-function handleTouchStart(e: TouchEvent) {
-  touchStartX.value = e.touches[0].clientX;
-  pauseAutoplay();
-}
-function handleTouchEnd(e: TouchEvent) {
-  const touchEndX = e.changedTouches[0].clientX;
-  const diff = touchStartX.value - touchEndX;
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) {
-      nextSlide();
-    } else {
-      prevSlide();
-    }
-  }
-  resumeAutoplay();
-}
-function startAutoplay() {
-  if (autoplayInterval.value) return;
-  autoplayInterval.value = window.setInterval(() => {
-    if (
-      !isHovering.value &&
-      certifications.value &&
-      certifications.value.length > itemsPerPage.value
-    ) {
-      if (
-        currentIndex.value >=
-        certifications.value.length - itemsPerPage.value
-      ) {
-        goToSlide(0);
-      } else {
-        nextSlide();
-      }
-    }
-  }, 5000);
-}
-function stopAutoplay() {
-  if (autoplayInterval.value) {
-    clearInterval(autoplayInterval.value);
-    autoplayInterval.value = null;
-  }
-}
-function pauseAutoplay() {
-  isHovering.value = true;
-}
-function resumeAutoplay() {
-  isHovering.value = false;
-}
-const totalPages = computed(() => {
-  if (!certifications.value) return 0;
-  return Math.ceil(certifications.value.length / itemsPerPage.value);
-});
-const currentPage = computed(() => {
-  return Math.floor(currentIndex.value / itemsPerPage.value) + 1;
-});
-const canGoNext = computed(() => {
-  if (!certifications.value) return false;
-  return currentIndex.value < certifications.value.length - itemsPerPage.value;
-});
-const canGoPrev = computed(() => {
-  return currentIndex.value > 0;
-});
 </script>
+
 <template>
-  <section class="flex flex-col gap-3">
-    <div class="flex flex-row gap-2 items-center justify-between">
-      <a href="#certifications">
-        <div class="flex flex-row gap-1 items-center group relative">
-          <IconLink
-            class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
-          />
-          <h2 class="text-xl font-bold hover:cursor-pointer">Certifications</h2>
-        </div>
-      </a>
-      <ClientOnly>
-        <ConfettisButton>
-          <template v-slot:default="{ onLaunchConfettis }">
-            <UButton
-              icon="i-tabler-confetti"
-              variant="soft"
-              label="Celebrate"
-              @click="onLaunchConfettis"
-            />
-          </template>
-        </ConfettisButton>
-      </ClientOnly>
-    </div>
-    <div
-      class="relative carousel-container"
-      @mouseenter="pauseAutoplay"
-      @mouseleave="resumeAutoplay"
-    >
-      <button
-        @click="prevSlide"
-        class="navigation-arrow left-arrow absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-4 bg-white dark:bg-primary-900 rounded-full shadow-md p-2 transition-all duration-300"
-        :class="{
-          'opacity-0 pointer-events-none': !canGoPrev,
-          'opacity-100 hover:bg-neutral-100 dark:hover:bg-primary-800 hover:scale-110':
-            canGoPrev,
-        }"
-      >
-        <IconChevronLeft class="w-5 h-5 text-primary-500" />
-      </button>
-      <button
-        @click="nextSlide"
-        class="navigation-arrow right-arrow absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-4 bg-white dark:bg-primary-900 rounded-full shadow-md p-2 transition-all duration-300"
-        :class="{
-          'opacity-0 pointer-events-none': !canGoNext,
-          'opacity-100 hover:bg-neutral-100 dark:hover:bg-primary-800 hover:scale-110':
-            canGoNext,
-        }"
-      >
-        <IconChevronRight class="w-5 h-5 text-primary-500" />
-      </button>
-      <div
-        ref="carouselRef"
-        class="overflow-hidden carousel-view"
-        @touchstart="handleTouchStart"
-        @touchend="handleTouchEnd"
-      >
-        <div
-          class="flex carousel-track"
-          :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
-        >
-          <div
-            v-for="(cert, index) in certifications || []"
-            :key="cert?._id"
-            class="cert-card min-w-full px-2"
-            :class="{
-              'is-active': index === currentIndex,
-              'is-prev': index < currentIndex,
-              'is-next': index > currentIndex,
-            }"
+  <section class="flex flex-col gap-8" id="certifications">
+    <!-- Section header -->
+    <div class="flex flex-col gap-1">
+      <div class="flex items-center gap-2">
+        <div class="w-1 h-6 rounded-full bg-primary-500" />
+        <a href="#certifications" class="group">
+          <h2
+            class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200"
           >
-            <UCard class="h-full flex flex-col card-inner">
-              <div class="flex justify-between items-start mb-3">
-                <div class="flex-1">
-                  <h3 class="font-bold text-base">
-                    <a
-                      v-if="cert?.website"
-                      class="hover:underline inline-flex items-center gap-1"
-                      :href="cert.website"
-                      target="_blank"
-                    >
-                      {{ cert.title }}
-                      <IconExternalLink class="w-4 h-4 opacity-70" />
-                    </a>
-                    <template v-else>{{ cert?.title }}</template>
-                  </h3>
-                  <p class="text-xs text-neutral-600 dark:text-neutral-400">
-                    {{ cert.date }}
-                  </p>
-                </div>
-                <div v-if="cert?.icon || cert?.provider" class="ml-2">
-                  <a
-                    :href="cert.credlyBadgeUrl || cert.website"
-                    target="_blank"
-                    class="block p-1"
-                  >
-                    <UIcon
-                      v-if="cert.icon"
-                      :name="cert.icon"
-                      class="text-2xl"
-                      :title="cert.badgeAlt"
-                    />
-                    <UIcon
-                      v-else-if="cert.provider"
-                      :name="getProviderDefaultIcon(cert.provider)"
-                      class="text-2xl"
-                      :title="cert.badgeAlt"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div class="flex-1 overflow-auto">
-                <p
-                  v-if="cert?.description"
-                  class="text-xs leading-relaxed text-pretty text-neutral-700 dark:text-neutral-300 mb-2"
-                >
-                  {{ cert.description }}
-                </p>
-                <p
-                  v-if="cert?.skills"
-                  class="text-xs leading-relaxed text-pretty text-neutral-700 dark:text-neutral-300"
-                  v-html="cert.skills"
+            Certifications
+          </h2>
+        </a>
+      </div>
+      <p class="text-sm text-neutral-500 dark:text-neutral-400 pl-3">
+        Courses and credentials I've completed.
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div
+      v-if="certifications && certifications.length > 0"
+      class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+    >
+      <article
+        v-for="(cert, index) in certifications"
+        :key="certId(cert, index)"
+        class="cert-entry group flex flex-col bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 hover:shadow-md hover:shadow-neutral-100 dark:hover:shadow-black/20 overflow-hidden"
+        :style="{ '--i': index }"
+      >
+        <div class="p-5 flex flex-col gap-3 flex-1">
+
+          <!-- Top row: icon + title + date -->
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3 min-w-0">
+              <!-- Provider icon -->
+              <div
+                class="flex-shrink-0 w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center"
+              >
+                <UIcon
+                  v-if="cert.icon"
+                  :name="cert.icon"
+                  class="text-xl"
+                  :title="cert.badge_alt"
                 />
-                <UAccordion
-                  v-if="cert?.recap || cert?.details"
-                  :items="[
-                    {
-                      label: 'More details',
-                      slot: `details-${index}`,
-                      defaultOpen: false,
-                    },
-                  ]"
-                  class="mt-3"
-                  color="primary"
-                >
-                  <template #[`details-${index}`]>
-                    <p
-                      v-if="cert?.recap"
-                      class="text-xs leading-relaxed text-pretty text-neutral-700 dark:text-neutral-300 mb-2"
-                    >
-                      {{ cert.recap }}
-                    </p>
-                    <p
-                      v-if="cert?.details"
-                      class="text-xs leading-relaxed text-pretty text-neutral-700 dark:text-neutral-300"
-                      v-html="cert.details"
-                    />
-                  </template>
-                </UAccordion>
+                <IconCertificate
+                  v-else
+                  class="w-4 h-4 text-neutral-400 dark:text-neutral-500"
+                />
               </div>
-            </UCard>
+
+              <!-- Title -->
+              <div class="min-w-0 flex flex-col gap-0.5">
+                <a
+                  v-if="cert.website"
+                  :href="cert.website"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 inline-flex items-center gap-1 group/link leading-snug"
+                >
+                  <span class="text-pretty">{{ cert.title }}</span>
+                  <IconExternalLink
+                    class="w-3 h-3 flex-shrink-0 opacity-0 group-hover/link:opacity-70 transition-opacity duration-200"
+                  />
+                </a>
+                <span
+                  v-else
+                  class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 leading-snug text-pretty"
+                >
+                  {{ cert.title }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Date -->
+            <span
+              class="flex-shrink-0 inline-flex items-center gap-1 text-xs text-neutral-400 dark:text-neutral-500 tabular-nums whitespace-nowrap"
+            >
+              <IconCalendar class="w-3 h-3" />
+              {{ cert.date }}
+            </span>
           </div>
+
+          <!-- Divider -->
+          <div class="h-px bg-neutral-100 dark:bg-neutral-800" />
+
+          <!-- Description -->
+          <p
+            v-if="cert.description"
+            class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed"
+          >
+            {{ cert.description }}
+          </p>
+
+          <!-- Skills — expandable -->
+          <div v-if="cert.skills" class="flex flex-col gap-1.5">
+            <button
+              @click="toggle(certId(cert, index))"
+              class="inline-flex items-center gap-1 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
+            >
+              <span>{{ isExpanded(certId(cert, index)) ? "Hide topics" : "Topics covered" }}</span>
+              <IconChevronDown
+                class="w-3.5 h-3.5 transition-transform duration-200"
+                :class="{ 'rotate-180': isExpanded(certId(cert, index)) }"
+              />
+            </button>
+
+            <div
+              v-if="isExpanded(certId(cert, index))"
+              class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed border-l-2 border-neutral-200 dark:border-neutral-700 pl-3"
+              v-html="cert.skills"
+            />
+          </div>
+
         </div>
+      </article>
+    </div>
+
+    <!-- Empty state -->
+    <div
+      v-else-if="certifications !== null"
+      class="flex flex-col items-center justify-center py-16 gap-3 text-center"
+    >
+      <div
+        class="w-12 h-12 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center"
+      >
+        <IconCertificate class="w-6 h-6 text-neutral-400 dark:text-neutral-500" />
       </div>
-      <div class="flex justify-center mt-4 gap-1">
-        <button
-          v-for="i in certifications?.length || 0"
-          :key="i"
-          @click="goToSlide(i - 1)"
-          class="pagination-dot h-2 rounded-full transition-all duration-300"
-          :class="
-            i - 1 === currentIndex
-              ? 'bg-primary-500 w-6 scale-y-110'
-              : 'bg-neutral-300 dark:bg-neutral-700 hover:bg-primary-300 dark:hover:bg-primary-700 w-2'
-          "
-          :aria-label="`Go to certificate ${i}`"
-        ></button>
-      </div>
+      <p class="text-sm text-neutral-500 dark:text-neutral-400">
+        No certifications yet.
+      </p>
     </div>
   </section>
 </template>
+
 <style scoped>
-.cert-card {
-  height: auto;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
-  will-change: transform, opacity;
+.cert-entry {
+  animation: certEnter 0.45s ease-out both;
+  animation-delay: calc(var(--i, 0) * 70ms);
 }
-.carousel-track {
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: transform;
-  padding: 8px 0;
-}
-.navigation-arrow {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  will-change: transform, opacity;
-}
-.navigation-arrow:hover {
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-.pagination-dot {
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: width, background-color, transform;
-}
-.cert-card.is-active .card-inner {
-  transform: scale(1);
-  opacity: 1;
-}
-.cert-card.is-prev .card-inner {
-  opacity: 0;
-  transform: scale(0.9) translateX(-10%);
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
-}
-.cert-card.is-next .card-inner {
-  opacity: 0;
-  transform: scale(0.9) translateX(10%);
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
-}
-.card-inner {
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
-  transform: scale(1);
-  opacity: 1;
-}
-.UAccordion {
-  --un-accordion-item-gap: 0.5rem;
-}
-@keyframes cardEntrance {
+
+@keyframes certEnter {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(10px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
   }
-}
-.carousel-container:hover .navigation-arrow {
-  transform: translateX(0) scale(1.05);
-}
-.carousel-container .left-arrow {
-  transform: translateX(-8px);
-}
-.carousel-container .right-arrow {
-  transform: translateX(8px);
-}
-@media (max-width: 640px) {
-  .navigation-arrow {
-    padding: 0.5rem;
-  }
-  .cert-card {
-    animation: cardEntrance 0.6s ease forwards;
-  }
-}
-.carousel-container::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    var(--color-primary-500),
-    var(--color-primary-300)
-  );
-  width: 0;
-  animation: autoplayProgress 3s linear infinite;
-  opacity: 0.5;
-}
-@keyframes autoplayProgress {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 100%;
-  }
-}
-.carousel-container:hover::after {
-  animation-play-state: paused;
 }
 </style>

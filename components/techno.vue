@@ -36,40 +36,12 @@ const props = defineProps<{
   techno: string;
   size: "little" | "medium" | "big";
 }>();
-const { data: technoData } = await useAsyncData<ContentSkill>(
-  `skill-${props.techno}`,
-  async () => {
-    try {
-      const items = await queryContent("/skills")
-        .where({ title: props.techno })
-        .find();
-      if (items && items.length > 0) {
-        return {
-          _id: items[0]._id,
-          _path: items[0]._path,
-          title: items[0].title || props.techno,
-          type: items[0].type || "other",
-          url: items[0].url || "#",
-          icon: items[0].icon || "i-tabler-code",
-        } as ContentSkill;
-      }
-      return {
-        title: props.techno,
-        icon: "i-tabler-code",
-        type: "other",
-        url: "#",
-      } as ContentSkill;
-    } catch (error) {
-      console.error("Error fetching techno data:", error);
-      return {
-        title: props.techno,
-        icon: "i-tabler-code",
-        type: "other",
-        url: "#",
-      } as ContentSkill;
-    }
-  }
-);
+const technoData = ref<ContentSkill>({
+  title: props.techno,
+  icon: "i-tabler-code",
+  type: "other",
+  url: "#",
+});
 const littleClassesDisplay = "rounded-md flex flex-row items-center text-xs";
 const bigClassesDisplay =
   "flex flex-col items-center justify-evenly text-xs text-center w-full h-full";

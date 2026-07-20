@@ -27,9 +27,6 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Konfigurasi yang hanya tersedia di server
-    databaseUrl: process.env.DATABASE_URL,
-
     // Konfigurasi yang tersedia di client
     public: {
       apiBase: '/api',
@@ -46,7 +43,7 @@ export default defineNuxtConfig({
 
   // Content Configuration
   content: {
-    documentDriven: true,
+    documentDriven: false,
     api: {
       baseURL: '/api/_content'
     },
@@ -73,7 +70,14 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { headers: { 'cache-control': 's-maxage=31536000' } },
     '/resume': { headers: { 'cache-control': 's-maxage=31536000' } },
-    '/closed': { ssr: false }
+    '/closed': { ssr: false },
+    '/admin/**': { ssr: false },
+    // Cache API responses at Nitro level
+    '/api/skills': { cache: { maxAge: 3600 } },
+    '/api/certifications': { cache: { maxAge: 3600 } },
+    '/api/education': { cache: { maxAge: 3600 } },
+    '/api/experiences': { cache: { maxAge: 3600 } },
+    '/api/projects': { cache: { maxAge: 3600 } },
   },
 
   compatibilityDate: '2025-05-09'

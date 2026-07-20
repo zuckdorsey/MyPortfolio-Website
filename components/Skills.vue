@@ -14,17 +14,26 @@ const currentFilter = ref<TechnoType>("language");
 const showAllSkills = ref(false);
 const initialMobileSkillCount = 4;
 const isMobile = ref(false);
+let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 onMounted(() => {
   checkIfMobile();
-  window.addEventListener("resize", checkIfMobile);
+  window.addEventListener("resize", throttledCheckIfMobile);
 });
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", checkIfMobile);
+  window.removeEventListener("resize", throttledCheckIfMobile);
+  if (resizeTimer) clearTimeout(resizeTimer);
 });
+function throttledCheckIfMobile() {
+  if (resizeTimer) return;
+  resizeTimer = setTimeout(() => {
+    checkIfMobile();
+    resizeTimer = null;
+  }, 250);
+}
 function checkIfMobile() {
   isMobile.value = window.innerWidth < 640;
 }
-const { data: allSkills } = await useAsyncData<ContentSkill[]>(
+const { data: allSkills } = await useLazyAsyncData<ContentSkill[]>(
   "skills",
   async () => {
     const items = await $fetch<ContentSkill[]>("/api/skills");

@@ -3,7 +3,8 @@ import { createError } from 'h3';
 // GitHub GraphQL API endpoint
 const GITHUB_API = 'https://api.github.com/graphql';
 
-export default defineEventHandler(async (event) => {
+// Cache GitHub contributions for 1 hour
+export default defineCachedEventHandler(async (event) => {
   try {
     // Get username from query params
     const query = getQuery(event);
@@ -108,5 +109,12 @@ export default defineEventHandler(async (event) => {
       statusCode: err.statusCode || 500,
       message: err.message || 'Failed to fetch GitHub data'
     });
+  }
+}, {
+  maxAge: 3600, // 1 hour
+  name: 'github-contributions',
+  getKey: (event) => {
+    const query = getQuery(event);
+    return `github-${query.username || 'default'}`;
   }
 });

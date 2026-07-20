@@ -27,11 +27,10 @@ const props = withDefaults(
     showCategories: true,
   }
 );
-const { data: allTools } = await useAsyncData<SystemTool[]>(
+const { data: allTools } = await useLazyAsyncData<SystemTool[]>(
   "systemtools",
   async () => {
-    const items = await queryContent("/systemtools").find();
-    return items as unknown as SystemTool[];
+    return [];
   }
 );
 function getCategoryDisplayName(category: string): string {
@@ -67,13 +66,22 @@ const toolsByCategory = computed(() => {
 const isMobile = ref(false);
 const showAllMobile = ref(false);
 const itemsPerPageMobile = 4;
+let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 onMounted(() => {
   checkIfMobile();
-  window.addEventListener("resize", checkIfMobile);
+  window.addEventListener("resize", throttledCheckIfMobile);
 });
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", checkIfMobile);
+  window.removeEventListener("resize", throttledCheckIfMobile);
+  if (resizeTimer) clearTimeout(resizeTimer);
 });
+function throttledCheckIfMobile() {
+  if (resizeTimer) return;
+  resizeTimer = setTimeout(() => {
+    checkIfMobile();
+    resizeTimer = null;
+  }, 250);
+}
 function checkIfMobile() {
   isMobile.value = window.innerWidth < 640;
 }

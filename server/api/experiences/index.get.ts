@@ -1,11 +1,8 @@
-import { getDb, handleDbError } from '../../utils/db';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
-export default defineEventHandler(async (event) => {
-    try {
-        const db = getDb();
-        const result = await db.query('SELECT * FROM experiences ORDER BY created_at DESC');
-        return result.rows;
-    } catch (error) {
-        return handleDbError(error);
-    }
+export default defineEventHandler(() => {
+    const filePath = resolve(process.cwd(), 'data/experiences.json');
+    const raw = readFileSync(filePath, 'utf-8');
+    return JSON.parse(raw);
 });

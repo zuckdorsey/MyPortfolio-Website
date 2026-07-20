@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { IconPlayerPlay, IconVideo, IconEye } from '@tabler/icons-vue';
+import {
+  IconPlayerPlay,
+  IconVideo,
+  IconEye,
+  IconBrandGithub,
+  IconLock,
+  IconExternalLink,
+  IconCalendar,
+  IconCode,
+} from '@tabler/icons-vue';
 
-// Define allowed locales to avoid type errors
 type LocaleType = 'en' | 'id' | 'fr';
 
-// Interface untuk tipe data project dari Nuxt Content
 interface ContentProject {
   _id?: string;
   _path?: string;
@@ -14,9 +21,9 @@ interface ContentProject {
   date: string;
   technos: string[];
   type: string[];
-  image?: string; // Custom image filename
-  imageExt?: string; // Custom image extension
-  video_url?: string; // URL for video preview (YouTube/Vimeo embed)
+  image?: string;
+  imageExt?: string;
+  video_url?: string;
   content?: {
     en?: string;
     id?: string;
@@ -25,228 +32,324 @@ interface ContentProject {
   };
 }
 
-// Use 'en' locale directly
 const currentLocale = 'en';
 
-// Accept props from parent component
-const props = defineProps<{ project: ContentProject }>();
+const props = defineProps<{ project: ContentProject; index?: number }>();
 
-// Preview modal state
 const previewModalOpen = ref(false);
+const currentPreviewMode = ref<'live' | 'video'>('live');
 
-function getProjectImageName(project: ContentProject) {
-  // Use custom image name if provided, otherwise generate from project name
-  return project.image || project.name.toLowerCase().replace(/\s/g, '-').replace(/'/g, '');
+// Derive the image src — null when genuinely missing
+const projectImage = computed<string | null>(() => {
+  if (props.project.image && props.project.image.startsWith('http')) {
+    return props.project.image;
+  }
+  const name = props.project.image
+    || props.project.name.toLowerCase().replace(/\s/g, '-').replace(/'/g, '');
+  const ext = props.project.imageExt || 'webp';
+  return `/projects/${name}.${ext}`;
+});
+
+// Track whether the image actually loaded
+const imageLoaded = ref(false);
+const imageErrored = ref(false);
+
+function onImageLoad() {
+  imageLoaded.value = true;
+}
+function onImageError() {
+  imageErrored.value = true;
 }
 
-function getProjectImageExtension(project: ContentProject) {
-  // Use custom extension if provided, otherwise default to webp
-  return project.imageExt || 'webp';
-}
+// Show the image strip only when an image source exists and hasn't errored
+const showImage = computed(() => projectImage.value && !imageErrored.value);
 
-// Check if project has a valid live preview link
+// Generate a stable accent color per project name (for the no-image placeholder)
+const placeholderHue = computed(() => {
+  let hash = 0;
+  for (let i = 0; i < props.project.name.length; i++) {
+    hash = props.project.name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash) % 360;
+});
+
+// Initials from project name (up to 2 words)
+const initials = computed(() => {
+  return props.project.name
+    .split(' ')
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
+});
+
 function hasLivePreview(project: ContentProject): boolean {
   return !!project.link && project.link.trim() !== '' && project.link !== '#';
 }
 
-// Check if project has a video preview
 function hasVideoPreview(project: ContentProject): boolean {
   return !!project.video_url && project.video_url.trim() !== '';
 }
 
-// Check if project has any preview available
 function hasAnyPreview(project: ContentProject): boolean {
   return hasLivePreview(project) || hasVideoPreview(project);
 }
 
-// Check if project is closed source (repo_link is an email address)
 function isClosedSource(project: ContentProject): boolean {
   return !project.repo_link || project.repo_link.startsWith('closed');
 }
 
-// Get the appropriate link for the repository button
 function getRepoLink(project: ContentProject): string {
-  if (isClosedSource(project)) {
-    return '/closed';  // Redirect to closed source info page
-  }
+  if (isClosedSource(project)) return '/closed';
   return project.repo_link;
 }
 
-// Get localized content
 const getLocalizedContent = computed(() => {
-  if (props.project.content && props.project.content[currentLocale]) {
-    return props.project.content[currentLocale] || '';
-  }
-  return '';
+  return props.project.content?.[currentLocale] ?? '';
 });
 
-// Get embedded video code (safely)
 function getSafeVideoEmbed(url: string | undefined): string {
   if (!url) return '';
-  
-  // Handle YouTube URLs
   if (url.includes('youtube.com') || url.includes('youtu.be')) {
-    const videoId = getYouTubeVideoId(url);
-    if (videoId) {
-      return `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    const m = url.match(/^.*((youtu.be\/)|(v\/)|(\u002Fu\/\w\/)|(embed\/)|(watch\?))\\??v?=?([^#&?]*).*/);
+    if (m && m[7]?.length === 11) {
+      return `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${m[7]}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     }
   }
-  
-  // Handle Vimeo URLs
   if (url.includes('vimeo.com')) {
-    const videoId = getVimeoVideoId(url);
-    if (videoId) {
-      return `<iframe width="100%" height="315" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+    const m = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(?:\d+)\/video\/|)(\d+)(?:$|\/|\?)/);
+    if (m) {
+      return `<iframe width="100%" height="315" src="https://player.vimeo.com/video/${m[1]}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
     }
   }
-  
-  // If we can't parse it, just return the URL as a fallback
   return `<p>Video preview not available: ${url}</p>`;
 }
-
-// Helper to extract YouTube video ID from various YouTube URL formats
-function getYouTubeVideoId(url: string): string | null {
-  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[7].length === 11) ? match[7] : null;
-}
-
-// Helper to extract Vimeo video ID
-function getVimeoVideoId(url: string): string | null {
-  const regExp = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(?:\d+)\/video\/|)(\d+)(?:$|\/|\?)/;
-  const match = url.match(regExp);
-  return match ? match[1] : null;
-}
-
-// Current preview mode in the modal
-const currentPreviewMode = ref<'live' | 'video'>('live');
 </script>
 
 <template>
-  <UCard
-    class="relative overflow-hidden group hover:bg-neutral-100 dark:hover:bg-primary-900 transition duration-300"
-    :ui="{
-      body: {
-          padding: 'px-3 py-4 sm:p-4'
-      },
-      background:
-          'bg-white dark:bg-primary-950 border border-stone-200 dark:border-stone-600',
-      ring: ''
-    }"
+  <article
+    class="project-card group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-500 hover:shadow-xl hover:shadow-neutral-200/60 dark:hover:shadow-black/40 hover:-translate-y-1"
+    :style="{ '--card-index': index ?? 0 }"
   >
-    <div class="flex flex-col gap-2">
-      <div class="flex flex-row items-start justify-between w-full">
-        <div class="flex flex-col gap-1 items-start">
-          <a
-            class="text-lg font-bold hover:underline"
-            :href="project.link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >{{ project.name }}</a>
-          <div class="flex flex-wrap gap-4 text-neutral-600 dark:text-neutral-400">
-            <Techno
-              v-for="techno in project.technos"
-              :key="techno"
-              :techno="techno"
-              size="medium"
-            />
-          </div>
-        </div>
-        <div class="flex flex-col items-end gap-0.5">
-          <p class="text-sm">{{ project.date }}</p>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Content area with fixed minimum height to prevent card shrinking -->
-    <div class="mt-4 flex flex-row items-center justify-between w-full min-h-[100px]">
-      <p class="text-xs text-neutral-600 dark:text-neutral-400 w-full sm:w-1/2 line-clamp-4 sm:line-clamp-none">
-        {{ getLocalizedContent }}
-      </p>
+    <!-- ── Image strip (when image exists and loads) ── -->
+    <div
+      v-if="showImage"
+      class="relative h-44 overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex-shrink-0"
+    >
       <NuxtImg
         v-if="project.image && project.image.startsWith('http')"
         :src="project.image"
         :alt="project.name"
-        class="hidden sm:block absolute bottom-0 right-[-10%] shadow-2xl rounded-t-xl z-10 h-32 w-60 sm:h-44 sm:w-80 transition group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:-rotate-2"
-        width="320"
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        width="640"
         height="176"
         loading="lazy"
         :placeholder="[64, 35, 75, 5]"
+        @load="onImageLoad"
+        @error="onImageError"
       />
       <NuxtImg
         v-else
-        :src="`/projects/${getProjectImageName(project)}.${getProjectImageExtension(project)}`"
+        :src="projectImage!"
         :alt="project.name"
-        class="hidden sm:block absolute bottom-0 right-[-10%] shadow-2xl rounded-t-xl z-10 h-32 w-60 sm:h-44 sm:w-80 transition group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:-rotate-2"
-        width="320"
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        width="640"
         height="176"
         format="webp"
         loading="lazy"
         :placeholder="[64, 35, 75, 5]"
+        @load="onImageLoad"
+        @error="onImageError"
       />
-    </div>
-    
-    <div class="mt-4 flex flex-row items-center justify-start gap-2 w-full">
-      <!-- Code/Repository button -->
-      <UButton :to="getRepoLink(project)" :target="isClosedSource(project) ? '_self' : '_blank'" variant="solid">
-        <UIcon name="devicon:github-original" v-if="!isClosedSource(project)" />
-        <i class="material-symbols-light:lock-outline-sharp" v-else></i>
-        {{ isClosedSource(project) ? 'Closed Source' : 'Code' }}
-      </UButton>
-      
-      <!-- Preview button - opens modal with preview options -->
-      <UButton 
+      <!-- gradient overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent dark:from-neutral-900/70" />
+
+      <!-- Date badge -->
+      <div class="absolute top-3 right-3 flex items-center gap-1 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm text-neutral-600 dark:text-neutral-400 text-xs font-medium px-2.5 py-1 rounded-full border border-neutral-200 dark:border-neutral-700">
+        <IconCalendar class="w-3 h-3" />
+        {{ project.date }}
+      </div>
+
+      <!-- Preview hover overlay -->
+      <button
         v-if="hasAnyPreview(project)"
-        @click="previewModalOpen = true" 
-        variant="solid"
+        @click="previewModalOpen = true"
+        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        aria-label="Preview project"
       >
-        <IconEye class="w-4 h-4 mr-1" /> Preview
-      </UButton>
+        <span class="flex items-center gap-2 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm text-neutral-800 dark:text-neutral-100 text-sm font-medium px-4 py-2 rounded-full border border-neutral-200 dark:border-neutral-700 shadow-lg translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+          <IconEye class="w-4 h-4" />
+          Preview
+        </span>
+      </button>
     </div>
-  </UCard>
-  
+
+    <!-- ── No-image placeholder strip ── -->
+    <div
+      v-else
+      class="relative h-24 flex-shrink-0 overflow-hidden flex items-center px-5"
+      :style="{
+        background: `linear-gradient(135deg, hsl(${placeholderHue},18%,94%) 0%, hsl(${placeholderHue},12%,89%) 100%)`,
+      }"
+      :class="'dark:[background:linear-gradient(135deg,hsl(var(--placeholder-h,220),15%,16%)_0%,hsl(var(--placeholder-h,220),10%,12%)_100%)]'"
+    >
+      <!-- Dot grid pattern -->
+      <svg
+        class="absolute inset-0 w-full h-full opacity-[0.18] dark:opacity-[0.25]"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.2" :fill="`hsl(${placeholderHue},30%,50%)`" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#dots)" />
+      </svg>
+
+      <!-- Large faded initials -->
+      <span
+        class="select-none font-bold tracking-tighter leading-none text-6xl opacity-10 dark:opacity-[0.08]"
+        :style="{ color: `hsl(${placeholderHue},40%,30%)` }"
+        aria-hidden="true"
+      >
+        {{ initials }}
+      </span>
+
+      <!-- Date badge -->
+      <div class="absolute top-3 right-3 flex items-center gap-1 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm text-neutral-600 dark:text-neutral-400 text-xs font-medium px-2.5 py-1 rounded-full border border-neutral-200/60 dark:border-neutral-700">
+        <IconCalendar class="w-3 h-3" />
+        {{ project.date }}
+      </div>
+    </div>
+
+    <!-- ── Card body ── -->
+    <div class="flex flex-col flex-1 p-5 gap-4">
+      <!-- Name + description -->
+      <div class="flex flex-col gap-2">
+        <h3 class="text-base font-semibold text-neutral-900 dark:text-neutral-100 leading-snug">
+          <a
+            v-if="hasLivePreview(project)"
+            :href="project.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 inline-flex items-center gap-1.5 group/link"
+          >
+            {{ project.name }}
+            <IconExternalLink class="w-3.5 h-3.5 opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 flex-shrink-0" />
+          </a>
+          <span v-else>{{ project.name }}</span>
+        </h3>
+
+        <p
+          v-if="getLocalizedContent"
+          class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-3"
+        >
+          {{ getLocalizedContent }}
+        </p>
+      </div>
+
+      <!-- Tech stack badges -->
+      <div class="flex flex-wrap gap-1.5">
+        <ClientOnly>
+          <Techno
+            v-for="techno in project.technos"
+            :key="techno"
+            :techno="techno"
+            size="little"
+            class="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-2 py-0.5 rounded-md text-xs"
+          />
+        </ClientOnly>
+      </div>
+
+      <!-- Spacer -->
+      <div class="flex-1" />
+
+      <!-- Action buttons -->
+      <div class="flex items-center gap-2 pt-1 border-t border-neutral-100 dark:border-neutral-800">
+        <a
+          :href="getRepoLink(project)"
+          :target="isClosedSource(project) ? '_self' : '_blank'"
+          :rel="isClosedSource(project) ? undefined : 'noopener noreferrer'"
+          class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors duration-200"
+        >
+          <IconLock v-if="isClosedSource(project)" class="w-3.5 h-3.5" />
+          <IconBrandGithub v-else class="w-3.5 h-3.5" />
+          {{ isClosedSource(project) ? 'Closed source' : 'Code' }}
+        </a>
+
+        <button
+          v-if="hasAnyPreview(project)"
+          @click="previewModalOpen = true"
+          class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors duration-200"
+        >
+          <IconEye class="w-3.5 h-3.5" />
+          Preview
+        </button>
+      </div>
+    </div>
+  </article>
+
   <!-- Preview Modal -->
   <UModal v-model="previewModalOpen">
-    <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+    <UCard :ui="{ ring: '', divide: 'divide-y divide-neutral-100 dark:divide-neutral-800', rounded: 'rounded-2xl' }">
       <template #header>
         <div class="flex justify-between items-center">
-          <h3 class="text-lg font-bold">{{ project.name }} - Preview</h3>
+          <h3 class="text-base font-semibold">{{ project.name }}</h3>
           <UButton color="gray" variant="ghost" icon="i-tabler-x" @click="previewModalOpen = false" />
         </div>
       </template>
-      
-      <!-- Modal tabs for different preview modes -->
+
       <div v-if="hasLivePreview(project) && hasVideoPreview(project)" class="flex gap-2 mb-4">
-        <UButton 
-          @click="currentPreviewMode = 'live'" 
-          :variant="currentPreviewMode === 'live' ? 'solid' : 'ghost'"
-        >
-          <IconPlayerPlay class="w-4 h-4 mr-1" /> Live Preview
+        <UButton @click="currentPreviewMode = 'live'" :variant="currentPreviewMode === 'live' ? 'solid' : 'ghost'">
+          <IconPlayerPlay class="w-4 h-4 mr-1" /> Live
         </UButton>
-        <UButton 
-          @click="currentPreviewMode = 'video'" 
-          :variant="currentPreviewMode === 'video' ? 'solid' : 'ghost'"
-        >
-          <IconVideo class="w-4 h-4 mr-1" /> Video Preview
+        <UButton @click="currentPreviewMode = 'video'" :variant="currentPreviewMode === 'video' ? 'solid' : 'ghost'">
+          <IconVideo class="w-4 h-4 mr-1" /> Video
         </UButton>
       </div>
-      
-      <!-- Preview content based on mode -->
+
       <div>
-        <!-- Live Preview - only show when actually has live preview -->
-        <div v-if="hasLivePreview(project) && (currentPreviewMode === 'live' || !hasVideoPreview(project))" class="text-center">
-          <p class="mb-4">Visit the live project to see it in action:</p>
-          <UButton :to="project.link" target="_blank" variant="solid" class="w-full md:w-auto">
-            <IconPlayerPlay class="w-4 h-4 mr-1" /> Open Live Project
-          </UButton>
+        <div
+          v-if="hasLivePreview(project) && (currentPreviewMode === 'live' || !hasVideoPreview(project))"
+          class="text-center py-4"
+        >
+          <p class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">Visit the live project:</p>
+          <a
+            :href="project.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors duration-200"
+          >
+            <IconExternalLink class="w-4 h-4" /> Open live project
+          </a>
         </div>
-        
-        <!-- Video Preview -->
-        <div v-if="hasVideoPreview(project) && (currentPreviewMode === 'video' || !hasLivePreview(project))" class="text-center">
-          <p class="mb-4">Watch the video preview because live preview not possible 😁</p>
-          <div class="aspect-video w-full mt-2 mb-4" v-html="getSafeVideoEmbed(project.video_url)"></div>
+
+        <div
+          v-if="hasVideoPreview(project) && (currentPreviewMode === 'video' || !hasLivePreview(project))"
+          class="text-center py-2"
+        >
+          <p class="mb-3 text-sm text-neutral-600 dark:text-neutral-400">Video preview</p>
+          <div class="aspect-video w-full rounded-lg overflow-hidden" v-html="getSafeVideoEmbed(project.video_url)" />
         </div>
       </div>
     </UCard>
   </UModal>
 </template>
+
+<style scoped>
+.project-card {
+  animation: cardEnter 0.5s ease-out both;
+  animation-delay: calc(var(--card-index, 0) * 80ms);
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

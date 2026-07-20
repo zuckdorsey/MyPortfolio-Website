@@ -20,6 +20,12 @@ useHead({
       href: "/apple-touch-icon.png",
     },
     { rel: "manifest", href: "/manifest.json" },
+    // Preconnect to external API providers to reduce DNS/TLS latency
+    { rel: "preconnect", href: "https://api.spotify.com" },
+    { rel: "preconnect", href: "https://accounts.spotify.com" },
+    { rel: "preconnect", href: "https://wakatime.com" },
+    { rel: "preconnect", href: "https://api.github.com" },
+    { rel: "dns-prefetch", href: "https://i.scdn.co" }, // Spotify album art CDN
   ],
   htmlAttrs: {
     lang: "en",

@@ -122,7 +122,7 @@ const fetchWakaTimeStats = async () => {
   try {
     isLoading.value = true;
     hasError.value = false;
-    const response = await $fetch("/api/wakatime");
+    const response = await $fetch<WakaTimeStats>("/api/wakatime");
     stats.value = response;
     console.log("WakaTime stats loaded:", stats.value);
   } catch (error) {

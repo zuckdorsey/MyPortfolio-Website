@@ -11,7 +11,6 @@ services:
       NITRO_HOST: 0.0.0.0
       NITRO_PORT: 3000
       PORT: 3000
-      # Example placeholders; define real values in your .env
       DATABASE_URL: ${DATABASE_URL}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
       SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
@@ -20,4 +19,4 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    command: ["bun", "run", "dev", "--", "--host", "0.0.0.0"]
