@@ -7,8 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "db:init": "bun run server/utils/db.ts"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@iconify-json/fluent-emoji-flat": "^1.1.17",
@@ -20,12 +19,9 @@
     "@nuxtjs/sitemap": "^7.4.3",
     "@tabler/icons-vue": "^3.11.0",
     "@vercel/analytics": "^1.5.0",
-    "cloudinary": "^2.8.0",
-    "gray-matter": "^4.0.3",
     "jose": "^6.2.3",
     "js-confetti": "^0.12.0",
     "nuxt": "^3.12.4",
-    "pg": "^8.16.0",
     "resend": "^3.4.0",
     "vue": "latest",
     "zod": "^3.24.4"
@@ -41,7 +37,6 @@
     "@iconify-json/material-symbols-light": "^1.2.20",
     "@iconify-json/octicon": "^1.2.5",
     "@iconify-json/simple-icons": "^1.2.34",
-    "@iconify-json/skill-icons": "^1.2.0",
-    "@types/pg": "^8.15.4"
+    "@iconify-json/skill-icons": "^1.2.0"
   }
 }
