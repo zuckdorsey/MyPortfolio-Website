@@ -1,56 +1,50 @@
 <script setup lang="ts">
-import { IconLink, IconChevronDown, IconChevronUp } from "@tabler/icons-vue";
+import { IconChevronDown } from "@tabler/icons-vue";
+
 const isExpanded = ref(false);
 const toggleContent = () => {
   isExpanded.value = !isExpanded.value;
 };
 </script>
+
 <template>
-  <section class="flex flex-col gap-3">
-    <a href="#about">
-      <div class="flex flex-row gap-1 items-center group relative">
-        <IconLink
-          class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
-        />
-        <h2 class="text-xl font-bold hover:cursor-pointer">
-          About Me
-        </h2>
+  <Section
+    anchor="about"
+    kicker="About"
+    title="A bit about me"
+  >
+    <div class="flex max-w-prose flex-col gap-4 text-[0.95rem] leading-relaxed text-sand-600 dark:text-sand-400">
+      <p>
+        I'm a backend developer with a strong interest in robotics and cybersecurity. I build scalable, efficient backend architectures with Python, Node.js, and PHP — working across frameworks like Express.js, Laravel, and Django. My focus is on RESTful APIs, databases, and modular, maintainable code.
+      </p>
+
+      <div v-if="isExpanded" class="flex flex-col gap-4" :class="{ 'animate-fadeIn': isExpanded }">
+        <p>
+          Outside of backend work, I build robotics projects — microcontrollers, sensors, and automation. I'm especially interested in where software meets hardware: navigation logic, serial communication between devices, real-time sensor data. That's where code meets the real world and logic is genuinely tested.
+        </p>
+        <p>
+          I'm also a cybersecurity enthusiast who values secure, resilient software. I explore secure coding practices — encryption, token-based authentication, system hardening — and share experiments on GitHub. For me it's not just about building features, but building systems that are reliable and secure.
+        </p>
       </div>
-    </a>
-    <p class="text-pretty text-sm text-neutral-600 dark:text-neutral-400">
-      Hi! I'm a backend developer with a strong interest in robotics and cybersecurity. I have experience building scalable and efficient backend architectures using Python, Node.js, and PHP, and I work with frameworks like Express.js, Laravel, and Django. My focus is on developing RESTful APIs, managing databases, and writing modular, maintainable code.
-    </p>
-    <div v-if="isExpanded" class="animate-fadeIn">
-      <p
-        class="text-pretty text-sm text-neutral-600 dark:text-neutral-400 mb-3"
-      >
-        Outside of backend development, I actively work on robotics projects, especially those involving microcontrollers, sensors, and automation systems. I'm particularly interested in integrating software with hardware—such as programming navigation logic, implementing serial communication between devices, and handling real-time sensor data. For me, robotics is where code meets the real world and logic is truly tested.
-      </p>
-      <p class="text-pretty text-sm text-neutral-600 dark:text-neutral-400">
-        I'm also a cybersecurity enthusiast who values writing secure, resilient software. I explore secure coding practices, including encryption, token-based authentication, and system hardening to improve application security. I regularly share personal projects and experiments on GitHub as part of my learning journey and to contribute to the developer community. For me, software development is not just about building features—it's about building systems that are both reliable and secure.
-      </p>
     </div>
-    <div class="flex justify-center mt-4">
+
+    <div>
       <button
         @click="toggleContent"
-        class="group relative inline-flex items-center gap-2 px-6 py-2 overflow-hidden rounded-full transition-all duration-300 ease-out bg-gradient-to-r from-primary-500/10 via-primary-500/20 to-primary-500/10 hover:from-primary-500/20 hover:via-primary-500/30 hover:to-primary-500/20 dark:from-primary-500/20 dark:via-primary-500/30 dark:to-primary-500/20 dark:hover:from-primary-500/30 dark:hover:via-primary-500/40 dark:hover:to-primary-500/30 text-primary-600 dark:text-primary-400 text-sm font-medium"
+        :aria-expanded="isExpanded"
+        class="inline-flex items-center gap-1.5 rounded-lg text-sm font-medium text-emerald-600 transition-colors duration-200 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
       >
-        <span v-if="isExpanded">
-          <IconChevronUp class="w-4 h-4 animate-bounce-mini" />
-        </span>
-        <span v-else>
-          <IconChevronDown class="w-4 h-4 animate-bounce-mini" />
-        </span>
-        <span class="relative">
-          {{ isExpanded ? "Show less" : "Read more" }}
-        </span>
-        <span
-          class="absolute inset-0 -z-10 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 bg-gradient-to-r from-transparent via-primary-500/10 to-transparent dark:via-primary-500/20"
-        ></span>
+        <span>{{ isExpanded ? "Show less" : "Read more" }}</span>
+        <IconChevronDown
+          class="h-4 w-4 transition-transform duration-200"
+          :class="{ 'rotate-180': isExpanded }"
+          aria-hidden="true"
+        />
       </button>
     </div>
-  </section>
+  </Section>
 </template>
+
 <style scoped>
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-in-out;
@@ -65,16 +59,9 @@ const toggleContent = () => {
     transform: translateY(0);
   }
 }
-.animate-bounce-mini {
-  animation: bounce-mini 2s infinite ease-in-out;
-}
-@keyframes bounce-mini {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-2px);
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeIn {
+    animation: none;
   }
 }
 </style>

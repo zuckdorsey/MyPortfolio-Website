@@ -38,9 +38,18 @@ const resumeLink = computed(() => (hasResume.value ? resumeFile.value : undefine
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-6">
-    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-      <h1 class="text-3xl font-bold">Resume</h1>
+  <div class="mx-auto w-full max-w-5xl px-5 py-10 sm:px-6">
+    <NuxtLink
+      to="/"
+      class="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
+    >
+      ← Back home
+    </NuxtLink>
+
+    <div class="mt-6 mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+      <h1 class="font-display text-3xl font-semibold tracking-tight text-sand-900 dark:text-sand-100">
+        Resume
+      </h1>
 
       <UButton
         v-if="hasResume"
@@ -49,30 +58,26 @@ const resumeLink = computed(() => (hasResume.value ? resumeFile.value : undefine
         target="_blank"
         color="primary"
         variant="solid"
-        class="mt-4 md:mt-0"
+        icon="i-tabler-file-download"
       >
-        <i class="i-tabler-file-download mr-2"></i>
-        Download Resume
+        Download resume
       </UButton>
-      <p
-        v-else
-        class="mt-4 md:mt-0 text-sm text-gray-500 text-center md:text-right"
-      >
-        Resume belum tersedia.
+      <p v-else class="text-sm text-sand-500 dark:text-sand-400">
+        Resume isn't available yet.
       </p>
     </div>
 
-    <UCard v-if="hasResume" class="w-full">
+    <UCard v-if="hasResume" class="w-full" :ui="{ body: { padding: 'p-0' } }">
       <embed
         :src="resumeFile"
         type="application/pdf"
-        class="w-full min-h-[80vh]"
+        title="Ababil Mustaqim's resume (PDF)"
+        class="min-h-[80vh] w-full rounded-b-2xl"
       />
     </UCard>
     <UCard v-else class="w-full">
-      <p class="text-sm text-gray-500">
-        URL resume belum dikonfigurasi. Setel `NUXT_PUBLIC_RESUME_URL` ke tautan
-        Google Drive publik untuk menampilkan CV.
+      <p class="text-sm text-sand-500 dark:text-sand-400">
+        The resume URL isn't configured. Set <code class="rounded bg-sand-100 px-1.5 py-0.5 font-mono text-xs dark:bg-sand-800">NUXT_PUBLIC_RESUME_URL</code> to a public PDF link to show it here.
       </p>
     </UCard>
   </div>

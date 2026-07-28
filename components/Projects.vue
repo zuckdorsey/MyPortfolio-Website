@@ -97,34 +97,30 @@ watchEffect(() => {
 </script>
 
 <template>
-  <section class="flex flex-col gap-8" id="projects">
-    <!-- Section header -->
-    <div class="flex flex-col gap-1">
-      <div class="flex items-center gap-2">
-        <div class="w-1 h-6 rounded-full bg-primary-500" />
-        <a href="#projects" class="group">
-          <h2 class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
-            Projects
-          </h2>
-        </a>
-      </div>
-      <p class="text-sm text-neutral-500 dark:text-neutral-400 pl-3">
-        Things I've built — from side experiments to production work.
-      </p>
-    </div>
-
+  <Section
+    anchor="projects"
+    kicker="Work"
+    title="Projects"
+    subtitle="Things I've built — from side experiments to production work."
+  >
     <!-- Controls row -->
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <!-- Filter tabs (segmented control style) -->
-      <div class="flex flex-wrap gap-1 p-1 bg-neutral-100 dark:bg-neutral-800/60 rounded-xl w-fit">
+      <div
+        class="flex w-fit flex-wrap gap-1 rounded-xl bg-sand-100 p-1 dark:bg-sand-800/60"
+        role="tablist"
+        aria-label="Filter projects by type"
+      >
         <button
           v-for="type in projectTypes"
           :key="type"
           @click="setFilter(type)"
-          class="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200"
+          role="tab"
+          :aria-selected="type === currentFilter"
+          class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200"
           :class="type === currentFilter
-            ? 'bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 shadow-sm'
-            : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'"
+            ? 'bg-white text-sand-900 shadow-soft dark:bg-sand-700 dark:text-sand-100'
+            : 'text-sand-500 hover:text-sand-700 dark:text-sand-400 dark:hover:text-sand-200'"
         >
           {{ getProjectTypeLabel(type) }}
         </button>
@@ -133,16 +129,16 @@ watchEffect(() => {
       <!-- Tech filter button -->
       <button
         @click="techFilterModalOpen = true"
-        class="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg border transition-all duration-200 w-fit"
+        class="inline-flex w-fit items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-all duration-200"
         :class="selectedTechFilters.length > 0
-          ? 'border-primary-400 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-          : 'border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-neutral-300 dark:hover:border-neutral-600'"
+          ? 'border-emerald-400 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300'
+          : 'border-sand-200 text-sand-600 hover:border-sand-300 dark:border-sand-700 dark:text-sand-400 dark:hover:border-sand-600'"
       >
-        <IconFilter class="w-3.5 h-3.5" />
+        <IconFilter class="h-3.5 w-3.5" aria-hidden="true" />
         Filter by tech
         <span
           v-if="selectedTechFilters.length > 0"
-          class="bg-primary-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none"
+          class="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-xs leading-none text-white dark:bg-emerald-500"
         >
           {{ selectedTechFilters.length }}
         </span>
@@ -150,31 +146,31 @@ watchEffect(() => {
     </div>
 
     <!-- Active tech filter chips -->
-    <div v-if="selectedTechFilters.length > 0" class="flex flex-wrap gap-2 -mt-4">
+    <div v-if="selectedTechFilters.length > 0" class="-mt-4 flex flex-wrap gap-2">
       <span
         v-for="tech in selectedTechFilters"
         :key="tech"
-        class="inline-flex items-center gap-1 text-xs font-medium bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 px-2.5 py-1 rounded-full"
+        class="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300"
       >
         {{ tech }}
         <button
           @click="toggleTechFilter(tech)"
-          class="hover:text-primary-900 dark:hover:text-primary-100 transition-colors"
+          class="transition-colors hover:text-emerald-900 dark:hover:text-emerald-100"
           :aria-label="`Remove ${tech} filter`"
         >
-          <IconX class="w-3 h-3" />
+          <IconX class="h-3 w-3" aria-hidden="true" />
         </button>
       </span>
       <button
         @click="clearTechFilters"
-        class="text-xs text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors underline underline-offset-2"
+        class="text-xs text-sand-400 underline underline-offset-2 transition-colors hover:text-sand-600 dark:text-sand-500 dark:hover:text-sand-300"
       >
         Clear all
       </button>
     </div>
 
     <!-- Project grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       <Project
         v-for="(project, index) in projectsList.slice(0, currentNumberOfProjects)"
         :key="project._id || index"
@@ -186,18 +182,18 @@ watchEffect(() => {
     <!-- Empty state -->
     <div
       v-if="projectsList.length === 0"
-      class="flex flex-col items-center justify-center py-16 gap-4 text-center"
+      class="flex flex-col items-center justify-center gap-4 py-16 text-center"
     >
-      <div class="w-14 h-14 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-        <IconFolderOpen class="w-7 h-7 text-neutral-400 dark:text-neutral-500" />
+      <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand-100 dark:bg-sand-800">
+        <IconFolderOpen class="h-7 w-7 text-sand-400 dark:text-sand-500" aria-hidden="true" />
       </div>
       <div class="flex flex-col gap-1">
-        <p class="text-sm font-medium text-neutral-700 dark:text-neutral-300">No projects match these filters</p>
-        <p class="text-xs text-neutral-400 dark:text-neutral-500">Try a different category or clear your tech filters.</p>
+        <p class="text-sm font-medium text-sand-700 dark:text-sand-300">No projects match these filters</p>
+        <p class="text-xs text-sand-400 dark:text-sand-500">Try a different category or clear your tech filters.</p>
       </div>
       <button
         @click="clearTechFilters"
-        class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:underline underline-offset-2 transition-colors"
+        class="text-xs font-medium text-emerald-600 underline-offset-2 transition-colors hover:underline dark:text-emerald-400"
       >
         Clear filters
       </button>
@@ -211,31 +207,31 @@ watchEffect(() => {
       <button
         v-if="currentNumberOfProjects < projectsList.length"
         @click="currentNumberOfProjects = projectsList.length"
-        class="inline-flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors duration-200 group"
+        class="group inline-flex items-center gap-2 text-xs font-medium text-sand-500 transition-colors duration-200 hover:text-sand-800 dark:text-sand-400 dark:hover:text-sand-200"
       >
         <span>Show all {{ projectsList.length }} projects</span>
-        <IconArrowDown class="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform duration-200" />
+        <IconArrowDown class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-y-0.5" aria-hidden="true" />
       </button>
       <button
         v-else-if="projectsList.length > defaultNumberOfProjects"
         @click="currentNumberOfProjects = defaultNumberOfProjects"
-        class="inline-flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors duration-200 group"
+        class="group inline-flex items-center gap-2 text-xs font-medium text-sand-500 transition-colors duration-200 hover:text-sand-800 dark:text-sand-400 dark:hover:text-sand-200"
       >
         <span>Show less</span>
-        <IconArrowUp class="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+        <IconArrowUp class="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" aria-hidden="true" />
       </button>
     </div>
 
     <!-- Tech filter modal -->
     <UModal v-model="techFilterModalOpen" :ui="{ width: 'sm:max-w-md' }">
-      <UCard :ui="{ rounded: 'rounded-2xl', ring: '' }">
+      <UCard>
         <template #header>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <IconFilter class="w-4 h-4 text-neutral-500" />
-              <h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Filter by tech stack</h3>
+              <IconFilter class="h-4 w-4 text-sand-500" aria-hidden="true" />
+              <h3 class="font-display text-sm font-semibold text-sand-900 dark:text-sand-100">Filter by tech stack</h3>
             </div>
-            <UButton color="gray" variant="ghost" icon="i-tabler-x" @click="techFilterModalOpen = false" />
+            <UButton color="gray" variant="ghost" icon="i-tabler-x" aria-label="Close" @click="techFilterModalOpen = false" />
           </div>
         </template>
 
@@ -245,10 +241,11 @@ watchEffect(() => {
               v-for="tech in availableTechnologies"
               :key="tech"
               @click="toggleTechFilter(tech)"
-              class="text-xs font-medium px-3 py-1.5 rounded-lg border transition-all duration-150"
+              :aria-pressed="selectedTechFilters.includes(tech)"
+              class="rounded-lg border px-3 py-1.5 text-xs font-medium transition-all duration-150"
               :class="selectedTechFilters.includes(tech)
-                ? 'bg-primary-500 border-primary-500 text-white'
-                : 'border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:border-neutral-300 dark:hover:border-neutral-600'"
+                ? 'border-emerald-600 bg-emerald-600 text-white dark:border-emerald-500 dark:bg-emerald-500'
+                : 'border-sand-200 text-sand-600 hover:border-sand-300 dark:border-sand-700 dark:text-sand-400 dark:hover:border-sand-600'"
             >
               {{ tech }}
             </button>
@@ -256,11 +253,11 @@ watchEffect(() => {
         </div>
 
         <template #footer>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <button
               @click="clearTechFilters"
-              class="text-xs text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
-              :class="{ 'opacity-40 pointer-events-none': selectedTechFilters.length === 0 }"
+              class="text-xs text-sand-500 transition-colors hover:text-sand-700 dark:hover:text-sand-300"
+              :class="{ 'pointer-events-none opacity-40': selectedTechFilters.length === 0 }"
             >
               Clear all
             </button>
@@ -271,5 +268,5 @@ watchEffect(() => {
         </template>
       </UCard>
     </UModal>
-  </section>
+  </Section>
 </template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import NowPlaying from "~/components/NowPlaying.vue";
 useHead({
   title: "Ababil Mustaqim",
   meta: [
@@ -25,23 +24,21 @@ useHead({
   ],
 });
 </script>
+
 <template>
-  <div
-    class="container relative mx-auto scroll-my-12 overflow-auto px-4 pt-6 md:p-x-16 md:pt-16"
-  >
-    <section class="mx-auto w-full max-w-[45rem] space-y-8">
-      <Header id="me" />
-      <About id="about" />
-      <Projects id="projects" />
-      <Experience id="experience" />
-      <Education id="education" />
-      <Certifications id="certifications" />
-      <Skills id="technologies" />
-      <SystemTools :showCategories="true" />
-      <CodingStats id="coding-stats" />
-      <NowPlaying id="now-playing" />
-      <Contact id="contact" />
+  <div class="mx-auto w-full max-w-3xl px-5 pt-14 sm:px-6 md:pt-20">
+    <div class="flex flex-col gap-20 md:gap-24">
+      <Header />
+      <About />
+      <Projects />
+      <Experience />
+      <Education />
+      <Certifications />
+      <Skills />
+      <CodingStats />
+      <NowPlaying />
+      <Contact />
       <Footer />
-    </section>
+    </div>
   </div>
 </template>

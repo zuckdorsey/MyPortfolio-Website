@@ -128,13 +128,13 @@ function getSafeVideoEmbed(url: string | undefined): string {
 
 <template>
   <article
-    class="project-card group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-500 hover:shadow-xl hover:shadow-neutral-200/60 dark:hover:shadow-black/40 hover:-translate-y-1"
+    class="project-card group relative flex flex-col overflow-hidden rounded-2xl border border-sand-200 bg-white transition-all duration-500 hover:-translate-y-1 hover:border-sand-300 hover:shadow-lift dark:border-sand-800 dark:bg-sand-900 dark:hover:border-sand-700 dark:hover:shadow-lift-dark"
     :style="{ '--card-index': index ?? 0 }"
   >
     <!-- ── Image strip (when image exists and loads) ── -->
     <div
       v-if="showImage"
-      class="relative h-44 overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex-shrink-0"
+      class="relative h-44 flex-shrink-0 overflow-hidden bg-sand-100 dark:bg-sand-800"
     >
       <NuxtImg
         v-if="project.image && project.image.startsWith('http')"
@@ -162,11 +162,11 @@ function getSafeVideoEmbed(url: string | undefined): string {
         @error="onImageError"
       />
       <!-- gradient overlay -->
-      <div class="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent dark:from-neutral-900/70" />
+      <div class="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent dark:from-sand-900/70" aria-hidden="true" />
 
       <!-- Date badge -->
-      <div class="absolute top-3 right-3 flex items-center gap-1 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm text-neutral-600 dark:text-neutral-400 text-xs font-medium px-2.5 py-1 rounded-full border border-neutral-200 dark:border-neutral-700">
-        <IconCalendar class="w-3 h-3" />
+      <div class="tnum absolute right-3 top-3 flex items-center gap-1 rounded-full border border-sand-200 bg-white/90 px-2.5 py-1 font-mono text-xs font-medium text-sand-600 backdrop-blur-sm dark:border-sand-700 dark:bg-sand-900/90 dark:text-sand-400">
+        <IconCalendar class="h-3 w-3" aria-hidden="true" />
         {{ project.date }}
       </div>
 
@@ -174,50 +174,46 @@ function getSafeVideoEmbed(url: string | undefined): string {
       <button
         v-if="hasAnyPreview(project)"
         @click="previewModalOpen = true"
-        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         aria-label="Preview project"
       >
-        <span class="flex items-center gap-2 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm text-neutral-800 dark:text-neutral-100 text-sm font-medium px-4 py-2 rounded-full border border-neutral-200 dark:border-neutral-700 shadow-lg translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-          <IconEye class="w-4 h-4" />
+        <span class="flex translate-y-2 items-center gap-2 rounded-full border border-sand-200 bg-white/95 px-4 py-2 text-sm font-medium text-sand-800 shadow-lift backdrop-blur-sm transition-transform duration-300 group-hover:translate-y-0 dark:border-sand-700 dark:bg-sand-900/95 dark:text-sand-100">
+          <IconEye class="h-4 w-4" aria-hidden="true" />
           Preview
         </span>
       </button>
     </div>
 
-    <!-- ── No-image placeholder strip ── -->
+    <!-- ── No-image placeholder strip (accent-tinted) ── -->
     <div
       v-else
-      class="relative h-24 flex-shrink-0 overflow-hidden flex items-center px-5"
-      :style="{
-        background: `linear-gradient(135deg, hsl(${placeholderHue},18%,94%) 0%, hsl(${placeholderHue},12%,89%) 100%)`,
-      }"
-      :class="'dark:[background:linear-gradient(135deg,hsl(var(--placeholder-h,220),15%,16%)_0%,hsl(var(--placeholder-h,220),10%,12%)_100%)]'"
+      class="relative flex h-24 flex-shrink-0 items-center overflow-hidden bg-emerald-50 px-5 dark:bg-emerald-950/40"
     >
       <!-- Dot grid pattern -->
       <svg
-        class="absolute inset-0 w-full h-full opacity-[0.18] dark:opacity-[0.25]"
+        class="absolute inset-0 h-full w-full opacity-[0.15] dark:opacity-[0.2]"
         xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
       >
         <defs>
-          <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1.2" :fill="`hsl(${placeholderHue},30%,50%)`" />
+          <pattern :id="`dots-${index ?? 0}`" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.2" class="fill-emerald-600 dark:fill-emerald-400" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#dots)" />
+        <rect width="100%" height="100%" :fill="`url(#dots-${index ?? 0})`" />
       </svg>
 
       <!-- Large faded initials -->
       <span
-        class="select-none font-bold tracking-tighter leading-none text-6xl opacity-10 dark:opacity-[0.08]"
-        :style="{ color: `hsl(${placeholderHue},40%,30%)` }"
+        class="select-none font-display text-6xl font-bold leading-none tracking-tighter text-emerald-700 opacity-[0.13] dark:text-emerald-300 dark:opacity-[0.12]"
         aria-hidden="true"
       >
         {{ initials }}
       </span>
 
       <!-- Date badge -->
-      <div class="absolute top-3 right-3 flex items-center gap-1 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm text-neutral-600 dark:text-neutral-400 text-xs font-medium px-2.5 py-1 rounded-full border border-neutral-200/60 dark:border-neutral-700">
-        <IconCalendar class="w-3 h-3" />
+      <div class="tnum absolute right-3 top-3 flex items-center gap-1 rounded-full border border-sand-200/60 bg-white/80 px-2.5 py-1 font-mono text-xs font-medium text-sand-600 backdrop-blur-sm dark:border-sand-700 dark:bg-sand-900/80 dark:text-sand-400">
+        <IconCalendar class="h-3 w-3" aria-hidden="true" />
         {{ project.date }}
       </div>
     </div>
@@ -226,23 +222,23 @@ function getSafeVideoEmbed(url: string | undefined): string {
     <div class="flex flex-col flex-1 p-5 gap-4">
       <!-- Name + description -->
       <div class="flex flex-col gap-2">
-        <h3 class="text-base font-semibold text-neutral-900 dark:text-neutral-100 leading-snug">
+        <h3 class="font-display text-base font-semibold leading-snug text-sand-900 dark:text-sand-100">
           <a
             v-if="hasLivePreview(project)"
             :href="project.link"
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 inline-flex items-center gap-1.5 group/link"
+            class="group/link inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-emerald-700 dark:hover:text-emerald-300"
           >
             {{ project.name }}
-            <IconExternalLink class="w-3.5 h-3.5 opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 flex-shrink-0" />
+            <IconExternalLink class="h-3.5 w-3.5 flex-shrink-0 opacity-0 transition-opacity duration-200 group-hover/link:opacity-100" aria-hidden="true" />
           </a>
           <span v-else>{{ project.name }}</span>
         </h3>
 
         <p
           v-if="getLocalizedContent"
-          class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed line-clamp-3"
+          class="text-xs leading-relaxed text-sand-500 line-clamp-3 dark:text-sand-400"
         >
           {{ getLocalizedContent }}
         </p>
@@ -256,33 +252,33 @@ function getSafeVideoEmbed(url: string | undefined): string {
             :key="techno"
             :techno="techno"
             size="little"
-            class="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-2 py-0.5 rounded-md text-xs"
+            class="rounded-md bg-sand-100 px-2 py-0.5 text-xs text-sand-700 dark:bg-sand-800 dark:text-sand-300"
           />
         </ClientOnly>
       </div>
 
-      <!-- Spacer -->
+      <!-- Spacer pins CTAs to the bottom so all cards align -->
       <div class="flex-1" />
 
       <!-- Action buttons -->
-      <div class="flex items-center gap-2 pt-1 border-t border-neutral-100 dark:border-neutral-800">
+      <div class="flex items-center gap-2 border-t border-sand-100 pt-3 dark:border-sand-800">
         <a
           :href="getRepoLink(project)"
           :target="isClosedSource(project) ? '_self' : '_blank'"
           :rel="isClosedSource(project) ? undefined : 'noopener noreferrer'"
-          class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors duration-200"
+          class="inline-flex items-center gap-1.5 rounded-lg bg-sand-900 px-3 py-1.5 text-xs font-medium text-white transition-colors duration-200 hover:bg-sand-700 dark:bg-sand-100 dark:text-sand-900 dark:hover:bg-sand-300"
         >
-          <IconLock v-if="isClosedSource(project)" class="w-3.5 h-3.5" />
-          <IconBrandGithub v-else class="w-3.5 h-3.5" />
+          <IconLock v-if="isClosedSource(project)" class="h-3.5 w-3.5" aria-hidden="true" />
+          <IconBrandGithub v-else class="h-3.5 w-3.5" aria-hidden="true" />
           {{ isClosedSource(project) ? 'Closed source' : 'Code' }}
         </a>
 
         <button
           v-if="hasAnyPreview(project)"
           @click="previewModalOpen = true"
-          class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors duration-200"
+          class="inline-flex items-center gap-1.5 rounded-lg border border-sand-200 px-3 py-1.5 text-xs font-medium text-sand-700 transition-colors duration-200 hover:bg-sand-50 dark:border-sand-700 dark:text-sand-300 dark:hover:bg-sand-800"
         >
-          <IconEye class="w-3.5 h-3.5" />
+          <IconEye class="h-3.5 w-3.5" aria-hidden="true" />
           Preview
         </button>
       </div>
@@ -291,45 +287,45 @@ function getSafeVideoEmbed(url: string | undefined): string {
 
   <!-- Preview Modal -->
   <UModal v-model="previewModalOpen">
-    <UCard :ui="{ ring: '', divide: 'divide-y divide-neutral-100 dark:divide-neutral-800', rounded: 'rounded-2xl' }">
+    <UCard>
       <template #header>
-        <div class="flex justify-between items-center">
-          <h3 class="text-base font-semibold">{{ project.name }}</h3>
-          <UButton color="gray" variant="ghost" icon="i-tabler-x" @click="previewModalOpen = false" />
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-base font-semibold">{{ project.name }}</h3>
+          <UButton color="gray" variant="ghost" icon="i-tabler-x" aria-label="Close" @click="previewModalOpen = false" />
         </div>
       </template>
 
-      <div v-if="hasLivePreview(project) && hasVideoPreview(project)" class="flex gap-2 mb-4">
+      <div v-if="hasLivePreview(project) && hasVideoPreview(project)" class="mb-4 flex gap-2">
         <UButton @click="currentPreviewMode = 'live'" :variant="currentPreviewMode === 'live' ? 'solid' : 'ghost'">
-          <IconPlayerPlay class="w-4 h-4 mr-1" /> Live
+          <IconPlayerPlay class="mr-1 h-4 w-4" aria-hidden="true" /> Live
         </UButton>
         <UButton @click="currentPreviewMode = 'video'" :variant="currentPreviewMode === 'video' ? 'solid' : 'ghost'">
-          <IconVideo class="w-4 h-4 mr-1" /> Video
+          <IconVideo class="mr-1 h-4 w-4" aria-hidden="true" /> Video
         </UButton>
       </div>
 
       <div>
         <div
           v-if="hasLivePreview(project) && (currentPreviewMode === 'live' || !hasVideoPreview(project))"
-          class="text-center py-4"
+          class="py-4 text-center"
         >
-          <p class="mb-4 text-sm text-neutral-600 dark:text-neutral-400">Visit the live project:</p>
+          <p class="mb-4 text-sm text-sand-600 dark:text-sand-400">Visit the live project:</p>
           <a
             :href="project.link"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors duration-200"
+            class="inline-flex items-center gap-2 rounded-xl bg-sand-900 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-sand-700 dark:bg-sand-100 dark:text-sand-900 dark:hover:bg-sand-300"
           >
-            <IconExternalLink class="w-4 h-4" /> Open live project
+            <IconExternalLink class="h-4 w-4" aria-hidden="true" /> Open live project
           </a>
         </div>
 
         <div
           v-if="hasVideoPreview(project) && (currentPreviewMode === 'video' || !hasLivePreview(project))"
-          class="text-center py-2"
+          class="py-2 text-center"
         >
-          <p class="mb-3 text-sm text-neutral-600 dark:text-neutral-400">Video preview</p>
-          <div class="aspect-video w-full rounded-lg overflow-hidden" v-html="getSafeVideoEmbed(project.video_url)" />
+          <p class="mb-3 text-sm text-sand-600 dark:text-sand-400">Video preview</p>
+          <div class="aspect-video w-full overflow-hidden rounded-lg" v-html="getSafeVideoEmbed(project.video_url)" />
         </div>
       </div>
     </UCard>

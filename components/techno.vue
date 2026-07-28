@@ -11,7 +11,7 @@
       <p v-if="size == 'little'" class="mr-2 text-xs">• {{ techno }}</p>
       <p
         v-else-if="size == 'big'"
-        class="text-xs font-bold text-stone-800 dark:text-neutral-400"
+        class="text-xs font-medium text-sand-800 dark:text-sand-300"
       >
         {{ techno }}
       </p>

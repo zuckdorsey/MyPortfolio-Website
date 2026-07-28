@@ -15,20 +15,23 @@ function rickRoll() {
 </script>
 
 <template>
-    <div class="flex flex-row gap-2 items-center">
+    <div class="flex flex-row items-center gap-1">
         <UButton
             @click="isDark = !isDark"
             variant="ghost"
+            color="gray"
             :icon="isDark ? 'i-tabler-moon' : 'i-tabler-sun'"
-            aria-label="Dark mode"
-            aria-current-value="true"
+            :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+            :aria-pressed="isDark"
+            class="transition-transform duration-200 ease-spring hover:-translate-y-0.5 active:scale-95"
         />
         <UButton
             @click="rickRoll()"
             variant="ghost"
+            color="gray"
             icon="i-tabler-info-circle"
-            aria-label="Infos"
-            aria-current-value="true"
+            aria-label="A little surprise"
+            class="transition-transform duration-200 ease-spring hover:-translate-y-0.5 active:scale-95"
         />
     </div>
 </template>

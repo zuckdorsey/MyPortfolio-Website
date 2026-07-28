@@ -20,6 +20,13 @@ useHead({
       href: "/apple-touch-icon.png",
     },
     { rel: "manifest", href: "/manifest.json" },
+    // Fonts: Fraunces (display serif), Outfit (sans), JetBrains Mono
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
+    { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Outfit:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+    },
     // Preconnect to external API providers to reduce DNS/TLS latency
     { rel: "preconnect", href: "https://api.spotify.com" },
     { rel: "preconnect", href: "https://accounts.spotify.com" },

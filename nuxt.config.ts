@@ -2,7 +2,6 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
-    '@nuxt/content',
     '@nuxtjs/sitemap',
     '@nuxt/image'
   ],
@@ -41,17 +40,6 @@ export default defineNuxtConfig({
 
   ui: {},
 
-  // Content Configuration
-  content: {
-    documentDriven: false,
-    api: {
-      baseURL: '/api/_content'
-    },
-    experimental: {
-      stripQueryParameters: false
-    }
-  },
-
   // SEO Configuration
   site: {
     url: 'https://your-domain.com', // Ganti dengan domain Anda
@@ -63,7 +51,8 @@ export default defineNuxtConfig({
   sitemap: {
     urls: [
       '/',
-      '/resume'
+      '/resume',
+      '/privacy'
     ]
   },
 

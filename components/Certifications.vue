@@ -44,43 +44,31 @@ function isExpanded(id: string): boolean {
 </script>
 
 <template>
-  <section class="flex flex-col gap-8" id="certifications">
-    <!-- Section header -->
-    <div class="flex flex-col gap-1">
-      <div class="flex items-center gap-2">
-        <div class="w-1 h-6 rounded-full bg-primary-500" />
-        <a href="#certifications" class="group">
-          <h2
-            class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200"
-          >
-            Certifications
-          </h2>
-        </a>
-      </div>
-      <p class="text-sm text-neutral-500 dark:text-neutral-400 pl-3">
-        Courses and credentials I've completed.
-      </p>
-    </div>
-
+  <Section
+    anchor="certifications"
+    kicker="Credentials"
+    title="Certifications"
+    subtitle="Courses and credentials I've completed."
+  >
     <!-- Grid -->
     <div
       v-if="certifications && certifications.length > 0"
-      class="grid grid-cols-1 sm:grid-cols-2 gap-4"
+      class="grid grid-cols-1 gap-4 sm:grid-cols-2"
     >
       <article
         v-for="(cert, index) in certifications"
         :key="certId(cert, index)"
-        class="cert-entry group flex flex-col bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 hover:shadow-md hover:shadow-neutral-100 dark:hover:shadow-black/20 overflow-hidden"
+        class="cert-entry group flex flex-col overflow-hidden rounded-2xl border border-sand-200 bg-white transition-all duration-300 hover:border-sand-300 hover:shadow-soft dark:border-sand-800 dark:bg-sand-900 dark:hover:border-sand-700"
         :style="{ '--i': index }"
       >
-        <div class="p-5 flex flex-col gap-3 flex-1">
+        <div class="flex flex-1 flex-col gap-3 p-5">
 
           <!-- Top row: icon + title + date -->
           <div class="flex items-start justify-between gap-3">
-            <div class="flex items-start gap-3 min-w-0">
+            <div class="flex min-w-0 items-start gap-3">
               <!-- Provider icon -->
               <div
-                class="flex-shrink-0 w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center"
+                class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-sand-100 dark:bg-sand-800"
               >
                 <UIcon
                   v-if="cert.icon"
@@ -90,27 +78,29 @@ function isExpanded(id: string): boolean {
                 />
                 <IconCertificate
                   v-else
-                  class="w-4 h-4 text-neutral-400 dark:text-neutral-500"
+                  class="h-4 w-4 text-sand-400 dark:text-sand-500"
+                  aria-hidden="true"
                 />
               </div>
 
               <!-- Title -->
-              <div class="min-w-0 flex flex-col gap-0.5">
+              <div class="flex min-w-0 flex-col gap-0.5">
                 <a
                   v-if="cert.website"
                   :href="cert.website"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 inline-flex items-center gap-1 group/link leading-snug"
+                  class="group/link inline-flex items-center gap-1 text-sm font-semibold leading-snug text-sand-900 transition-colors duration-200 hover:text-emerald-700 dark:text-sand-100 dark:hover:text-emerald-300"
                 >
                   <span class="text-pretty">{{ cert.title }}</span>
                   <IconExternalLink
-                    class="w-3 h-3 flex-shrink-0 opacity-0 group-hover/link:opacity-70 transition-opacity duration-200"
+                    class="h-3 w-3 flex-shrink-0 opacity-0 transition-opacity duration-200 group-hover/link:opacity-70"
+                    aria-hidden="true"
                   />
                 </a>
                 <span
                   v-else
-                  class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 leading-snug text-pretty"
+                  class="text-pretty text-sm font-semibold leading-snug text-sand-900 dark:text-sand-100"
                 >
                   {{ cert.title }}
                 </span>
@@ -119,20 +109,20 @@ function isExpanded(id: string): boolean {
 
             <!-- Date -->
             <span
-              class="flex-shrink-0 inline-flex items-center gap-1 text-xs text-neutral-400 dark:text-neutral-500 tabular-nums whitespace-nowrap"
+              class="tnum inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-mono text-xs text-sand-400 dark:text-sand-500"
             >
-              <IconCalendar class="w-3 h-3" />
+              <IconCalendar class="h-3 w-3" aria-hidden="true" />
               {{ cert.date }}
             </span>
           </div>
 
           <!-- Divider -->
-          <div class="h-px bg-neutral-100 dark:bg-neutral-800" />
+          <div class="h-px bg-sand-100 dark:bg-sand-800" />
 
           <!-- Description -->
           <p
             v-if="cert.description"
-            class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed"
+            class="text-xs leading-relaxed text-sand-600 dark:text-sand-400"
           >
             {{ cert.description }}
           </p>
@@ -141,18 +131,20 @@ function isExpanded(id: string): boolean {
           <div v-if="cert.skills" class="flex flex-col gap-1.5">
             <button
               @click="toggle(certId(cert, index))"
-              class="inline-flex items-center gap-1 text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200 w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
+              :aria-expanded="isExpanded(certId(cert, index))"
+              class="inline-flex w-fit items-center gap-1 text-xs font-medium text-emerald-600 transition-colors duration-200 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
             >
               <span>{{ isExpanded(certId(cert, index)) ? "Hide topics" : "Topics covered" }}</span>
               <IconChevronDown
-                class="w-3.5 h-3.5 transition-transform duration-200"
+                class="h-3.5 w-3.5 transition-transform duration-200"
                 :class="{ 'rotate-180': isExpanded(certId(cert, index)) }"
+                aria-hidden="true"
               />
             </button>
 
             <div
               v-if="isExpanded(certId(cert, index))"
-              class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed border-l-2 border-neutral-200 dark:border-neutral-700 pl-3"
+              class="border-l-2 border-sand-200 pl-3 text-xs leading-relaxed text-sand-500 dark:border-sand-700 dark:text-sand-400"
               v-html="cert.skills"
             />
           </div>
@@ -164,18 +156,18 @@ function isExpanded(id: string): boolean {
     <!-- Empty state -->
     <div
       v-else-if="certifications !== null"
-      class="flex flex-col items-center justify-center py-16 gap-3 text-center"
+      class="flex flex-col items-center justify-center gap-3 py-16 text-center"
     >
       <div
-        class="w-12 h-12 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center"
+        class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand-100 dark:bg-sand-800"
       >
-        <IconCertificate class="w-6 h-6 text-neutral-400 dark:text-neutral-500" />
+        <IconCertificate class="h-6 w-6 text-sand-400 dark:text-sand-500" aria-hidden="true" />
       </div>
-      <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      <p class="text-sm text-sand-500 dark:text-sand-400">
         No certifications yet.
       </p>
     </div>
-  </section>
+  </Section>
 </template>
 
 <style scoped>

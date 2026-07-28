@@ -121,57 +121,40 @@ onBeforeUnmount(() => {
 });
 </script>
 <template>
-  <section class="flex flex-col gap-3">
-    <a href="#now-playing">
-      <div class="flex flex-row gap-1 items-center group relative">
-        <IconLink
-          class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
-        />
-        <h2
-          class="text-xl font-bold hover:cursor-pointer flex items-center gap-2"
-        >
-          <IconMusic class="w-5 h-5 text-primary-500" />
-          Spotify Now Playing
-        </h2>
-      </div>
-    </a>
-    
+  <Section
+    anchor="now-playing"
+    kicker="Listening"
+    title="Now playing"
+    subtitle="What I'm listening to on Spotify, live."
+  >
     <UCard
-      class="spotify-card relative overflow-hidden transition-all duration-300"
-      :class="{ 'card-hovering': isHovering }"
-      @mouseenter="isHovering = true" 
-      @mouseleave="isHovering = false"
+      class="spotify-card relative overflow-hidden"
       :ui="{
         body: { padding: 'p-0' },
-        background:
-          'bg-white dark:bg-primary-950 border border-stone-200 dark:border-stone-600',
-        ring: '',
+        background: 'bg-white dark:bg-sand-900',
+        ring: 'ring-1 ring-sand-200 dark:ring-sand-800',
       }"
     >
-      <!-- Loading State -->
+      <!-- Loading skeleton -->
       <template v-if="isLoading">
-        <div class="flex items-center justify-center p-6 sm:p-8">
-          <div class="loading-container">
-            <div class="music-bars">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <p class="text-sm text-center mt-4 text-neutral-500">
-              Loading your vibes...
-            </p>
+        <div class="flex items-center gap-4 p-4 sm:p-5">
+          <Skeleton variant="custom" class="h-24 w-24 flex-shrink-0 rounded-xl sm:h-32 sm:w-32" />
+          <div class="flex min-w-0 flex-1 flex-col gap-2">
+            <Skeleton variant="line" class="h-4 w-2/3" />
+            <Skeleton variant="line" class="h-3 w-1/2" />
+            <Skeleton variant="line" class="h-3 w-1/3" />
+            <Skeleton variant="custom" class="mt-2 h-2 w-full rounded-full" />
           </div>
         </div>
       </template>
 
       <!-- Error State -->
       <template v-else-if="error">
-        <div class="flex flex-col items-center justify-center p-6 sm:p-8 gap-3">
-          <div class="error-icon p-3 bg-red-50 dark:bg-red-900/20 rounded-full">
-            <IconVolume class="text-red-500 w-7 h-7 sm:w-8 sm:h-8" />
+        <div class="flex flex-col items-center justify-center gap-3 p-6 sm:p-8">
+          <div class="error-icon rounded-full bg-red-50 p-3 dark:bg-red-950/30">
+            <IconVolume class="h-7 w-7 text-red-500 sm:h-8 sm:w-8" aria-hidden="true" />
           </div>
-          <p class="text-sm font-medium text-center text-neutral-700 dark:text-neutral-300">{{ error }}</p>
+          <p class="text-center text-sm font-medium text-sand-700 dark:text-sand-300">Couldn't load Spotify. Try again.</p>
           <UButton
             size="sm"
             @click="fetchNowPlaying"
@@ -179,42 +162,33 @@ onBeforeUnmount(() => {
             variant="soft"
             class="mt-1"
           >
-            Try Again
+            Try again
           </UButton>
         </div>
       </template>
 
       <!-- Not Playing State -->
       <template v-else-if="nowPlaying && !nowPlaying.isPlaying">
-        <div class="flex flex-col items-center justify-center p-6 sm:p-8 gap-3">
-          <div class="silent-icon p-3 bg-neutral-100 dark:bg-neutral-800 rounded-full">
-            <IconVolume class="text-neutral-500 w-7 h-7 sm:w-8 sm:h-8" />
+        <div class="flex flex-col items-center justify-center gap-3 p-6 sm:p-8">
+          <div class="silent-icon rounded-full bg-sand-100 p-3 dark:bg-sand-800">
+            <IconVolume class="h-7 w-7 text-sand-500 sm:h-8 sm:w-8" aria-hidden="true" />
           </div>
-          <p class="text-sm text-center text-neutral-600 dark:text-neutral-400 max-w-xs px-2">
-            Ababil recently not playing Music!!
+          <p class="max-w-xs px-2 text-center text-sm text-sand-600 dark:text-sand-400">
+            Not playing anything right now.
           </p>
-          <div class="w-full max-w-[150px] mt-1 sm:mt-2">
-            <div class="flex items-center justify-center gap-2">
-              <div class="w-4 h-4 sm:w-5 sm:h-5 opacity-50">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-                </svg>
-              </div>
-              <UButton
-                size="xs"
-                to="https://open.spotify.com/"
-                target="_blank"
-                variant="ghost"
-                color="gray"
-                class="text-xs"
-              >
-                Open Spotify
-                <template #trailing>
-                  <IconExternalLink class="w-3 h-3" />
-                </template>
-              </UButton>
-            </div>
-          </div>
+          <UButton
+            size="xs"
+            to="https://open.spotify.com/"
+            target="_blank"
+            variant="ghost"
+            color="gray"
+            class="mt-1 text-xs"
+          >
+            Open Spotify
+            <template #trailing>
+              <IconExternalLink class="h-3 w-3" aria-hidden="true" />
+            </template>
+          </UButton>
         </div>
       </template>
 
@@ -222,36 +196,35 @@ onBeforeUnmount(() => {
       <template v-else-if="nowPlaying">
         <div class="relative">
           <!-- Background album art (blurred) -->
-          <div class="absolute inset-0 z-0 overflow-hidden">
+          <div class="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
             <NuxtImg
               :src="nowPlaying.albumImageUrl"
               alt=""
-              class="w-full h-full object-cover blur-2xl opacity-20 transform scale-110"
-              aria-hidden="true"
+              class="h-full w-full scale-110 object-cover opacity-20 blur-2xl"
               format="webp"
               loading="lazy"
               width="256"
               height="256"
             />
-            <div class="absolute inset-0 bg-gradient-to-b from-white dark:from-primary-950/80 to-white/95 dark:to-primary-950/95"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-white to-white/95 dark:from-sand-900/80 dark:to-sand-900/95"></div>
           </div>
 
           <!-- Content -->
-          <div class="relative z-10 flex flex-col sm:flex-row p-0">
+          <div class="relative z-10 flex flex-col p-0 sm:flex-row">
             <!-- Album Art -->
-            <div class="w-full h-36 sm:w-32 sm:h-32 relative group">
+            <div class="group relative h-36 w-full flex-shrink-0 sm:h-32 sm:w-32">
               <NuxtImg
                 :src="nowPlaying.albumImageUrl"
-                :alt="nowPlaying.album"
-                class="w-full h-full object-cover shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
+                :alt="`Album art for ${nowPlaying.album}`"
+                class="h-full w-full object-cover shadow-md transition-transform duration-300 group-hover:scale-[1.02] sm:rounded-l-2xl"
                 width="128"
                 height="128"
                 format="webp"
               />
-              
+
               <!-- Play indicator overlay -->
-              <div v-if="nowPlaying.isPlaying" class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-opacity duration-300">
-                <div class="music-equalizer">
+              <div v-if="nowPlaying.isPlaying" class="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity duration-300 group-hover:bg-black/30">
+                <div class="music-equalizer" aria-hidden="true">
                   <span></span>
                   <span></span>
                   <span></span>
@@ -260,48 +233,52 @@ onBeforeUnmount(() => {
             </div>
 
             <!-- Song Info -->
-            <div class="flex flex-col justify-between p-4 flex-1">
-              <div>
+            <div class="flex min-w-0 flex-1 flex-col justify-between p-4">
+              <div class="min-w-0">
                 <div class="flex items-center gap-2">
-                  <div class="status-indicator">
+                  <span class="flex items-center" aria-hidden="true">
                     <IconPlayerPlay
                       v-if="nowPlaying.isPlaying"
-                      class="w-3 h-3 sm:w-4 sm:h-4 text-green-500 animate-pulse"
+                      class="h-4 w-4 animate-pulse text-emerald-500"
                     />
-                    <IconPlayerPause v-else class="w-3 h-3 sm:w-4 sm:h-4 text-neutral-500" />
-                  </div>
-                  
+                    <IconPlayerPause v-else class="h-4 w-4 text-sand-500" />
+                  </span>
                   <a
                     :href="nowPlaying.songUrl"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-sm sm:text-base font-semibold hover:text-primary-500 transition-colors duration-200 truncate flex items-center gap-1"
+                    class="flex items-center gap-1 truncate text-sm font-semibold text-sand-900 transition-colors duration-200 hover:text-emerald-600 dark:text-sand-100 dark:hover:text-emerald-400 sm:text-base"
                   >
                     {{ nowPlaying.title }}
-                    <IconExternalLink class="w-3 h-3 opacity-50 inline-block" />
+                    <IconExternalLink class="inline-block h-3 w-3 flex-shrink-0 opacity-50" aria-hidden="true" />
                   </a>
                 </div>
-                <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 truncate">
+                <p class="truncate text-xs text-sand-600 dark:text-sand-400 sm:text-sm">
                   {{ nowPlaying.artist }}
                 </p>
-                <p class="text-xs text-neutral-500 dark:text-neutral-500 truncate">
+                <p class="truncate text-xs text-sand-500 dark:text-sand-500">
                   {{ nowPlaying.album }}
                 </p>
               </div>
-              
-              <div class="mt-2 sm:mt-2">
+
+              <div class="mt-2">
                 <!-- Progress bar -->
-                <div class="h-2 sm:h-1.5 w-full bg-neutral-200/70 dark:bg-neutral-700/70 rounded-full overflow-hidden backdrop-blur-sm">
+                <div
+                  class="h-1.5 w-full overflow-hidden rounded-full bg-sand-200/80 backdrop-blur-sm dark:bg-sand-700/70"
+                  role="progressbar"
+                  :aria-valuenow="Math.round(progressPercentage)"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-label="Track progress"
+                >
                   <div
-                    class="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full transition-all ease-out duration-150"
+                    class="h-full rounded-full bg-emerald-500 transition-all duration-150 ease-out"
                     :style="{ width: `${progressPercentage}%` }"
-                  >
-                    <div class="h-full bg-white/20 shine-animation"></div>
-                  </div>
+                  />
                 </div>
-                
+
                 <!-- Time display -->
-                <div class="flex justify-between text-[10px] sm:text-xs mt-1 text-neutral-500">
+                <div class="tnum mt-1 flex justify-between font-mono text-[10px] text-sand-500 sm:text-xs">
                   <span>{{ formatDuration(currentProgress) }}</span>
                   <span>{{ formatDuration(nowPlaying.duration) }}</span>
                 </div>
@@ -313,10 +290,10 @@ onBeforeUnmount(() => {
               href="https://open.spotify.com/"
               target="_blank"
               rel="noopener noreferrer"
-              class="absolute top-2 right-2 opacity-50 hover:opacity-100 transition-opacity duration-300"
-              title="Open in Spotify"
+              class="absolute right-3 top-3 opacity-50 transition-opacity duration-300 hover:opacity-100"
+              aria-label="Open in Spotify"
             >
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path
                   d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"
                 />
@@ -324,247 +301,38 @@ onBeforeUnmount(() => {
             </a>
           </div>
         </div>
-
-        <!-- Bottom animation bar -->
-        <div
-          v-if="nowPlaying.isPlaying"
-          class="absolute bottom-0 left-0 h-0.5 spotify-progress-animation"
-          style="animation-duration: 30s"
-        ></div>
       </template>
     </UCard>
-  </section>
+  </Section>
 </template>
 
 <style scoped>
-.spotify-card {
-  transition: all 0.3s ease;
-}
-
-.card-hovering {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-}
-
-.music-bars {
-  display: flex;
-  align-items: flex-end;
-  height: 32px;
-  gap: 2px;
-}
-
-.music-bars span {
-  display: block;
-  width: 4px;
-  background: linear-gradient(
-    to top,
-    rgb(var(--color-primary-500) / 1),
-    rgb(var(--color-primary-300) / 1)
-  );
-  animation: music-bars-animation 1.5s infinite ease-in-out;
-  border-radius: 1px;
-}
-
-.music-bars span:nth-child(1) {
-  height: 60%;
-  animation-delay: 0.1s;
-}
-
-.music-bars span:nth-child(2) {
-  height: 30%;
-  animation-delay: 0.2s;
-}
-
-.music-bars span:nth-child(3) {
-  height: 90%;
-  animation-delay: 0.3s;
-}
-
-.music-bars span:nth-child(4) {
-  height: 40%;
-  animation-delay: 0.4s;
-}
-
+/* Animated equalizer bars (accent-tinted) shown while playing. */
 .music-equalizer {
   display: flex;
   align-items: flex-end;
-  height: 16px;
-  gap: 2px;
   justify-content: center;
+  gap: 2px;
+  height: 16px;
 }
-
 .music-equalizer span {
   display: block;
   width: 2px;
-  background: white;
-  animation: music-bars-animation 1.2s infinite ease-in-out;
   border-radius: 1px;
+  background: #fff;
   opacity: 0.9;
+  animation: eq 1.2s infinite ease-in-out;
+}
+.music-equalizer span:nth-child(1) { height: 60%; animation-delay: 0s; }
+.music-equalizer span:nth-child(2) { height: 100%; animation-delay: 0.3s; }
+.music-equalizer span:nth-child(3) { height: 75%; animation-delay: 0.6s; }
+
+@keyframes eq {
+  0%, 100% { height: 15%; }
+  50% { height: 100%; }
 }
 
-.music-equalizer span:nth-child(1) {
-  height: 60%;
-  animation-delay: 0s;
-}
-
-.music-equalizer span:nth-child(2) {
-  height: 100%;
-  animation-delay: 0.3s;
-}
-
-.music-equalizer span:nth-child(3) {
-  height: 75%;
-  animation-delay: 0.6s;
-}
-
-.error-icon, .silent-icon {
-  transition: transform 0.3s ease;
-}
-
-.error-icon:hover, .silent-icon:hover {
-  transform: scale(1.05);
-}
-
-@keyframes music-bars-animation {
-  0%,
-  100% {
-    height: 15%;
-  }
-  50% {
-    height: 100%;
-  }
-}
-
-.spotify-progress-animation {
-  width: 0%;
-  background: linear-gradient(to right, 
-    theme("colors.green.500"), 
-    theme("colors.green.400"),
-    theme("colors.green.300")
-  );
-  animation-name: spotify-progress;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-@keyframes spotify-progress {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.shine-animation {
-  position: relative;
-  overflow: hidden;
-}
-
-.shine-animation::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shine 2.5s infinite;
-}
-
-@keyframes shine {
-  100% {
-    left: 150%;
-  }
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Improved transitions between states */
-.spotify-card > *,
-.spotify-card a,
-.spotify-card img {
-  transition: all 0.3s ease;
-}
-
-/* Status indicator styling */
-.status-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Mobile optimizations */
-@media (max-width: 640px) {
-  /* Updated card styling with margins instead of edge-to-edge */
-  .spotify-card {
-    margin-left: 0.75rem;  /* Add margin on left side */
-    margin-right: 0.75rem; /* Add margin on right side */
-    width: calc(100% - 1.5rem); /* Adjust width to account for margins */
-    border-radius: 0.5rem; /* Restore rounded corners */
-    border-left: 1px solid;  /* Restore left border */
-    border-right: 1px solid; /* Restore right border */
-    border-color: inherit;
-  }
-  
-  /* Keep the rest of your mobile optimizations */
-  .music-equalizer {
-    height: 24px;
-    gap: 3px;
-  }
-  
-  .music-equalizer span {
-    width: 3px;
-  }
-  
-  /* Layout changes for "Playing" view */
-  .status-indicator {
-    min-width: 14px;
-  }
-  
-  /* Adjust hover effects for touch devices */
-  .card-hovering {
-    transform: none;
-    box-shadow: none;
-  }
-  
-  /* Optimize album art display for mobile */
-  .spotify-card img {
-    object-fit: cover;
-    width: 100%;
-  }
-}
-
-/* Enhance tap area for buttons on mobile */
-@media (max-width: 640px) {
-  .spotify-card button,
-  .spotify-card a {
-    padding: 0.5rem;
-    margin: -0.25rem;
-  }
-  
-  /* Make text more readable on small screens */
-  .spotify-card p {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .music-equalizer span { animation: none; }
 }
 </style>

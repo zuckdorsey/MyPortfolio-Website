@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { IconLink, IconCode } from "@tabler/icons-vue";
+import { IconChevronDown } from "@tabler/icons-vue";
 import type { TechnoType } from "~/data/types";
 import { getTechnoTypeLabel, technoTypes } from "~/data/types";
+
 interface ContentSkill {
   _id?: string;
   _path?: string;
@@ -10,161 +11,111 @@ interface ContentSkill {
   url: string;
   icon: string;
 }
+
 const currentFilter = ref<TechnoType>("language");
-const showAllSkills = ref(false);
-const initialMobileSkillCount = 4;
-const isMobile = ref(false);
-let resizeTimer: ReturnType<typeof setTimeout> | null = null;
-onMounted(() => {
-  checkIfMobile();
-  window.addEventListener("resize", throttledCheckIfMobile);
-});
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", throttledCheckIfMobile);
-  if (resizeTimer) clearTimeout(resizeTimer);
-});
-function throttledCheckIfMobile() {
-  if (resizeTimer) return;
-  resizeTimer = setTimeout(() => {
-    checkIfMobile();
-    resizeTimer = null;
-  }, 250);
-}
-function checkIfMobile() {
-  isMobile.value = window.innerWidth < 640;
-}
-const { data: allSkills } = await useLazyAsyncData<ContentSkill[]>(
+const showAll = ref(false);
+const MOBILE_VISIBLE = 4;
+
+const { data: allSkills, pending } = await useLazyAsyncData<ContentSkill[]>(
   "skills",
   async () => {
-    const items = await $fetch<ContentSkill[]>("/api/skills");
-    return items;
+    return await $fetch<ContentSkill[]>("/api/skills");
   }
 );
+
 const filteredSkills = computed(() => {
   if (!allSkills.value) return [];
   return allSkills.value.filter((skill) => skill.type === currentFilter.value);
 });
-const visibleSkills = computed(() => {
-  if (!isMobile.value || showAllSkills.value) {
-    return filteredSkills.value;
-  }
-  return filteredSkills.value.slice(0, initialMobileSkillCount);
-});
-const showLoadMoreButton = computed(() => {
-  return (
-    isMobile.value &&
-    !showAllSkills.value &&
-    filteredSkills.value.length > initialMobileSkillCount
-  );
-});
+
+// On mobile (CSS hides extras until expanded); on sm+ all show via the `sm:` variant.
+const hasExtra = computed(() => filteredSkills.value.length > MOBILE_VISIBLE);
+
 function filterSkills(type: TechnoType) {
   currentFilter.value = type;
-  showAllSkills.value = false;
+  showAll.value = false;
 }
-function loadMoreSkills() {
-  showAllSkills.value = true;
-}
-const colorMode = useColorMode();
 </script>
+
 <template>
-  <section class="flex flex-col gap-3">
-    <a href="#technologies">
-      <div class="flex flex-row gap-1 items-center group relative">
-        <IconLink
-          class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
-        />
-        <h2
-          class="text-xl font-bold hover:cursor-pointer flex items-center gap-2"
-        >
-          <IconCode class="w-5 h-5 text-primary-500" />
-          Skills
-        </h2>
-      </div>
-    </a>
-    <div class="flex flex-wrap gap-1 mb-4">
-      <UButton
-        v-for="(type, index) in technoTypes"
-        :key="index"
+  <Section
+    anchor="technologies"
+    kicker="Stack"
+    title="Skills"
+    subtitle="Languages, frameworks, and tools I work with."
+  >
+    <!-- Filter tabs -->
+    <div
+      class="flex w-fit flex-wrap gap-1 rounded-xl bg-sand-100 p-1 dark:bg-sand-800/60"
+      role="tablist"
+      aria-label="Filter skills by type"
+    >
+      <button
+        v-for="type in technoTypes"
+        :key="type"
         @click="filterSkills(type)"
-        class="hover:bg-primary-600 hover:dark:bg-primary-400 hover:text-white transition-colors duration-200"
-        :class="{
-          'bg-primary-600 dark:bg-primary-400 text-white':
-            type === currentFilter,
-          'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200':
-            type !== currentFilter,
-        }"
-        size="sm"
+        role="tab"
+        :aria-selected="type === currentFilter"
+        class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200"
+        :class="type === currentFilter
+          ? 'bg-white text-sand-900 shadow-soft dark:bg-sand-700 dark:text-sand-100'
+          : 'text-sand-500 hover:text-sand-700 dark:text-sand-400 dark:hover:text-sand-200'"
       >
         {{ getTechnoTypeLabel(type) }}
-      </UButton>
+      </button>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-      <div
-        v-for="skill in visibleSkills"
-        :key="skill.title"
-        class="skill-item flex flex-col items-center gap-2 p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-primary-900/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md"
-        :title="skill.title"
-      >
-        <a
-          :href="skill.url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex flex-col items-center w-full"
-        >
-          <div class="flex justify-center items-center h-12 mb-2">
-            <UIcon :name="skill.icon" class="text-3xl" />
-          </div>
-          <p class="text-xs font-medium text-center">{{ skill.title }}</p>
-        </a>
-      </div>
+
+    <!-- Loading skeleton -->
+    <div v-if="pending" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+      <Skeleton v-for="n in 8" :key="n" variant="custom" class="h-24 rounded-xl" />
     </div>
-    <UButton
-      v-if="showLoadMoreButton"
-      @click="loadMoreSkills"
-      class="mt-4 mx-auto"
-      variant="soft"
-      color="primary"
-    >
-      Load more
-    </UButton>
+
+    <!-- Grid -->
     <div
-      v-if="filteredSkills.length === 0"
-      class="text-center py-8 text-neutral-500"
+      v-else-if="filteredSkills.length > 0"
+      class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4"
     >
-      <p>No skills found for this category</p>
+      <a
+        v-for="(skill, i) in filteredSkills"
+        :key="skill.title"
+        :href="skill.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        :title="skill.title"
+        class="group flex flex-col items-center gap-2 rounded-xl border border-sand-200 bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-sand-300 hover:shadow-soft dark:border-sand-800 dark:bg-sand-900 dark:hover:border-sand-700"
+        :class="[
+          !showAll && i >= MOBILE_VISIBLE ? 'hidden sm:flex' : 'flex',
+        ]"
+      >
+        <div class="flex h-10 items-center justify-center">
+          <UIcon
+            :name="skill.icon"
+            class="text-3xl transition-transform duration-300 group-hover:scale-110"
+          />
+        </div>
+        <p class="text-center text-xs font-medium text-sand-700 dark:text-sand-300">
+          {{ skill.title }}
+        </p>
+      </a>
     </div>
-  </section>
+
+    <!-- Empty state -->
+    <div
+      v-else
+      class="py-8 text-center text-sm text-sand-500 dark:text-sand-400"
+    >
+      No skills found for this category.
+    </div>
+
+    <!-- Show more (mobile only) -->
+    <div v-if="hasExtra && !showAll" class="sm:hidden">
+      <button
+        @click="showAll = true"
+        class="inline-flex items-center gap-1.5 rounded-lg text-sm font-medium text-emerald-600 transition-colors duration-200 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
+      >
+        <span>Show all {{ filteredSkills.length }}</span>
+        <IconChevronDown class="h-4 w-4" aria-hidden="true" />
+      </button>
+    </div>
+  </Section>
 </template>
-<style scoped>
-.skill-item a {
-  text-decoration: none;
-  color: inherit;
-}
-.skill-item:hover UIcon {
-  transform: scale(1.1);
-  transition: transform 0.3s ease;
-}
-.skill-item {
-  position: relative;
-  overflow: hidden;
-}
-.skill-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    to top,
-    rgb(var(--color-primary-500) / 1),
-    rgb(var(--color-primary-300) / 1)
-  );
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-.skill-item:hover::before {
-  transform: scaleX(1);
-}
-</style>

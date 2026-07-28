@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  IconLink,
-  IconSend,
-  IconBrandGithub,
-  IconBrandLinkedin,
-  IconMail,
-  IconBrandTwitter,
-} from "@tabler/icons-vue";
+import { IconSend, IconCheck } from "@tabler/icons-vue";
 import { z } from "zod";
 interface ContactFormData {
   name: string;
@@ -22,7 +15,6 @@ const isSubmitting = ref(false);
 const isSubmitted = ref(false);
 const hasError = ref(false);
 const errorMessage = ref("");
-const formFocused = ref<string | null>(null);
 const FORMSPARK_URL = "https://submit-form.com/25uytm42L";
 const schema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -48,7 +40,7 @@ const socialLinks = [
   {
     name: "Instagram",
     icon: "i-tabler-brand-instagram",
-    url: "https://instagram/aababiil",
+    url: "https://instagram.com/aababiil",
     color: "hover:text-purple-500 dark:hover:text-purple-400",
   },
   {
@@ -99,211 +91,151 @@ function resetForm() {
   hasError.value = false;
   errorMessage.value = "";
 }
-function handleFocus(field: string) {
-  formFocused.value = field;
-}
-function handleBlur() {
-  formFocused.value = null;
-}
 </script>
 <template>
-  <section class="flex flex-col gap-3">
-    <a href="#contact" class="self-start">
-      <div class="flex flex-row gap-1 items-center group relative mb-2">
-        <IconLink
-          class="absolute transform -translate-x-5 transition duration-200 opacity-0 w-4 h-4 group-hover:opacity-100"
-        />
-        <h2 class="text-xl font-bold hover:cursor-pointer flex items-center">
-          <span>Contact</span>
-          <span class="ml-2 inline-block relative">
-            <span
-              class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary-400 opacity-75"
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"
-            ></span>
-          </span>
-        </h2>
-      </div>
-    </a>
-    <div class="grid md:grid-cols-5 gap-6">
+  <Section
+    anchor="contact"
+    kicker="Contact"
+    title="Let's work together"
+    subtitle="Have a project in mind, or just want to say hello? My inbox is open."
+  >
+    <div class="grid gap-6 md:grid-cols-5">
+      <!-- Intro + socials -->
       <UCard
-        class="md:col-span-2 bg-gray-50 dark:bg-gray-900/50 border-none"
-        :ui="{ body: { padding: 'p-5' } }"
+        class="md:col-span-2"
+        :ui="{ body: { padding: 'p-5' }, background: 'bg-emerald-50/60 dark:bg-emerald-950/20', ring: 'ring-1 ring-emerald-100 dark:ring-emerald-900/40', shadow: 'shadow-none' }"
       >
-        <div class="flex flex-col h-full justify-between">
+        <div class="flex h-full flex-col justify-between gap-6">
           <div>
-            <h3 class="text-lg font-medium mb-2">
-              Get in Touch
+            <h3 class="font-display text-lg font-semibold text-sand-900 dark:text-sand-100">
+              Get in touch
             </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Have a project in mind or just want to say hello? Feel free to reach out!
+            <p class="mt-2 text-sm leading-relaxed text-sand-600 dark:text-sand-400">
+              I usually reply within a day or two. The form goes straight to my email — or reach me on any of these:
             </p>
           </div>
-          <div class="mt-auto">
-            <h4 class="text-sm font-medium mb-3">
-              Connect with me
+          <div>
+            <h4 class="mb-3 font-mono text-xs font-medium uppercase tracking-widest text-sand-500 dark:text-sand-400">
+              Elsewhere
             </h4>
-            <div class="flex flex-wrap gap-3">
+            <div class="flex flex-wrap gap-2">
               <UButton
                 v-for="link in socialLinks"
                 :key="link.name"
                 :to="link.url"
                 target="_blank"
                 rel="noopener noreferrer"
-                variant="ghost"
+                variant="soft"
+                color="primary"
                 size="sm"
-                class="transition-all duration-300"
-                :class="link.color"
+                square
+                :aria-label="link.name"
+                class="transition-transform duration-200 ease-spring hover:-translate-y-0.5 active:scale-95"
               >
-                <UIcon :name="link.icon" class="w-5 h-5" />
+                <UIcon :name="link.icon" class="h-5 w-5" aria-hidden="true" />
               </UButton>
             </div>
           </div>
         </div>
       </UCard>
-      <UCard
-        class="md:col-span-3 shadow-sm hover:shadow transition-shadow duration-300"
-        :ui="{ body: { padding: 'p-5' } }"
-      >
+
+      <!-- Form / success -->
+      <UCard class="md:col-span-3" :ui="{ body: { padding: 'p-5' } }">
         <div
           v-if="isSubmitted"
-          class="py-10 flex flex-col items-center justify-center text-center"
+          class="flex flex-col items-center justify-center py-12 text-center"
         >
-          <div class="success-checkmark mb-6">
-            <div class="check-icon">
-              <span class="icon-line line-tip"></span>
-              <span class="icon-line line-long"></span>
-              <div class="icon-circle"></div>
-              <div class="icon-fix"></div>
-            </div>
+          <div class="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/40">
+            <IconCheck class="h-8 w-8 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
           </div>
-          <h3
-            class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200"
-          >
-            Message Sent!
+          <h3 class="font-display text-xl font-semibold text-sand-900 dark:text-sand-100">
+            Message sent
           </h3>
-          <p class="text-gray-600 dark:text-gray-400 mb-6">
-            Thank you for reaching out. I'll get back to you as soon as possible.
+          <p class="mt-2 text-sm text-sand-600 dark:text-sand-400">
+            Thanks for reaching out — I'll get back to you soon.
           </p>
           <UButton
             variant="outline"
+            color="gray"
             @click="resetForm"
             size="sm"
             icon="i-tabler-refresh"
+            class="mt-6"
           >
             Send another message
           </UButton>
         </div>
-        <form v-else @submit.prevent="submitForm" class="flex flex-col gap-4">
+
+        <form v-else @submit.prevent="submitForm" class="flex flex-col gap-4" novalidate>
           <input
             type="checkbox"
             name="_honeypot"
             style="display: none"
             tabindex="-1"
             autocomplete="off"
+            aria-hidden="true"
           />
           <div class="grid gap-4 sm:grid-cols-2">
-            <div class="relative">
+            <div>
+              <label for="contact-name" class="mb-1.5 block text-xs font-medium text-sand-600 dark:text-sand-400">Name</label>
               <UInput
+                id="contact-name"
                 v-model="formState.name"
                 placeholder="Your name"
                 type="text"
                 required
-                :ui="{
-                  base: 'transition-all duration-300',
-                  icon: { leading: { pointer: '' } },
-                }"
-                @focus="handleFocus('name')"
-                @blur="handleBlur"
+                autocomplete="name"
                 icon="i-tabler-user"
-                :class="{ 'input-focused': formFocused === 'name' }"
               />
-              <transition name="scale">
-                <small
-                  v-if="formFocused === 'name'"
-                  class="text-xs text-gray-500 dark:text-gray-400 absolute -bottom-5 left-1"
-                >
-                  Your full name
-                </small>
-              </transition>
             </div>
-            <div class="relative">
+            <div>
+              <label for="contact-email" class="mb-1.5 block text-xs font-medium text-sand-600 dark:text-sand-400">Email</label>
               <UInput
+                id="contact-email"
                 v-model="formState.email"
-                placeholder="Your email"
+                placeholder="you@example.com"
                 type="email"
                 required
-                :ui="{
-                  base: 'transition-all duration-300',
-                  icon: { leading: { pointer: '' } },
-                }"
-                @focus="handleFocus('email')"
-                @blur="handleBlur"
+                autocomplete="email"
                 icon="i-tabler-mail"
-                :class="{ 'input-focused': formFocused === 'email' }"
               />
-              <transition name="scale">
-                <small
-                  v-if="formFocused === 'email'"
-                  class="text-xs text-gray-500 dark:text-gray-400 absolute -bottom-5 left-1"
-                >
-                  Where I can reach you
-                </small>
-              </transition>
             </div>
           </div>
-          <div class="relative">
+          <div>
+            <label for="contact-message" class="mb-1.5 block text-xs font-medium text-sand-600 dark:text-sand-400">Message</label>
             <UTextarea
+              id="contact-message"
               v-model="formState.message"
-              placeholder="Your message..."
-              row="4"
+              placeholder="Tell me about your project or question…"
+              :rows="4"
               required
-              class="resize-none transition-all duration-300"
-              :ui="{
-                base: 'transition-all duration-300',
-                icon: { leading: { pointer: '' } },
-              }"
-              @focus="handleFocus('message')"
-              @blur="handleBlur"
-              icon="i-tabler-message"
-              :class="{ 'input-focused': formFocused === 'message' }"
+              class="resize-none"
             />
-            <transition name="scale">
-              <small
-                v-if="formFocused === 'message'"
-                class="text-xs text-gray-500 dark:text-gray-400 absolute -bottom-5 left-1"
-              >
-                Tell me about your project or question
-              </small>
-            </transition>
           </div>
-          <transition name="slide">
-            <p
-              v-if="hasError"
-              class="text-sm text-red-500 px-2 py-1 bg-red-50 dark:bg-red-900/20 rounded-md"
-            >
-              <UIcon
-                name="i-tabler-alert-circle"
-                class="w-4 h-4 mr-1 inline-block"
-              />
-              {{ errorMessage }}
-            </p>
-          </transition>
+
+          <p
+            v-if="hasError"
+            role="alert"
+            class="flex items-center gap-1.5 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400"
+          >
+            <UIcon name="i-tabler-alert-circle" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+            {{ errorMessage }}
+          </p>
+
           <UButton
             type="submit"
             variant="solid"
             :loading="isSubmitting"
             :disabled="isSubmitting"
-            class="mt-2 submit-button transition-all duration-300"
+            class="w-fit transition-transform duration-200 ease-spring hover:-translate-y-0.5 active:scale-[0.98]"
           >
-            <IconSend class="w-4 h-4 mr-2" />
-            Send Message
+            <IconSend class="mr-2 h-4 w-4" aria-hidden="true" />
+            Send message
           </UButton>
         </form>
       </UCard>
     </div>
-  </section>
+  </Section>
 </template>
 <style scoped>
 .input-focused {
