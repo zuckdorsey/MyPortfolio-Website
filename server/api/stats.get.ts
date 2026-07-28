@@ -1,30 +1,19 @@
-import { getDb, handleDbError } from '../utils/db';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
-export default defineEventHandler(async (event) => {
-    const db = getDb();
-    try {
-        const [
-            projectsCount,
-            skillsCount,
-            experiencesCount,
-            educationCount,
-            certificationsCount
-        ] = await Promise.all([
-            db.query('SELECT COUNT(*) FROM projects'),
-            db.query('SELECT COUNT(*) FROM skills'),
-            db.query('SELECT COUNT(*) FROM experiences'),
-            db.query('SELECT COUNT(*) FROM education'),
-            db.query('SELECT COUNT(*) FROM certifications')
-        ]);
+function readJsonCount(file: string): number {
+  try {
+    const data = JSON.parse(readFileSync(resolve('data', file), 'utf-8'));
+    return Array.isArray(data) ? data.length : 0;
+  } catch {
+    return 0;
+  }
+}
 
-        return {
-            projects: parseInt(projectsCount.rows[0].count),
-            skills: parseInt(skillsCount.rows[0].count),
-            experiences: parseInt(experiencesCount.rows[0].count),
-            education: parseInt(educationCount.rows[0].count),
-            certifications: parseInt(certificationsCount.rows[0].count),
-        };
-    } catch (error) {
-        return handleDbError(error);
-    }
-});
+export default defineEventHandler(() => ({
+  projects: readJsonCount('projects.json'),
+  skills: readJsonCount('skills.json'),
+  experiences: readJsonCount('experiences.json'),
+  education: readJsonCount('education.json'),
+  certifications: readJsonCount('certifications.json'),
+}));
