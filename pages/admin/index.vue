@@ -94,8 +94,8 @@ function getStatCount(label: string): number {
           </p>
         </div>
         <div>
-          <p class="text-sm text-neutral-500">Database</p>
-          <p class="text-xl font-bold text-green-500">Connected</p>
+          <p class="text-sm text-neutral-500">Data source</p>
+          <p class="text-xl font-bold text-green-500">Static JSON</p>
         </div>
       </div>
     </div>
