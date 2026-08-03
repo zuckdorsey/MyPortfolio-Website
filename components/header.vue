@@ -75,28 +75,26 @@ const socials = [
       <Settings />
     </div>
 
-    <ClientOnly>
-      <ConfettisButton>
-        <template v-slot:default="{ onLaunchConfettis }">
-          <button
-            type="button"
-            aria-label="Launch confetti"
-            class="group relative shrink-0 cursor-pointer rounded-3xl focus-visible:outline-none"
-            @click="onLaunchConfettis()"
-          >
-            <NuxtImg
-              src="/photo.jpeg"
-              alt="Portrait of Ababil Mustaqim"
-              class="h-24 w-24 rounded-3xl object-cover ring-1 ring-sand-200 transition-all duration-300 ease-spring group-hover:scale-[1.03] group-hover:shadow-lift group-hover:ring-emerald-300 dark:ring-sand-700 dark:group-hover:ring-emerald-700 sm:h-40 sm:w-40"
-              width="160"
-              height="160"
-              format="webp"
-              preload
-              :placeholder="[40, 40, 75, 5]"
-            />
-          </button>
-        </template>
-      </ConfettisButton>
-    </ClientOnly>
+    <ConfettisButton>
+      <template v-slot:default="{ onLaunchConfettis }">
+        <button
+          type="button"
+          aria-label="Launch confetti"
+          class="group relative shrink-0 cursor-pointer rounded-3xl focus-visible:outline-none"
+          @click="onLaunchConfettis()"
+        >
+          <NuxtImg
+            src="/photo.jpeg"
+            alt="Portrait of Ababil Mustaqim"
+            class="h-24 w-24 rounded-3xl object-cover ring-1 ring-sand-200 transition-all duration-300 ease-spring group-hover:scale-[1.03] group-hover:shadow-lift group-hover:ring-emerald-300 dark:ring-sand-700 dark:group-hover:ring-emerald-700 sm:h-40 sm:w-40"
+            width="160"
+            height="160"
+            format="webp"
+            preload
+            :placeholder="[40, 40, 75, 5]"
+          />
+        </button>
+      </template>
+    </ConfettisButton>
   </header>
 </template>

@@ -1,22 +1,22 @@
 User-agent: *
 Allow: /
-Disallow: /dashboard/
-Disallow: /login
+Disallow: /admin
+Disallow: /admin/login
 Disallow: /closed
 Disallow: /api/
 
 # Specific rules for search engines
 User-agent: Googlebot
 Allow: /
-Disallow: /dashboard/
-Disallow: /login
+Disallow: /admin
+Disallow: /admin/login
 Disallow: /closed
 Disallow: /api/
 
 User-agent: Bingbot
 Allow: /
-Disallow: /dashboard/
-Disallow: /login
+Disallow: /admin
+Disallow: /admin/login
 Disallow: /closed
 Disallow: /api/
 

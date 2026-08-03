@@ -10,7 +10,7 @@
     "image_ext": "png",
     "technos": ["NPM", "Vercel", "Vue.js"],
     "type": ["web"],
-    "content_en": "An interactive educational platform that simulates a Linux desktop experience directly in the browser. Built with React 18 and Vite, this project features a dynamic window management system, an interactive terminal, and real-time interface customization. It aims to introduce the Linux ecosystem to beginners through a familiar and responsive GUI.An interactive educational platform that simulates a Linux desktop experience directly in the browser. Built with React 18 and Vite, this project features a dynamic window management system, an interactive terminal, and real-time interface customization. It aims to introduce the Linux ecosystem to beginners through a familiar and responsive GUI.",
+    "content_en": "An interactive educational platform that simulates a Linux desktop experience directly in the browser. Built with React 18 and Vite, this project features a dynamic window management system, an interactive terminal, and real-time interface customization. It aims to introduce the Linux ecosystem to beginners through a familiar and responsive GUI.",
     "content_id": null
   },
   {

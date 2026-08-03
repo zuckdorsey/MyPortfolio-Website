@@ -3,14 +3,14 @@
     "id": 31,
     "title": "Wordpress",
     "type": "CMS",
-    "url": "https://developer.android.com/studio",
+    "url": "https://wordpress.org",
     "icon": "skill-icons:wordpress"
   },
   {
     "id": 30,
     "title": "Wakatime",
-    "type": "library",
-    "url": "https://developer.android.com/studio",
+    "type": "development-tool",
+    "url": "https://wakatime.com",
     "icon": "simple-icons:wakatime"
   },
   {
@@ -31,7 +31,7 @@
     "id": 27,
     "title": "SQLite",
     "type": "database",
-    "url": "https://developer.android.com/studio",
+    "url": "https://sqlite.org",
     "icon": "skill-icons:sqlite"
   },
   {
@@ -45,14 +45,14 @@
     "id": 25,
     "title": "Pypi",
     "type": "development-tool",
-    "url": "https://developer.android.com/studio",
+    "url": "https://pypi.org",
     "icon": "devicon:pypi"
   },
   {
     "id": 24,
     "title": "Php",
     "type": "language",
-    "url": "https://www.java.com/en/",
+    "url": "https://www.php.net/",
     "icon": "skill-icons:php-light"
   },
   {
@@ -66,7 +66,7 @@
     "id": 22,
     "title": "NPM",
     "type": "development-tool",
-    "url": "https://developer.android.com/studio",
+    "url": "https://www.npmjs.com",
     "icon": "devicon:npm"
   },
   {
@@ -80,14 +80,14 @@
     "id": 20,
     "title": "MySql",
     "type": "database",
-    "url": "https://developer.android.com/studio",
+    "url": "https://www.mysql.com",
     "icon": "skill-icons:mysql-light"
   },
   {
     "id": 19,
     "title": "MongoDB",
     "type": "database",
-    "url": "https://developer.android.com/studio",
+    "url": "https://www.mongodb.com",
     "icon": "skill-icons:mongodb"
   },
   {
@@ -101,7 +101,7 @@
     "id": 17,
     "title": "JavaScript",
     "type": "language",
-    "url": "https://www.javascript.com/",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
     "icon": "i-logos-javascript"
   },
   {
@@ -115,21 +115,21 @@
     "id": 15,
     "title": "i18n",
     "type": "library",
-    "url": "https://developer.android.com/studio",
+    "url": "https://www.i18next.com",
     "icon": "material-icon-theme:i18n"
   },
   {
     "id": 14,
     "title": "HTML",
     "type": "language",
-    "url": "https://www.python.org/",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
     "icon": "skill-icons:html"
   },
   {
     "id": 13,
     "title": "Github Action",
     "type": "devops",
-    "url": "https://developer.android.com/studio",
+    "url": "https://github.com/features/actions",
     "icon": "skill-icons:githubactions-dark"
   },
   {
@@ -164,20 +164,20 @@
     "id": 8,
     "title": "FastAPI",
     "type": "framework",
-    "url": "https://www.djangoproject.com/",
+    "url": "https://fastapi.tiangolo.com/",
     "icon": "skill-icons:fastapi"
   },
   {
     "id": 7,
     "title": "Digital Ocean",
     "type": "devops",
-    "url": "https://developer.android.com/studio",
+    "url": "https://www.digitalocean.com",
     "icon": "devicon:digitalocean-wordmark"
   },
   {
     "id": 6,
     "title": "Pycharm",
-    "type": "language",
+    "type": "development-tool",
     "url": "https://www.jetbrains.com/pycharm/",
     "icon": "skill-icons:css"
   },
@@ -185,21 +185,21 @@
     "id": 5,
     "title": "C++",
     "type": "language",
-    "url": "https://www.jetbrains.com/pycharm/",
+    "url": "https://isocpp.org",
     "icon": "skill-icons:cpp"
   },
   {
     "id": 4,
     "title": "cPanel",
     "type": "devops",
-    "url": "https://developer.android.com/studio",
+    "url": "https://cpanel.net",
     "icon": "simple-icons:cpanel"
   },
   {
     "id": 3,
     "title": "Bootstrap",
     "type": "framework",
-    "url": "https://bootstrap.com",
+    "url": "https://getbootstrap.com",
     "icon": "skill-icons:bootstrap"
   },
   {
@@ -213,7 +213,7 @@
     "id": 1,
     "title": "Arduino",
     "type": "development-tool",
-    "url": "https://developer.android.com/studio",
+    "url": "https://www.arduino.cc",
     "icon": "skill-icons:arduino"
   }
 ]

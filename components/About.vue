@@ -18,7 +18,7 @@ const toggleContent = () => {
         I'm a backend developer with a strong interest in robotics and cybersecurity. I build scalable, efficient backend architectures with Python, Node.js, and PHP — working across frameworks like Express.js, Laravel, and Django. My focus is on RESTful APIs, databases, and modular, maintainable code.
       </p>
 
-      <div v-if="isExpanded" class="flex flex-col gap-4" :class="{ 'animate-fadeIn': isExpanded }">
+      <div v-show="isExpanded" class="flex flex-col gap-4" :class="{ 'animate-fadeIn': isExpanded }">
         <p>
           Outside of backend work, I build robotics projects — microcontrollers, sensors, and automation. I'm especially interested in where software meets hardware: navigation logic, serial communication between devices, real-time sensor data. That's where code meets the real world and logic is genuinely tested.
         </p>
