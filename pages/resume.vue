@@ -9,7 +9,7 @@ useHead({
     {
       name: "description",
       content:
-        "Download CV/Resume Ababil Mustaqim - Backend Developer dengan pengalaman Python, Django, Node.js, dan teknologi modern. Format PDF tersedia untuk download.",
+        "Download the CV/Resume of Ababil Mustaqim, a backend developer experienced in Python, Django, Node.js, and modern technologies. PDF format available.",
     },
     {
       name: "keywords",
@@ -23,7 +23,7 @@ useHead({
     {
       property: "og:description",
       content:
-        "Download CV/Resume Ababil Mustaqim - Backend Developer dengan pengalaman Python, Django, Node.js, dan teknologi modern.",
+        "Download the CV/Resume of Ababil Mustaqim, a backend developer experienced in Python, Django, Node.js, and modern technologies.",
     },
     { name: "robots", content: "index, follow" },
   ],

@@ -5,16 +5,16 @@ export const useSEO = (options: {
   image?: string;
   url?: string;
   type?: string;
-}) => {
-  const config = useRuntimeConfig();
-  const siteUrl = 'https://ababil.is-not-a.dev'; // Ganti dengan domain Anda
-  
+} = {}) => {
+  const route = useRoute();
+  const siteUrl = 'https://ababil.is-not-a.dev';
+
   const defaults = {
     title: 'Ababil Mustaqim - Backend Developer From Bandung',
-    description: 'Ababil Mustaqim adalah seorang backend developer profesional dari Bandung, berpengalaman dalam membangun sistem backend yang scalable, aman, dan efisien.',
+    description: 'Ababil Mustaqim is a professional backend developer from Bandung, experienced in building scalable, secure, and efficient backend systems.',
     keywords: 'backend developer, python, django, flask, nodejs, postgresql, vue, nuxt, rest api, bandung, indonesia',
-    image: `${siteUrl}/og-image.svg`,
-    url: siteUrl,
+    image: `${siteUrl}/og-image.png`,
+    url: `${siteUrl}${route.path === '/' ? '' : route.path}`,
     type: 'website'
   };
 

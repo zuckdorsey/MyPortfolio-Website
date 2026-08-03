@@ -5,7 +5,7 @@
     "website": "https://www.hackerrank.com/certificates/a37fe25e4404",
     "date": "February 2024",
     "icon": "tabler:brand-hackerrank",
-    "badge_alt": "Udemy JavaScript Certificate",
+    "badge_alt": "Rest API (Intermediate) Certificate",
     "description": "Completed a certification program focused on building and consuming RESTful APIs using modern best practices, covering key concepts such as HTTP methods, status codes, authentication, and API design principles.",
     "skills": "<b>Major topics covered:</b></br>• RESTful architecture principles</br>• HTTP methods and status codes</br>• CRUD operations</br>• Authentication and authorization (e.g., JWT, API keys)</br>• API documentation and testing (e.g., Swagger, Postman)"
   },
@@ -21,13 +21,13 @@
   },
   {
     "id": 4,
-    "title": "JavaScript for Beginners: The Complete ",
+    "title": "JavaScript for Beginners: The Complete Course",
     "website": "https://www.udemy.com/certificate/UC-97d39ed1-959c-4792-a7d4-780802bba25a/",
     "date": "October 2021",
     "icon": "logos:udemy",
-    "badge_alt": "HTML5 - From Basics to Advanced",
+    "badge_alt": "JavaScript for Beginners: The Complete Course",
     "description": "Completed a comprehensive course covering JavaScript from fundamental concepts to advanced techniques, including modern ES6+ features, asynchronous programming, and best practices for writing efficient and maintainable code.",
-    "skills": "<b>Major topics covered:</b></br>• HTML document structure</br>• Text formatting and links</br>• Forms and input elements</br>• Tables and lists</br>• Semantic HTML5 elements</br>• Media embedding (audio, video, iframe)</br>• Accessibility best practices</br>• SEO-friendly markup</br>• Responsive design principles"
+    "skills": "<b>Major topics covered:</b></br>• Variables, types, and operators</br>• Control flow and loops</br>• Functions and scope</br>• Arrays and objects</br>• DOM manipulation and events</br>• ES6+ features (arrow functions, destructuring, modules)</br>• Asynchronous JavaScript (callbacks, promises, async/await)</br>• Debugging and best practices"
   },
   {
     "id": 3,

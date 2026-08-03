@@ -1,27 +1,25 @@
 <template>
-  <ClientOnly>
-    <div
-      v-if="technoData"
-      :class="{
-        [littleClassesDisplay]: size === 'little',
-        [bigClassesDisplay]: size === 'big',
-        'flex flex-row items-center justify-center gap-1': size === 'medium',
-      }"
+  <div
+    v-if="technoData"
+    :class="{
+      [littleClassesDisplay]: size === 'little',
+      [bigClassesDisplay]: size === 'big',
+      'flex flex-row items-center justify-center gap-1': size === 'medium',
+    }"
+  >
+    <p v-if="size == 'little'" class="mr-2 text-xs">• {{ techno }}</p>
+    <p
+      v-else-if="size == 'big'"
+      class="text-xs font-medium text-sand-800 dark:text-sand-300"
     >
-      <p v-if="size == 'little'" class="mr-2 text-xs">• {{ techno }}</p>
-      <p
-        v-else-if="size == 'big'"
-        class="text-xs font-medium text-sand-800 dark:text-sand-300"
-      >
-        {{ techno }}
-      </p>
-      <UIcon
-        :name="technoData.icon || 'i-tabler-code'"
-        class="w-6 h-6"
-        :class="{ 'mx-auto': size === 'big' }"
-      />
-    </div>
-  </ClientOnly>
+      {{ techno }}
+    </p>
+    <UIcon
+      :name="technoData.icon || 'i-tabler-code'"
+      class="w-6 h-6"
+      :class="{ 'mx-auto': size === 'big' }"
+    />
+  </div>
 </template>
 <script setup lang="ts">
 interface ContentSkill {

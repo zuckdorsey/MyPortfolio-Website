@@ -44,7 +44,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://your-domain.com', // Ganti dengan domain Anda
     name: 'Ababil Mustaqim',
-    description: 'Ababil Mustaqim adalah seorang backend developer profesional dari Bandung, berpengalaman dalam membangun sistem backend yang scalable, aman, dan efisien.',
+    description: 'Ababil Mustaqim is a professional backend developer from Bandung, experienced in building scalable, secure, and efficient backend systems.',
     defaultLocale: 'en'
   },
 
@@ -53,12 +53,13 @@ export default defineNuxtConfig({
       '/',
       '/resume',
       '/privacy'
-    ]
+    ],
+    exclude: ['/admin/**', '/closed']
   },
 
   routeRules: {
-    '/': { headers: { 'cache-control': 's-maxage=31536000' } },
-    '/resume': { headers: { 'cache-control': 's-maxage=31536000' } },
+    '/': { headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+    '/resume': { headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     '/closed': { ssr: false },
     '/admin/**': { ssr: false },
     // Cache API responses at Nitro level

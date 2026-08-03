@@ -39,15 +39,12 @@ const props = defineProps<{ project: ContentProject; index?: number }>();
 const previewModalOpen = ref(false);
 const currentPreviewMode = ref<'live' | 'video'>('live');
 
-// Derive the image src — null when genuinely missing
+// Derive the image src — null when no remote image is set
 const projectImage = computed<string | null>(() => {
   if (props.project.image && props.project.image.startsWith('http')) {
     return props.project.image;
   }
-  const name = props.project.image
-    || props.project.name.toLowerCase().replace(/\s/g, '-').replace(/'/g, '');
-  const ext = props.project.imageExt || 'webp';
-  return `/projects/${name}.${ext}`;
+  return null; // no local image directory; fall through to the placeholder
 });
 
 // Track whether the image actually loaded
@@ -246,15 +243,13 @@ function getSafeVideoEmbed(url: string | undefined): string {
 
       <!-- Tech stack badges -->
       <div class="flex flex-wrap gap-1.5">
-        <ClientOnly>
-          <Techno
-            v-for="techno in project.technos"
-            :key="techno"
-            :techno="techno"
-            size="little"
-            class="rounded-md bg-sand-100 px-2 py-0.5 text-xs text-sand-700 dark:bg-sand-800 dark:text-sand-300"
-          />
-        </ClientOnly>
+        <Techno
+          v-for="techno in project.technos"
+          :key="techno"
+          :techno="techno"
+          size="little"
+          class="rounded-md bg-sand-100 px-2 py-0.5 text-xs text-sand-700 dark:bg-sand-800 dark:text-sand-300"
+        />
       </div>
 
       <!-- Spacer pins CTAs to the bottom so all cards align -->

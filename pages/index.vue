@@ -1,11 +1,10 @@
 <script setup lang="ts">
 useHead({
-  title: "Ababil Mustaqim",
   meta: [
     {
       name: "description",
       content:
-        "Portfolio Ababil Mustaqim - Backend Developer berpengalaman dari Bandung. Spesialis Python, Django, Flask, Node.js, PostgreSQL, dan teknologi backend modern.",
+        "Portfolio of Ababil Mustaqim, an experienced backend developer from Bandung. Specializing in Python, Django, Flask, Node.js, PostgreSQL, and modern backend technologies.",
     },
     {
       name: "keywords",
@@ -19,7 +18,7 @@ useHead({
     {
       property: "og:description",
       content:
-        "Portfolio Ababil Mustaqim - Backend Developer berpengalaman dari Bandung. Spesialis Python, Django, Flask, Node.js, PostgreSQL, dan teknologi backend modern.",
+        "Portfolio of Ababil Mustaqim, an experienced backend developer from Bandung. Specializing in Python, Django, Flask, Node.js, PostgreSQL, and modern backend technologies.",
     },
   ],
 });

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+useHead({
+  meta: [{ name: 'robots', content: 'noindex, nofollow' }]
+})
+
 const { isLoggedIn, logout } = useAdmin()
 const route = useRoute()
 

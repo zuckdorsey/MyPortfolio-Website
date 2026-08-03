@@ -1,18 +1,20 @@
 <script setup lang="ts">
 const seoTitle = "Ababil Mustaqim - Backend Developer From Bandung";
 const seoDescription =
-  "Ababil Mustaqim adalah seorang backend developer profesional dari Bandung, berpengalaman dalam membangun sistem backend yang scalable, aman, dan efisien. Temukan portofolio, proyek, dan keahlian teknologi terbaru di sini.";
+  "Ababil Mustaqim is a professional backend developer from Bandung, experienced in building scalable, secure, and efficient backend systems. Explore projects, skills, and experience here.";
 const siteUrl = "https://ababil.is-not-a.dev";
-const ogImageUrl = `${siteUrl}/og-image.svg`;
+const ogImageUrl = `${siteUrl}/og-image.png`;
 
 // JSON-LD handled in separate composable for better hydration performance
 useJsonLd();
+
+// Per-page canonical derived from the current route
+useCanonical();
 
 // Basic head configuration (non-SEO related)
 useHead({
   title: seoTitle,
   link: [
-    { rel: "canonical", href: siteUrl },
     { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
     {
       rel: "apple-touch-icon",
