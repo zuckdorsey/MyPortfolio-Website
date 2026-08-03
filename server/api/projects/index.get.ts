@@ -1,8 +1,3 @@
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import projects from '~/data/projects.json';
 
-export default defineEventHandler(() => {
-    const filePath = resolve(process.cwd(), 'data/projects.json');
-    const raw = readFileSync(filePath, 'utf-8');
-    return JSON.parse(raw);
-});
+export default defineEventHandler(() => projects);

@@ -1,8 +1,3 @@
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import skills from '~/data/skills.json';
 
-export default defineEventHandler(() => {
-    const filePath = resolve(process.cwd(), 'data/skills.json');
-    const raw = readFileSync(filePath, 'utf-8');
-    return JSON.parse(raw);
-});
+export default defineEventHandler(() => skills);

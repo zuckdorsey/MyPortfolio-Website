@@ -1,19 +1,13 @@
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
-
-function readJsonCount(file: string): number {
-  try {
-    const data = JSON.parse(readFileSync(resolve('data', file), 'utf-8'));
-    return Array.isArray(data) ? data.length : 0;
-  } catch {
-    return 0;
-  }
-}
+import projects from '~/data/projects.json';
+import skills from '~/data/skills.json';
+import experiences from '~/data/experiences.json';
+import education from '~/data/education.json';
+import certifications from '~/data/certifications.json';
 
 export default defineEventHandler(() => ({
-  projects: readJsonCount('projects.json'),
-  skills: readJsonCount('skills.json'),
-  experiences: readJsonCount('experiences.json'),
-  education: readJsonCount('education.json'),
-  certifications: readJsonCount('certifications.json'),
+  projects: (projects as unknown[]).length,
+  skills: (skills as unknown[]).length,
+  experiences: (experiences as unknown[]).length,
+  education: (education as unknown[]).length,
+  certifications: (certifications as unknown[]).length,
 }));

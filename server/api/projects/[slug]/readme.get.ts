@@ -1,6 +1,5 @@
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { getRouterParam, createError } from 'h3';
+import projectsData from '~/data/projects.json';
 
 interface ProjectRecord {
   id: number;
@@ -9,6 +8,8 @@ interface ProjectRecord {
   repo_link: string;
   [key: string]: unknown;
 }
+
+const projects = projectsData as ProjectRecord[];
 
 /**
  * Parse an "owner/repo" pair out of a GitHub URL.
@@ -39,8 +40,6 @@ export default defineCachedEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Missing project slug' });
   }
 
-  const filePath = resolve(process.cwd(), 'data/projects.json');
-  const projects: ProjectRecord[] = JSON.parse(readFileSync(filePath, 'utf-8'));
   const project = projects.find((p) => p.slug === slug || String(p.id) === slug);
 
   if (!project) {

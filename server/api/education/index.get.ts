@@ -1,8 +1,3 @@
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import education from '~/data/education.json';
 
-export default defineEventHandler(() => {
-    const filePath = resolve(process.cwd(), 'data/education.json');
-    const raw = readFileSync(filePath, 'utf-8');
-    return JSON.parse(raw);
-});
+export default defineEventHandler(() => education);
