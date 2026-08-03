@@ -7,7 +7,7 @@
     "icon": "tabler:brand-hackerrank",
     "badge_alt": "Rest API (Intermediate) Certificate",
     "description": "Completed a certification program focused on building and consuming RESTful APIs using modern best practices, covering key concepts such as HTTP methods, status codes, authentication, and API design principles.",
-    "skills": "<b>Major topics covered:</b></br>• RESTful architecture principles</br>• HTTP methods and status codes</br>• CRUD operations</br>• Authentication and authorization (e.g., JWT, API keys)</br>• API documentation and testing (e.g., Swagger, Postman)"
+    "skills": "RESTful architecture principles | HTTP methods and status codes | CRUD operations | Authentication and authorization (JWT, API keys) | API documentation and testing (Swagger, Postman)"
   },
   {
     "id": 5,
@@ -17,17 +17,17 @@
     "icon": "tabler:brand-hackerrank",
     "badge_alt": "Java (Basic) Certificate",
     "description": "Completed a foundational certification assessing core Java programming skills, focusing on object-oriented principles, basic syntax, and problem-solving techniques using standard Java libraries.",
-    "skills": "<b>Major topics covered:</b></br>• Java syntax and data types</br>• Control flow (if/else, loops)</br>• Object-oriented programming (classes, objects, inheritance)</br>• Exception handling</br>• Standard library usage (e.g., java.util)"
+    "skills": "Java syntax and data types | Control flow (if/else, loops) | Object-oriented programming (classes, objects, inheritance) | Exception handling | Standard library usage (java.util)"
   },
   {
     "id": 4,
-    "title": "JavaScript for Beginners: The Complete Course",
+    "title": "JavaScript for Beginners: The Complete Guide",
     "website": "https://www.udemy.com/certificate/UC-97d39ed1-959c-4792-a7d4-780802bba25a/",
     "date": "October 2021",
     "icon": "logos:udemy",
-    "badge_alt": "JavaScript for Beginners: The Complete Course",
+    "badge_alt": "JavaScript for Beginners",
     "description": "Completed a comprehensive course covering JavaScript from fundamental concepts to advanced techniques, including modern ES6+ features, asynchronous programming, and best practices for writing efficient and maintainable code.",
-    "skills": "<b>Major topics covered:</b></br>• Variables, types, and operators</br>• Control flow and loops</br>• Functions and scope</br>• Arrays and objects</br>• DOM manipulation and events</br>• ES6+ features (arrow functions, destructuring, modules)</br>• Asynchronous JavaScript (callbacks, promises, async/await)</br>• Debugging and best practices"
+    "skills": "Core syntax and ES6+ features | Asynchronous programming (promises, async/await) | DOM manipulation | Functions and scope | Arrays, objects, and modules | Error handling and debugging"
   },
   {
     "id": 3,
@@ -37,7 +37,7 @@
     "icon": "logos:udemy",
     "badge_alt": "HTML5 - From Basics to Advanced",
     "description": "Completed a comprehensive course covering HTML from basic structure to advanced elements and semantic markup, with a focus on building accessible, responsive, and SEO-friendly web pages.",
-    "skills": "<b>Major topics covered:</b></br>• HTML document structure</br>• Text formatting and links</br>• Forms and input elements</br>• Tables and lists</br>• Semantic HTML5 elements</br>• Media embedding (audio, video, iframe)</br>• Accessibility best practices</br>• SEO-friendly markup</br>• Responsive design principles"
+    "skills": "HTML document structure | Text formatting and links | Forms and input elements | Tables and lists | Semantic HTML5 elements | Media embedding (audio, video, iframe) | Accessibility best practices | SEO-friendly markup | Responsive design principles"
   },
   {
     "id": 2,
@@ -47,7 +47,7 @@
     "icon": "logos:udemy",
     "badge_alt": "Python Django - The Practical Guide",
     "description": "Completed a comprehensive course covering Django web framework from basics to advanced usage, with a focus on building dynamic, secure, and scalable web applications using Python.",
-    "skills": "<b>Major topics covered:</b></br>• Django project and app structure</br>• URL routing and views</br>• Templates and template inheritance</br>• Models and ORM (Object-Relational Mapping)</br>• Admin interface customization</br>• User authentication and authorization</br>• Forms and form validation</br>• Class-based and function-based views</br>• RESTful APIs with Django REST Framework</br>• Deployment best practices"
+    "skills": "Django project and app structure | URL routing and views | Templates and template inheritance | Models and ORM | Admin interface customization | User authentication and authorization | Forms and form validation | Class-based and function-based views | RESTful APIs with Django REST Framework | Deployment best practices"
   },
   {
     "id": 1,
@@ -57,6 +57,6 @@
     "icon": "logos:udemy",
     "badge_alt": "Web Developer Bootcamp with Flask and Python",
     "description": "Completed an in-depth web development course focused on building modern web applications using Python and the Flask framework. The course covered core backend development skills, integrating HTML/CSS/JavaScript with Flask, working with databases, and deploying full-stack applications.",
-    "skills": "<b>Major topics covered:</b></br>• Flask application structure</br>• Routing and request handling</br>• Jinja2 templating engine</br>• Form handling and WTForms</br>• SQLAlchemy and database integration</br>• User authentication and sessions</br>• RESTful API creation with Flask</br>• Error handling and blueprints</br>• Frontend integration (Bootstrap, JavaScript)</br>• Deployment with Heroku and best practices"
+    "skills": "Flask application structure | Routing and request handling | Jinja2 templating engine | Form handling and WTForms | SQLAlchemy and database integration | User authentication and sessions | RESTful API creation with Flask | Error handling and blueprints | Frontend integration (Bootstrap, JavaScript) | Deployment with Heroku"
   }
 ]

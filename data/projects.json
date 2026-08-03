@@ -1,6 +1,7 @@
 [
   {
     "id": 11,
+    "slug": "linux-on-web",
     "name": "Linux On Web",
     "link": "https://linux-on-web.vercel.app/",
     "repo_link": "https://github.com/zuckdorsey/blug-exercise-v2",
@@ -14,6 +15,7 @@
   },
   {
     "id": 9,
+    "slug": "selera-rasa-sunda",
     "name": "Selera Rasa Sunda",
     "link": "https://selera-rasa-sunda.id",
     "repo_link": "closed",
@@ -27,6 +29,7 @@
   },
   {
     "id": 8,
+    "slug": "portfolio-website",
     "name": "Portfolio Website",
     "link": "https://ababil.is-not-a.dev",
     "repo_link": "https://github.com/birdfromhell/Myportfolio-website",
@@ -40,6 +43,7 @@
   },
   {
     "id": 7,
+    "slug": "payment-gateway-landing-pages",
     "name": "Payment Gateway Landing Pages",
     "link": "https://payment-gateway-landingpage.vercel.app/",
     "repo_link": "https://github.com/birdfromhell/payment-gateway-landingpage",
@@ -53,6 +57,7 @@
   },
   {
     "id": 6,
+    "slug": "notepad-app",
     "name": "Notepad App",
     "link": "",
     "repo_link": "https://github.com/birdfromhell/NotepadCloneWithJava",
@@ -66,6 +71,7 @@
   },
   {
     "id": 5,
+    "slug": "news-portal-website",
     "name": "News Portal Website",
     "link": "",
     "repo_link": "https://github.com/birdfromhell/NewsPortal",
@@ -79,6 +85,7 @@
   },
   {
     "id": 4,
+    "slug": "flappy-bird-game",
     "name": "Flappy Bird Game",
     "link": "",
     "repo_link": "https://github.com/birdfromhell/FlappyBird_WithPython",
@@ -92,6 +99,7 @@
   },
   {
     "id": 2,
+    "slug": "accountant-software",
     "name": "Accountant Software",
     "link": "",
     "repo_link": "",
@@ -105,6 +113,7 @@
   },
   {
     "id": 1,
+    "slug": "blog-website-with-astro",
     "name": "Blog website with Astro",
     "link": "https://blog-lovat-delta.vercel.app/",
     "repo_link": "https://github.com/birdfromhell/blog",

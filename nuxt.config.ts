@@ -62,12 +62,15 @@ export default defineNuxtConfig({
     '/resume': { headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     '/closed': { ssr: false },
     '/admin/**': { ssr: false },
+    // Project detail pages are cached (README fetched server-side, 6h Nitro cache)
+    '/projects/**': { headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     // Cache API responses at Nitro level
     '/api/skills': { cache: { maxAge: 3600 } },
     '/api/certifications': { cache: { maxAge: 3600 } },
     '/api/education': { cache: { maxAge: 3600 } },
     '/api/experiences': { cache: { maxAge: 3600 } },
     '/api/projects': { cache: { maxAge: 3600 } },
+    '/api/projects/**': { cache: { maxAge: 21600 } },
   },
 
   compatibilityDate: '2025-05-09'
