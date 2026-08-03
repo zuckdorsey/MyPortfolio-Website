@@ -26,10 +26,8 @@ logs
 .env.*
 !.env.example
 
-# Local env files
-.env
-.env.*
-!.env.example
-
-
 .github
+
+graphify-out
+.agent
+.claude
