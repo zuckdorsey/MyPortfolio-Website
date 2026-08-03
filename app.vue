@@ -9,7 +9,11 @@ const ogImageUrl = `${siteUrl}/og-image.png`;
 useJsonLd();
 
 // Per-page canonical derived from the current route
-useCanonical();
+useHead({
+  link: [
+    { rel: 'canonical', href: `https://ababil.is-not-a.dev${useRoute().path === '/' ? '' : useRoute().path}` }
+  ]
+});
 
 // Basic head configuration (non-SEO related)
 useHead({

@@ -10,7 +10,7 @@ ENV NITRO_PORT=3000
 
 # Install dependencies
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Copy source for development
 COPY . .
@@ -25,7 +25,7 @@ WORKDIR /app
 
 # Install dependencies needed to build
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN bun install
 
 # Build stage
 FROM oven/bun:1 AS builder
