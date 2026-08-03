@@ -38,7 +38,7 @@ const resumeLink = computed(() => (hasResume.value ? resumeFile.value : undefine
 </script>
 
 <template>
-  <div class="mx-auto w-full max-w-5xl px-5 py-10 sm:px-6">
+  <div class="mx-auto w-full max-w-5xl overflow-x-hidden px-5 py-10 sm:px-6">
     <NuxtLink
       to="/"
       class="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"

@@ -285,12 +285,12 @@ onBeforeUnmount(() => {
               </div>
             </div>
 
-            <!-- Spotify Logo -->
+            <!-- Spotify Logo (hidden on mobile to avoid overlap, shown on sm+) -->
             <a
               href="https://open.spotify.com/"
               target="_blank"
               rel="noopener noreferrer"
-              class="absolute right-3 top-3 opacity-50 transition-opacity duration-300 hover:opacity-100"
+              class="absolute right-3 top-3 hidden opacity-50 transition-opacity duration-300 hover:opacity-100 sm:block"
               aria-label="Open in Spotify"
             >
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

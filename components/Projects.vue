@@ -117,7 +117,7 @@ watchEffect(() => {
           @click="setFilter(type)"
           role="tab"
           :aria-selected="type === currentFilter"
-          class="rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200"
+          class="rounded-lg px-3 py-2 text-xs font-medium transition-all duration-200 sm:py-1.5"
           :class="type === currentFilter
             ? 'bg-white text-sand-900 shadow-soft dark:bg-sand-700 dark:text-sand-100'
             : 'text-sand-500 hover:text-sand-700 dark:text-sand-400 dark:hover:text-sand-200'"
@@ -129,7 +129,7 @@ watchEffect(() => {
       <!-- Tech filter button -->
       <button
         @click="techFilterModalOpen = true"
-        class="inline-flex w-fit items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-all duration-200"
+        class="inline-flex w-full items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all duration-200 sm:w-fit sm:justify-start sm:py-2"
         :class="selectedTechFilters.length > 0
           ? 'border-emerald-400 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300'
           : 'border-sand-200 text-sand-600 hover:border-sand-300 dark:border-sand-700 dark:text-sand-400 dark:hover:border-sand-600'"

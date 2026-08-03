@@ -66,13 +66,13 @@ const needsTrunc = (html: string, max = 220) => plain(html).length > max;
 
 <template>
   <div class="relative">
-    <!-- Vertical line -->
+    <!-- Vertical line (desktop) -->
     <div
       class="absolute bottom-3 left-[19px] top-3 hidden w-px bg-gradient-to-b from-sand-300 via-sand-200 to-transparent dark:from-sand-700 dark:via-sand-800 sm:block"
       aria-hidden="true"
     />
 
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-4 sm:gap-6">
       <article
         v-for="(item, index) in items"
         :key="key(item, index)"
@@ -97,9 +97,9 @@ const needsTrunc = (html: string, max = 220) => plain(html).length > max;
           </div>
         </div>
 
-        <!-- Card -->
+        <!-- Card (mobile: left border accent + rounded-tl, desktop: full rounded) -->
         <div
-          class="min-w-0 flex-1 overflow-hidden rounded-2xl border border-sand-200 bg-white transition-all duration-300 group-hover:border-sand-300 group-hover:shadow-soft dark:border-sand-800 dark:bg-sand-900 dark:group-hover:border-sand-700"
+          class="min-w-0 flex-1 overflow-hidden rounded-r-2xl rounded-bl-2xl border border-sand-200 bg-white transition-all duration-300 group-hover:border-sand-300 group-hover:shadow-soft dark:border-sand-800 dark:bg-sand-900 dark:group-hover:border-sand-700 sm:rounded-2xl"
         >
           <div class="flex flex-col gap-3 p-5">
             <!-- Top row -->
@@ -221,6 +221,20 @@ const needsTrunc = (html: string, max = 220) => plain(html).length > max;
 </template>
 
 <style scoped>
+/* Mobile timeline: left emerald accent strip */
+.tl-entry > div:last-child {
+  @apply relative;
+}
+.tl-entry > div:last-child::before {
+  content: '';
+  @apply absolute left-0 top-0 bottom-0 w-1 rounded-l-[inherit] bg-emerald-400/70 dark:bg-emerald-600/70;
+}
+@media (min-width: 640px) {
+  .tl-entry > div:last-child::before {
+    display: none;
+  }
+}
+
 .tl-entry {
   animation: tlEnter 0.45s ease-out both;
   animation-delay: calc(var(--i, 0) * 90ms);

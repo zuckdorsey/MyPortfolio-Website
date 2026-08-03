@@ -25,7 +25,7 @@ useHead({
 </script>
 
 <template>
-  <div class="mx-auto w-full max-w-3xl px-5 pt-14 sm:px-6 md:pt-20">
+  <div class="mx-auto w-full max-w-3xl overflow-x-hidden px-5 pt-14 sm:px-6 md:pt-20">
     <div class="flex flex-col gap-20 md:gap-24">
       <Header />
       <About />

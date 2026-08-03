@@ -79,8 +79,8 @@ function providerOf(cert: ContentCertification): string {
         @keydown.enter.prevent="open(cert)"
         @keydown.space.prevent="open(cert)"
       >
-        <!-- Top: icon + title + date -->
-        <div class="flex items-start gap-3">
+        <!-- Top: icon + title + date (flex-col on mobile for readability) -->
+        <div class="flex flex-wrap items-start gap-3">
           <div
             class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-sand-100 transition-colors group-hover:bg-emerald-50 dark:bg-sand-800 dark:group-hover:bg-emerald-950/50"
           >
@@ -89,7 +89,7 @@ function providerOf(cert: ContentCertification): string {
           </div>
 
           <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-            <h3 class="truncate text-sm font-semibold leading-snug text-sand-900 transition-colors group-hover:text-emerald-700 dark:text-sand-100 dark:group-hover:text-emerald-300">
+            <h3 class="break-words text-sm font-semibold leading-snug text-sand-900 transition-colors group-hover:text-emerald-700 dark:text-sand-100 dark:group-hover:text-emerald-300">
               {{ cert.title }}
             </h3>
             <span class="text-[11px] leading-none text-sand-400 dark:text-sand-500">
@@ -97,7 +97,7 @@ function providerOf(cert: ContentCertification): string {
             </span>
           </div>
 
-          <span class="tnum inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-mono text-[11px] text-sand-400 dark:text-sand-500">
+          <span class="tnum flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-sand-100 px-2 py-0.5 font-mono text-[11px] text-sand-400 dark:bg-sand-800 dark:text-sand-500">
             <IconCalendar class="h-3 w-3" aria-hidden="true" />
             {{ cert.date }}
           </span>

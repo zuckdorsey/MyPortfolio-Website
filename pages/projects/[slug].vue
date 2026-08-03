@@ -138,7 +138,7 @@ function toggleTheme() {
 </script>
 
 <template>
-  <div class="mx-auto max-w-3xl px-5 py-10 sm:py-14">
+  <div class="mx-auto max-w-3xl overflow-x-hidden px-5 py-10 sm:py-14">
     <!-- Loading skeleton -->
     <div v-if="isLoading" class="animate-pulse space-y-5">
       <div class="h-3 w-24 rounded bg-sand-200 dark:bg-sand-800" />
