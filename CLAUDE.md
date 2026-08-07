@@ -20,9 +20,9 @@ There are currently no lint or test scripts in `package.json`. If adding tests, 
 
 - The app is a Nuxt 3/Vue 3 portfolio site. `app.vue` owns global head metadata, JSON-LD setup, and renders the active page via `<NuxtPage />`.
 - The public homepage is `pages/index.vue`, composed from section components in `components/` (`Header`, `About`, `Projects`, `Experience`, `Education`, `Certifications`, `Skills`, `SystemTools`, `CodingStats`, `NowPlaying`, `Contact`, `Footer`).
-- Static portfolio/admin data lives in `data/*.json`, with shared TypeScript shapes and label helpers in `data/types.ts`. Server endpoints expose this data from `server/api/`.
-- Admin pages live under `pages/admin/`. Client-side admin route protection is in `middleware/admin.ts`, while write API protection for selected endpoints and methods is handled by `server/middleware/auth.ts` using JWT bearer tokens.
-- Database support has been removed. `server/utils/db.ts` is a compatibility stub, and data is served from static JSON files instead of PostgreSQL.
+- Static portfolio data lives in `data/*.json`, with shared TypeScript shapes and label helpers in `data/types.ts`. Read-only server endpoints in `server/api/` import these JSON files directly.
+- There is no admin panel and no authentication. Content is edited by changing the JSON files in `data/` directly, so there are no write APIs, JWT handling, or protected routes.
+- Database support has been removed. Data is served from static JSON files instead of PostgreSQL.
 - Runtime integrations are implemented as Nitro API routes in `server/api/`, including GitHub contributions, Spotify now playing, WakaTime/stats, and seed/check endpoints.
 - Global styling is in `assets/css/main.css`; Tailwind customization is in `tailwind.config.js`. Nuxt UI, Nuxt Content, Nuxt Image, and sitemap support are configured in `nuxt.config.ts`.
 - SEO/site behavior is split between `app.vue`, `composables/seo.ts`, `composables/useJsonLd.ts`, and `nuxt.config.ts` site/sitemap/route rules.
@@ -37,7 +37,7 @@ README-documented environment variables include:
 - `SPOTIFY_REFRESH_TOKEN`
 - `NUXT_PUBLIC_RESUME_URL`
 
-The server middleware also expects a JWT secret for protected write APIs via runtime config (`config.jwtSecret`), so verify the corresponding environment/runtime configuration before working on admin write flows.
+All of these are optional integration credentials for public, read-only features. No auth-related secrets are required.
 
 ## Graphify
 

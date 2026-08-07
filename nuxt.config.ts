@@ -54,14 +54,13 @@ export default defineNuxtConfig({
       '/resume',
       '/privacy'
     ],
-    exclude: ['/admin/**', '/closed']
+    exclude: ['/closed']
   },
 
   routeRules: {
     '/': { headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     '/resume': { headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     '/closed': { ssr: false },
-    '/admin/**': { ssr: false },
     // Project detail pages are cached (README fetched server-side, 6h Nitro cache)
     '/projects/**': { headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     // Cache API responses at Nitro level
