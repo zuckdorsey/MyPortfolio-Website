@@ -34,7 +34,7 @@ const socials = [
   <header
     id="me"
     aria-labelledby="me-heading"
-    class="flex items-start justify-between gap-6 sm:items-center"
+    class="flex flex-col-reverse items-start gap-6 sm:flex-row sm:items-center sm:justify-between"
   >
     <div class="flex min-w-0 flex-col gap-4">
       <div class="flex flex-col gap-2">
@@ -75,7 +75,7 @@ const socials = [
       <Settings />
     </div>
 
-    <ConfettisButton>
+    <ConfettisButton class="shrink-0">
       <template v-slot:default="{ onLaunchConfettis }">
         <button
           type="button"
@@ -86,7 +86,8 @@ const socials = [
           <NuxtImg
             src="/photo.jpeg"
             alt="Portrait of Ababil Mustaqim"
-            class="h-24 w-24 rounded-3xl object-cover ring-1 ring-sand-200 transition-all duration-300 ease-spring group-hover:scale-[1.03] group-hover:shadow-lift group-hover:ring-emerald-300 dark:ring-sand-700 dark:group-hover:ring-emerald-700 sm:h-40 sm:w-40"
+            class="h-24 w-24 rounded-3xl object-cover object-[70%_center] ring-1 ring-sand-200 transition-all duration-300 ease-spring group-hover:scale-[1.03] group-hover:shadow-lift group-hover:ring-emerald-300 dark:ring-sand-700 dark:group-hover:ring-emerald-700 sm:h-40 sm:w-40"
+            sizes="96px sm:160px"
             width="160"
             height="160"
             format="webp"
